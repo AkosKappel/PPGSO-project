@@ -27,6 +27,7 @@ namespace ppgso {
      * @param image - Image to use
      */
     Texture(Image&& image);
+    Texture(Image&& image, std::vector<ppgso::Image> facesPictures);
 
     ~Texture();
 
@@ -34,6 +35,7 @@ namespace ppgso {
      * Update the OpenGL texture in memory.
      */
     void update();
+    void updateCube();
 
     /*!
      * Get OpenGL texture identifier number.
@@ -48,10 +50,13 @@ namespace ppgso {
      * @param id - OpenGL Texture id to bind to (0 default)
      */
     void bind(int id = 0) const;
+    void bindCube(int id = 0) const;
 
     Image image;
+    std::vector<ppgso::Image> facesPictures;
   private:
     void initGL();
+    void initGLCube();
     GLuint texture;
   };
 }

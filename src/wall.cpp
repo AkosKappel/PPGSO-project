@@ -1,6 +1,4 @@
 #include "wall.h"
-#include "scene.h"
-#include "asteroid.h"
 
 #include <shaders/texture_frag_glsl.h>
 #include <shaders/texture_vert_glsl.h>
@@ -20,7 +18,7 @@ Wall::Wall() {
   };
 
   if (!shader) shader = std::make_unique<ppgso::Shader>(texture_vert_glsl, texture_frag_glsl);
-  if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Brick.bmp"));
+  if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Wall/Brick.bmp"));
   std::vector<float> positions2 = {
     -1.0, -1.0,  1.0, //FRONT
     1.0, -1.0,  1.0,

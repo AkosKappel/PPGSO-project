@@ -67,6 +67,7 @@ set(PPGSO_SHADER_SRC
         shader/convolution_vert.glsl shader/convolution_frag.glsl
         shader/diffuse_vert.glsl shader/diffuse_frag.glsl
         shader/texture_vert.glsl shader/texture_frag.glsl
+        shader/cube_vert.glsl shader/cube_frag.glsl
         )
 add_resources(shaders ${PPGSO_SHADER_SRC})
 
@@ -115,7 +116,10 @@ add_executable(src
         src/space.cpp
         src/BarChair.cpp
         src/Plane.cpp
-        src/Square.cpp)
+        src/Square.cpp
+        src/wall.cpp
+        src/skybox.cpp
+)
 target_link_libraries(src ppgso shaders)
 install(TARGETS src DESTINATION .)
 add_custom_command(TARGET src POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data/ ${CMAKE_CURRENT_BINARY_DIR})

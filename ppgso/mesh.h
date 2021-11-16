@@ -16,17 +16,17 @@
 namespace ppgso {
 
   class Mesh {
-    struct gl_buffer {
+
+      struct gl_buffer {
     public:
       GLuint vao, vbo, tbo, nbo, ibo = 0;
       GLsizei size = 0;
     };
-    std::vector<tinyobj::shape_t> shapes;
-    std::vector<tinyobj::material_t> materials;
-    std::vector<gl_buffer> buffers;
+      std::vector<tinyobj::shape_t> shapes;
+      std::vector<tinyobj::material_t> materials;
+      std::vector<gl_buffer> buffers;
 
   public:
-
     /*!
      * Load 3D geometry from a na Wavefront .obj file.
      *
@@ -38,6 +38,8 @@ namespace ppgso {
      * @param obj - File path to the obj file to load.
      */
     Mesh(const std::string &obj);
+
+    Mesh(std::vector<tinyobj::shape_t> shapes2, std::vector<tinyobj::material_t> materials2);
 
     ~Mesh();
 

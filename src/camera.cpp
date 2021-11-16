@@ -17,66 +17,50 @@ void Camera::movement(int key, int action, int mods) {
 
     // keyboard controls
     if (keyPress[GLFW_KEY_W]) {
-        std::cout << "W" << std::endl;
         position += speed * orientation;
     }
     if (keyPress[GLFW_KEY_S]) {
-        std::cout << "S" << std::endl;
         position -= speed * orientation;
     }
     if (keyPress[GLFW_KEY_D]) {
-        std::cout << "D" << std::endl;
         position += speed * glm::normalize(glm::cross(orientation, up));
     }
     if (keyPress[GLFW_KEY_A]) {
-        std::cout << "A" << std::endl;
         position -= speed * glm::normalize(glm::cross(orientation, up));
     }
     if (keyPress[GLFW_KEY_SPACE]) {
-        std::cout << "SPACE" << std::endl;
         position += speed * up;
     }
     if (keyPress[GLFW_KEY_LEFT_CONTROL]) {
-        std::cout << "LEFT CONTROL" << std::endl;
         position -= speed * up;
     }
     if (keyPress[GLFW_KEY_E]) {
-        std::cout << "E" << std::endl;
         orientation += speed / 8 * glm::normalize(glm::cross(orientation, up));
     }
     if (keyPress[GLFW_KEY_Q]) {
-        std::cout << "Q" << std::endl;
         orientation -= speed / 8 * glm::normalize(glm::cross(orientation, up));
     }
     if (keyPress[GLFW_KEY_X]) {
-        std::cout << "X" << std::endl;
         orientation += speed / 8 * glm::normalize(glm::cross(glm::cross(orientation, up), orientation));
     }
     if (keyPress[GLFW_KEY_C]) {
-        std::cout << "C" << std::endl;
         orientation -= speed / 8 * glm::normalize(glm::cross(glm::cross(orientation, up), orientation));
     }
 
     // movement speed
     if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS) {
-        std::cout << "LEFT SHIFT PRESSED" << std::endl;
         speed = 2 * defaultSpeed;
     } else if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE) {
-        std::cout << "LEFT SHIFT RELEASED" << std::endl;
         speed = defaultSpeed;
     }
 
     // mouse controls
     if (key == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        std::cout << "LEFT MOUSE CLICKER" << std::endl;
     } else if (key == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-        std::cout << "LEFT MOUSE RELEASED" << std::endl;
     }
 
     if (key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
-        std::cout << "RIGHT MOUSE" << std::endl;
     } else if (key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
-        std::cout << "RIGHT MOUSE RELEASED" << std::endl;
     }
 
 //    // Handles mouse movement

@@ -22,7 +22,7 @@ Square::Square(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl = glm::vec3(1, 1, 1),
     if (!FloorTexture) FloorTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Floor/parq.bmp"));
     if (!SidewalkTexture) SidewalkTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/wall.bmp"));
     if (!WallTexture) WallTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/wall.bmp"));
-    if (!CeilingTexture) CeilingTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Floor/ceiling.bmp"));
+    if (!CeilingTexture) CeilingTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Floor/parq.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("Square/square.obj");
 }
 

@@ -20,6 +20,8 @@
 #include "BarChair.h"
 #include "Plane.h"
 #include "Square.h"
+#include "skybox.h"
+#include "wall.h"
 
 const unsigned int SIZE = 1024;
 
@@ -50,6 +52,12 @@ private:
 //        auto generator = std::make_unique<Generator>();
 //        generator->position.y = 10.0f;
 //        scene.objects.push_back(move(generator));
+
+        auto skybox = std::make_unique<Skybox>();
+        scene.objects.push_back(std::move(skybox));
+
+        auto wall = std::make_unique<Wall>();
+        scene.objects.push_back(std::move(wall));
 
         auto chair = std::make_unique<BarChair>(glm::vec3(0, 0, 0));
         chair->scale = glm::vec3(0.25f, 0.25f, 0.25f);

@@ -1,6 +1,4 @@
 #include "skybox.h"
-#include "scene.h"
-#include "asteroid.h"
 
 #include <shaders/cube_frag_glsl.h>
 #include <shaders/cube_vert_glsl.h>
