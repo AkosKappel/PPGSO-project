@@ -1,15 +1,27 @@
 #include <glm/glm.hpp>
 
 #include "camera.h"
+#include "glm/ext.hpp"
 
 
 Camera::Camera(float fow, float ratio, float near, float far) {
+    keyframes = Keyframes();
     float fowInRad = glm::radians(fow);
     projectionMatrix = glm::perspective(fowInRad, ratio, near, far);
+    keyframes.addFrame({0, 0, 0}, {0, 0, 0}, 1);
+    keyframes.addFrame({0, 0, -20}, {0, ppgso::PI/2, ppgso::PI/2}, 10);
+    keyframes.addFrame({0, 0, -20}, {0, -ppgso::PI/2, -ppgso::PI/2}, 10);
+    keyframes.addFrame({0, 0, -50}, {0, 0, 0}, 10);
+    keyframes.addFrame({0, -20, -20}, {0, 0, 0}, 10);
 }
 
-void Camera::update() {
+void Camera::update(float time) {
     viewMatrix = lookAt(position, position + orientation, up);
+   //keyframes.updatePosRot(time, &position, &rotation);
+    //glm::mat4 rotateX = rotate(glm::mat4{1.0f}, rotation.x, {1.0f, 0.0f, 0.0f});
+    //glm::mat4 rotateY = rotate(glm::mat4{1.0f}, rotation.y, {0.0f, 1.0f, 0.0f});
+    //glm::mat4 rotateZ = rotate(glm::mat4{1.0f}, rotation.z, {0.0f, 0.0f, 1.0f});
+    //viewMatrix = glm::translate(glm::mat4(1.0f), position) * rotateX * rotateY * rotateZ;
 }
 
 void Camera::movement(int key, int action, int mods) {

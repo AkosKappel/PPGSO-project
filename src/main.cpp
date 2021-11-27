@@ -22,6 +22,8 @@
 #include "Square.h"
 #include "skybox.h"
 #include "wall.h"
+#include "doorway.h"
+#include "door.h"
 
 const unsigned int SIZE = 1024;
 
@@ -37,6 +39,7 @@ private:
      * Reset and initialize the game scene
      * Creating unique smart pointers to objects that are stored in the scene object list
      */
+
     void initScene() {
         scene.objects.clear();
 
@@ -56,8 +59,68 @@ private:
         auto skybox = std::make_unique<Skybox>();
         scene.objects.push_back(std::move(skybox));
 
-        auto wall = std::make_unique<Wall>();
-        scene.objects.push_back(std::move(wall));
+        auto wall1 = std::make_unique<Wall>();
+        wall1->position = {-3.0f, 1.5f, 6.2f};
+        scene.objects.push_back(std::move(wall1));
+
+        auto wall2 = std::make_unique<Wall>();
+        wall2->position = {-3.0f, 1.5f, -6.2f};
+        scene.objects.push_back(std::move(wall2));
+
+        auto wall3 = std::make_unique<Wall>();
+        wall3->position = {3.0f, 1.5f, -6.2f};
+        scene.objects.push_back(std::move(wall3));
+
+        auto wall4 = std::make_unique<Wall>();
+        wall4->position = {5.8f, 1.5f, -3.0f};
+        wall4->rotation = {0.0f, 0.0f, ppgso::PI/2};
+        scene.objects.push_back(std::move(wall4));
+
+        auto wall5 = std::make_unique<Wall>();
+        wall5->position = {5.8f, 1.5f, 3.0f};
+        wall5->rotation = {0.0f, 0.0f, ppgso::PI/2};
+        scene.objects.push_back(std::move(wall5));
+
+        auto wall6 = std::make_unique<Wall>();
+        wall6->position = {-5.8f, 1.5f, -3.0f};
+        wall6->rotation = {0.0f, 0.0f, ppgso::PI/2};
+        scene.objects.push_back(std::move(wall6));
+
+        auto wall7 = std::make_unique<Wall>();
+        wall7->position = {3.0f, 1.5f, 11.8002f};
+        scene.objects.push_back(std::move(wall7));
+
+        auto wall8 = std::make_unique<Wall>();
+        wall8->position = {5.8001f, 1.5f, 8.9999f};
+        wall8->rotation = {0.0f, 0.0f, ppgso::PI/2};
+        scene.objects.push_back(std::move(wall8));
+
+        auto wall9 = std::make_unique<Wall>();
+        wall9->position = {0.1999f, 1.5f, 9.0001f};
+        wall9->rotation = {0.0f, 0.0f, ppgso::PI/2};
+        scene.objects.push_back(std::move(wall9));
+
+        auto doorway1 = std::make_unique<Doorway>();
+        doorway1->position = {-5.8f, 1.5f, 3.0f};
+        doorway1->rotation = {0.0f, 0.0f, ppgso::PI/2};
+        scene.objects.push_back(std::move(doorway1));
+
+        auto doorway2 = std::make_unique<Doorway>();
+        doorway2->position = {3.0f, 1.5f, 6.2f};
+        scene.objects.push_back(std::move(doorway2));
+
+        auto door = std::make_unique<Door>();
+        door->position = {-5.8f, 0.0f, 3.0f};
+        door->rotation = {0.0f, 0.0f, ppgso::PI/2};
+        door->rotateAround = {0.0f, 0.0f, -0.6f};
+        door->timeRotate = 5.0f;
+        scene.objects.push_back(std::move(door));
+
+        auto door2 = std::make_unique<Door>();
+        door2->position = {3.0f, 0.0f, 6.2f};
+        door2->rotateAround = {0.6f, 0.0f, 0.0f};
+        door2->timeRotate = 10.0f;
+        scene.objects.push_back(std::move(door2));
 
         auto chair = std::make_unique<BarChair>(glm::vec3(0, 0, 0));
         chair->scale = glm::vec3(0.25f, 0.25f, 0.25f);
@@ -65,17 +128,29 @@ private:
 
         // Create ceiling
         auto ceiling = std::make_unique<Plane>(
-                glm::vec3(0, 4, 0),
+                glm::vec3(0, 3, 0),
                 glm::vec3(ppgso::PI / 2, 0, 0));
-        ceiling->generate(5, 5, TextureType::CEILING);
+        ceiling->generate(6, 6, TextureType::CEILING);
         scene.objects.push_back(std::move(ceiling));
+
+        auto ceiling2 = std::make_unique<Plane>(
+                glm::vec3(3.0f, 3, 9.0f),
+                glm::vec3(ppgso::PI / 2, 0, 0));
+        ceiling2->generate(3, 3, TextureType::CEILING);
+        scene.objects.push_back(std::move(ceiling2));
 
         // Create floor
         auto floor = std::make_unique<Plane>(
                 glm::vec3(0, 0, 0),
                 glm::vec3(-ppgso::PI / 2, 0, 0));
-        floor->generate(5, 5, TextureType::FLOOR);
+        floor->generate(6, 6, TextureType::FLOOR);
         scene.objects.push_back(std::move(floor));
+
+        auto floor2 = std::make_unique<Plane>(
+                glm::vec3(3.0f, 0, 9.0f),
+                glm::vec3(-ppgso::PI / 2, 0, 0));
+        floor2->generate(3, 3, TextureType::FLOOR);
+        scene.objects.push_back(std::move(floor2));
     }
 
 public:
@@ -177,7 +252,7 @@ public:
 
         // Compute time delta
         float dt = animate ? (float) glfwGetTime() - time : 0;
-
+        //std::cout << dt << std::endl;
         // Set gray background
         glClearColor(.5f, .5f, .5f, 0);
         // Clear depth and color buffers

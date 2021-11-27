@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 #include <ppgso/ppgso.h>
+#include "keyframes.h"
 
 /*!
  * Simple camera object that keeps track of viewMatrix and projectionMatrix
@@ -15,11 +16,14 @@ public:
     glm::vec3 up{0, 1, 0};
     glm::vec3 position{0, 0, 20};
     glm::vec3 orientation{0, 0, -1};
+    glm::vec3 rotation{0, 0, 0};
 
     float defaultSpeed = 0.5f;
     float speed = defaultSpeed;
     float sensitivity = 100.0f;
     bool firstClick = true;
+
+    Keyframes keyframes;
 
     glm::mat4 viewMatrix;
     glm::mat4 projectionMatrix;
@@ -38,7 +42,7 @@ public:
     /*!
      * Update Camera viewMatrix based on up, position and back vectors
      */
-    void update();
+    void update(float time);
 
     void movement(int key, int action, int mods);
 

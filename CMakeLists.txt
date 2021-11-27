@@ -119,7 +119,9 @@ add_executable(src
         src/Square.cpp
         src/wall.cpp
         src/skybox.cpp
-)
+        src/doorway.cpp
+        src/door.cpp
+        src/keyframes.cpp)
 target_link_libraries(src ppgso shaders)
 install(TARGETS src DESTINATION .)
 add_custom_command(TARGET src POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data/ ${CMAKE_CURRENT_BINARY_DIR})

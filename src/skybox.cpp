@@ -10,11 +10,6 @@ std::unique_ptr<ppgso::Shader> Skybox::shader;
 
 Skybox::Skybox() {
     scale *= 100.0f;
-    struct gl_buffer {
-    public:
-        GLuint vao, vbo, tbo, nbo, ibo = 0;
-        GLsizei size = 0;
-    };
     std::vector<ppgso::Image> images;
     std::vector<std::string> faces
     {

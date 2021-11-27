@@ -10,13 +10,7 @@ std::unique_ptr<ppgso::Shader> Wall::shader;
 Wall::Wall() {
   scale.x *= 3.0f;
   scale.y *= 1.5f;
-  scale.z *= 0.3f;
-  struct gl_buffer {
-  public:
-      GLuint vao, vbo, tbo, nbo, ibo = 0;
-      GLsizei size = 0;
-  };
-
+  scale.z *= 0.2f;
   if (!shader) shader = std::make_unique<ppgso::Shader>(texture_vert_glsl, texture_frag_glsl);
   if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Wall/Brick.bmp"));
   std::vector<float> positions2 = {
