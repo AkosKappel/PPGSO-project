@@ -24,6 +24,10 @@
 #include "wall.h"
 #include "doorway.h"
 #include "door.h"
+#include "SlotMachine.h"
+#include "Cigar.h"
+#include "Lever.h"
+#include "WineBottle.h"
 
 const unsigned int SIZE = 1024;
 
@@ -126,6 +130,17 @@ private:
         chair->scale = glm::vec3(0.25f, 0.25f, 0.25f);
         scene.objects.push_back(std::move(chair));
 
+        // smoking cigar
+        auto cigar = std::make_unique<Cigar>(glm::vec3(0, 1, 0));
+        scene.objects.push_back(std::move(cigar));
+
+        // bottles
+        auto wine1 = std::make_unique<WineBottle>(glm::vec3(3, 2, 0), true);
+        scene.objects.push_back(std::move(wine1));
+
+        auto wine2 = std::make_unique<WineBottle>(glm::vec3(-3, 2, 0), false);
+        scene.objects.push_back(std::move(wine2));
+
         // Create ceiling
         auto ceiling = std::make_unique<Plane>(
                 glm::vec3(0, 3, 0),
@@ -214,33 +229,6 @@ public:
      */
     void onMouseButton(int button, int action, int mods) override {
         scene.camera->movement(button, action, mods);
-
-//        if (button == GLFW_MOUSE_BUTTON_LEFT) {
-//            scene.cursor.left = action == GLFW_PRESS;
-//
-//            if (scene.cursor.left) {
-//                std::cout << "left mouse pressed" << std::endl;
-//                // Convert pixel coordinates to Screen coordinates
-//                double u = (scene.cursor.x / width - 0.5f) * 2.0f;
-//                double v = -(scene.cursor.y / height - 0.5f) * 2.0f;
-//
-//                // Get mouse pick vector in world coordinates
-//                auto direction = scene.camera->cast(u, v);
-//                auto position = scene.camera->position;
-//
-//                // Get all objects in scene intersected by ray
-//                auto picked = scene.intersect(position, direction);
-//
-//                // Go through all objects that have been picked
-//                for (auto &obj: picked) {
-//                    // Pass on the click event
-//                    obj->onClick(scene);
-//                }
-//            }
-//        }
-//        if (button == GLFW_MOUSE_BUTTON_RIGHT) {
-//            scene.cursor.right = action == GLFW_PRESS;
-//        }
     }
 
     /*!

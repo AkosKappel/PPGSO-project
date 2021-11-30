@@ -1,0 +1,59 @@
+#include "SmokeParticle.h"
+
+#include <shaders/diffuse_vert_glsl.h>
+#include <shaders/diffuse_frag_glsl.h>
+
+// Static resources
+std::unique_ptr<ppgso::Mesh> SmokeParticle::mesh;
+std::unique_ptr<ppgso::Texture> SmokeParticle::texture;
+std::unique_ptr<ppgso::Shader> SmokeParticle::shader;
+
+SmokeParticle::SmokeParticle(glm::vec3 pos, float size) {
+    position = pos;
+    scale = glm::vec3(size, size, size);
+
+    float shade = glm::linearRand(0.4f, 0.6f);
+    age = 0.0f;
+
+    // Initialize static resources if needed
+    if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
+    if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("smokeParticle.bmp"));
+    if (!mesh) mesh = std::make_unique<ppgso::Mesh>("sphere.obj");
+}
+
+bool SmokeParticle::update(Scene &scene, float dt) {
+
+    float maxAge = glm::linearRand(3.0f, 6.0f) * 100 / 6 * scale.x;
+    if (age > maxAge || glm::linearRand(0.0f, 1.0f) < 0.005f) {
+        return false;
+    }
+
+    float oscillation = 0.01f;
+    position += glm::vec3(glm::linearRand(-oscillation, oscillation), 0.005f, glm::linearRand(-oscillation, oscillation));
+    age += dt;
+
+    // Generate modelMatrix from position, rotation and scale
+    generateModelMatrix();
+
+    return true;
+}
+
+void SmokeParticle::render(Scene &scene) {
+    shader->use();
+
+    // set up light
+    shader->setUniform("LightDirection", scene.lightDirection);
+
+    // use camera
+    shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);
+    shader->setUniform("ViewMatrix", scene.camera->viewMatrix);
+
+    // render mesh
+    shader->setUniform("ModelMatrix", modelMatrix);
+    shader->setUniform("Texture", *texture);
+    mesh->render();
+}
+
+void SmokeParticle::onClick(Scene &scene) {
+    std::cout << "SmokeParticle clicked!" << std::endl;
+}
