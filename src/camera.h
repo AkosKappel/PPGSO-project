@@ -21,6 +21,7 @@ public:
     float defaultSpeed = 0.5f;
     float speed = defaultSpeed;
     float sensitivity = 100.0f;
+    float timePassed = 0.0f;
     bool firstClick = true;
 
     Keyframes keyframes;

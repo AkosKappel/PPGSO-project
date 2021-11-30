@@ -13,6 +13,7 @@ public:
 
     glm::vec3 rotateAround;
     float timeRotate;
+    float timePassedFromStart;
 
     Door();
 

@@ -240,6 +240,8 @@ public:
 
         // Compute time delta
         float dt = animate ? (float) glfwGetTime() - time : 0;
+
+        time = (float) glfwGetTime();
         //std::cout << dt << std::endl;
         // Set gray background
         glClearColor(.5f, .5f, .5f, 0);

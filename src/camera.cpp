@@ -16,8 +16,9 @@ Camera::Camera(float fow, float ratio, float near, float far) {
 }
 
 void Camera::update(float time) {
+    //timePassed += time;
     viewMatrix = lookAt(position, position + orientation, up);
-   //keyframes.updatePosRot(time, &position, &rotation);
+    //keyframes.updatePosRot(timePassed, &position, &rotation);
     //glm::mat4 rotateX = rotate(glm::mat4{1.0f}, rotation.x, {1.0f, 0.0f, 0.0f});
     //glm::mat4 rotateY = rotate(glm::mat4{1.0f}, rotation.y, {0.0f, 1.0f, 0.0f});
     //glm::mat4 rotateZ = rotate(glm::mat4{1.0f}, rotation.z, {0.0f, 0.0f, 1.0f});

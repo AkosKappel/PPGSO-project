@@ -20,11 +20,12 @@ Door::Door() {
 
 bool Door::update(Scene &scene, float dt) {
     float zRotate = 0;
-    float timePassed = (dt - timeRotate);
+    timePassedFromStart += dt;
+    float timePassed = (timePassedFromStart - timeRotate);
     if(timePassed >= ppgso::PI/2){
         zRotate = -ppgso::PI/2;
     }
-    else if(dt > timeRotate){
+    else if(timePassedFromStart > timeRotate){
         zRotate = -timePassed;
     }
     modelMatrix =
