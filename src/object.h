@@ -25,6 +25,15 @@ public:
 
     virtual ~Object() {};
 
+    struct Material {
+        glm::vec3 ambient;
+        glm::vec3 diffuse;
+        glm::vec3 specular;
+        float shininess;
+    };
+
+    Material material;
+
     /*!
      * Update Object parameters, usually used to update the modelMatrix based on position, scale and rotation
      *

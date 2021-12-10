@@ -1,8 +1,5 @@
 #include "Plane.h"
 
-#include <shaders/texture_vert_glsl.h>
-#include <shaders/texture_frag_glsl.h>
-
 Plane::Plane(glm::vec3 pos, glm::vec3 rot) {
     position = pos;
     rotation = rot;
@@ -51,5 +48,4 @@ void Plane::render(Scene &scene) {
 }
 
 void Plane::onClick(Scene &scene) {
-    std::cout << "Plane clicked!" << std::endl;
 }

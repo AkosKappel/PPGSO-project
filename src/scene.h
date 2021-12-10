@@ -1,3 +1,4 @@
+#pragma once
 #ifndef _PPGSO_SCENE_H
 #define _PPGSO_SCENE_H
 
@@ -45,6 +46,35 @@ public:
 
     // Lights, in this case using only simple directional diffuse lighting
     glm::vec3 lightDirection{0.0f, 1.0f, 0.0f};
+
+    struct PointLight {
+        glm::vec3 position;
+        glm::vec3 color;
+
+        glm::vec3 ambient;
+        glm::vec3 diffuse;
+        glm::vec3 specular;
+
+        float constant;
+        float linear;
+        float quadratic;
+    };
+    PointLight pointLight;
+
+    struct SpotLight {
+        glm::vec3 position;
+        glm::vec3  direction;
+        glm::vec3 color;
+        float cutOff;
+        float outerCutOff;
+
+        glm::vec3 ambient;
+        glm::vec3 diffuse;
+        glm::vec3 specular;
+    };
+    SpotLight spotLight;
+
+//    std::list<std::shared_ptr<Light> > lights;
 
     // Store cursor state
     struct {

@@ -51,18 +51,34 @@ private:
     void initScene() {
         scene.objects.clear();
 
+        scene.pointLight.position = {0.0f, 1.0f, 0.0f};
+        scene.pointLight.color = {0.7f, 0.3f, 0.3f};
+        scene.pointLight.ambient = glm::vec3{1.0};
+        scene.pointLight.diffuse = glm::vec3{1.0};
+        scene.pointLight.specular = glm::vec3{1.0};
+        scene.pointLight.constant = 1.0f;
+        scene.pointLight.linear = 0.09f;
+        scene.pointLight.quadratic = 0.032f;
+
+        scene.spotLight.position = {0.0f, 3.0f, 0.0f};
+        scene.spotLight.direction = {0.0f, -1.0f, 0.0f};
+        scene.spotLight.color = {1.0f, 1.0f, 1.0f};
+        scene.spotLight.ambient = glm::vec3{1.0};
+        scene.spotLight.diffuse = glm::vec3{1.0};
+        scene.spotLight.specular = glm::vec3{1.0};
+        scene.spotLight.cutOff = glm::cos(glm::radians(12.5f));
+        scene.spotLight.outerCutOff = glm::cos(glm::radians(17.5f));
+
         // Create a camera
         auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 100.0f);
         camera->position = glm::vec3(0.0f, 1.7f, 20.0f);
         scene.camera = std::move(camera);
 
-        // Add space background
-//        scene.objects.push_back(std::make_unique<Space>());
-//        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        // Add generator to scene
-//        auto generator = std::make_unique<Generator>();
-//        generator->position.y = 10.0f;
-//        scene.objects.push_back(move(generator));
+        auto light1 = std::make_unique<Light>(glm::vec3(0.0f, 1.0f, 0.0f));
+        scene.objects.push_back(std::move(light1));
+
+        auto light2 = std::make_unique<Light>(glm::vec3(0.0f, 3.0f, 0.0f));
+        scene.objects.push_back(std::move(light2));
 
         auto skybox = std::make_unique<Skybox>();
         scene.objects.push_back(std::move(skybox));

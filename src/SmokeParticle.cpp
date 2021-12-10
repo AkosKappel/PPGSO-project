@@ -54,6 +54,7 @@ void SmokeParticle::render(Scene &scene) {
     // use camera
     shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);
     shader->setUniform("ViewMatrix", scene.camera->viewMatrix);
+    shader->setUniform("Transparency", 0.5f);
 
     // render mesh
     shader->setUniform("ModelMatrix", modelMatrix);
