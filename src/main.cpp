@@ -53,21 +53,26 @@ private:
 
         scene.pointLight.position = {0.0f, 1.0f, 0.0f};
         scene.pointLight.color = {0.7f, 0.3f, 0.3f};
-        scene.pointLight.ambient = glm::vec3{1.0};
-        scene.pointLight.diffuse = glm::vec3{1.0};
-        scene.pointLight.specular = glm::vec3{1.0};
         scene.pointLight.constant = 1.0f;
         scene.pointLight.linear = 0.09f;
         scene.pointLight.quadratic = 0.032f;
+        scene.pointLight.ambient = glm::vec3{1.0};
+        scene.pointLight.diffuse = glm::vec3{1.0};
+        scene.pointLight.specular = glm::vec3{1.0};
 
         scene.spotLight.position = {0.0f, 3.0f, 0.0f};
         scene.spotLight.direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight.color = {1.0f, 1.0f, 1.0f};
+        scene.spotLight.cutOff = glm::cos(glm::radians(12.5f));
+        scene.spotLight.outerCutOff = glm::cos(glm::radians(17.5f));
         scene.spotLight.ambient = glm::vec3{1.0};
         scene.spotLight.diffuse = glm::vec3{1.0};
         scene.spotLight.specular = glm::vec3{1.0};
-        scene.spotLight.cutOff = glm::cos(glm::radians(12.5f));
-        scene.spotLight.outerCutOff = glm::cos(glm::radians(17.5f));
+
+        scene.directionalLight.direction = {0.0f, -1.0f, 0.0f};
+        scene.directionalLight.ambient = glm::vec3{1.0};
+        scene.directionalLight.diffuse = glm::vec3{1.0};
+        scene.directionalLight.specular = glm::vec3{1.0};
 
         // Create a camera
         auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 100.0f);
@@ -420,7 +425,7 @@ private:
         auto grass = std::make_unique<Plane>(
                 glm::vec3(0, -0.01, 0),
                 glm::vec3(-ppgso::PI / 2, 0, 0));
-        grass->generate(50, 50, TextureType::GRASS);
+        grass->generate(5, 5, TextureType::GRASS);
         scene.objects.push_back(std::move(grass));
 
         auto sidewalk = std::make_unique<Plane>(

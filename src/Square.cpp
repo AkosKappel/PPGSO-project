@@ -12,10 +12,10 @@ std::unique_ptr<ppgso::Texture> Square::GrassTexture;
 std::unique_ptr<ppgso::Texture> Square::CeilingTexture;
 std::unique_ptr<ppgso::Shader> Square::shader;
 
-Square::Square(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl = glm::vec3(1, 1, 1), TextureType txt = TextureType::FLOOR) {
+Square::Square(glm::vec3 pos, glm::vec3 rot, float size = 1, TextureType txt = TextureType::FLOOR) {
     position = pos;
     rotation = rot;
-    scale = scl;
+    scale = glm::vec3(size);
     texture = txt;
 
     material.ambient = glm::vec3(0.2);
@@ -46,12 +46,19 @@ void Square::render(Scene &scene) {
     shader->use();
 
     // Set up light
-    shader->setUniform("LightDirection", scene.lightDirection);
 
     // Use camera
     shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);
     shader->setUniform("ViewMatrix", scene.camera->viewMatrix);
     shader->setUniform("viewPos", scene.camera->position);
+
+
+    shader->setUniform("directionalLight.direction", scene.directionalLight.direction);
+
+    shader->setUniform("directionalLight.ambient", scene.directionalLight.ambient);
+    shader->setUniform("directionalLight.diffuse", scene.directionalLight.diffuse);
+    shader->setUniform("directionalLight.specular", scene.directionalLight.specular);
+
 
     shader->setUniform("pointLight.position", scene.pointLight.position);
     shader->setUniform("pointLight.color", scene.pointLight.color);
@@ -74,6 +81,7 @@ void Square::render(Scene &scene) {
     shader->setUniform("spotLight.ambient", scene.spotLight.ambient);
     shader->setUniform("spotLight.diffuse", scene.spotLight.diffuse);
     shader->setUniform("spotLight.specular", scene.spotLight.specular);
+
 
     shader->setUniform("material.ambient", material.ambient);
     shader->setUniform("material.diffuse", material.diffuse);

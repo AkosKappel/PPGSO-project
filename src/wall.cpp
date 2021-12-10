@@ -132,19 +132,20 @@ bool Wall::update(Scene &scene, float dt) {
 void Wall::render(Scene &scene) {
   shader->use();
 
-  shader->setUniform("LightDirection", scene.lightDirection);
-
   shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);
   shader->setUniform("ViewMatrix", scene.camera->viewMatrix);
   shader->setUniform("viewPos", scene.camera->position);
 
+    shader->setUniform("directionalLight.direction", scene.directionalLight.direction);
+    shader->setUniform("directionalLight.ambient", scene.directionalLight.ambient);
+    shader->setUniform("directionalLight.diffuse", scene.directionalLight.diffuse);
+    shader->setUniform("directionalLight.specular", scene.directionalLight.specular);
+
     shader->setUniform("pointLight.position", scene.pointLight.position);
     shader->setUniform("pointLight.color", scene.pointLight.color);
-
     shader->setUniform("pointLight.ambient", scene.pointLight.ambient);
     shader->setUniform("pointLight.diffuse", scene.pointLight.diffuse);
     shader->setUniform("pointLight.specular", scene.pointLight.specular);
-
     shader->setUniform("pointLight.constant",  scene.pointLight.constant);
     shader->setUniform("pointLight.linear",    scene.pointLight.linear);
     shader->setUniform("pointLight.quadratic", scene.pointLight.quadratic);
@@ -154,7 +155,6 @@ void Wall::render(Scene &scene) {
     shader->setUniform("spotLight.color", scene.spotLight.color);
     shader->setUniform("spotLight.cutOff", scene.spotLight.cutOff);
     shader->setUniform("spotLight.outerCutOff", scene.spotLight.outerCutOff);
-
     shader->setUniform("spotLight.ambient", scene.spotLight.ambient);
     shader->setUniform("spotLight.diffuse", scene.spotLight.diffuse);
     shader->setUniform("spotLight.specular", scene.spotLight.specular);

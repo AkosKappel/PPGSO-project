@@ -16,6 +16,7 @@ private:
     // Static resources (Shared between instances)
     static std::unique_ptr<ppgso::Mesh> mesh;
     static std::unique_ptr<ppgso::Shader> shader;
+
     static std::unique_ptr<ppgso::Texture> FloorTexture;
     static std::unique_ptr<ppgso::Texture> SidewalkTexture;
     static std::unique_ptr<ppgso::Texture> WallTexture;
@@ -31,7 +32,7 @@ public:
      * @param rot Rotation of the square
      * @param scl Scaling of the square
      */
-    Square(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl, TextureType txt);
+    Square(glm::vec3 pos, glm::vec3 rot, float size, TextureType txt);
 
     /*!
      * Update asteroid

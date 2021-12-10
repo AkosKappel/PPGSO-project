@@ -3,7 +3,7 @@
 Plane::Plane(glm::vec3 pos, glm::vec3 rot) {
     position = pos;
     rotation = rot;
-    scale = glm::vec3(1, 1, 1);
+    scale = glm::vec3(1);
 }
 
 void Plane::generate(int n, int m, TextureType txtType) {
@@ -15,7 +15,7 @@ void Plane::generate(int n, int m, TextureType txtType) {
         for (int j = 0; j < m; j++) {
             auto floor = std::make_unique<Square>(
                     position + glm::vec3((i - a) * size + offsetN, 0, (j - b) * size + offsetM),
-                    rotation, scale, txtType
+                    rotation, scale.x, txtType
             );
             objects.push_back(std::move(floor));
         }

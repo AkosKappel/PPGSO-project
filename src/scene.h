@@ -47,17 +47,26 @@ public:
     // Lights, in this case using only simple directional diffuse lighting
     glm::vec3 lightDirection{0.0f, 1.0f, 0.0f};
 
-    struct PointLight {
-        glm::vec3 position;
-        glm::vec3 color;
+    struct DirectionalLight {
+        glm::vec3 direction;
 
         glm::vec3 ambient;
         glm::vec3 diffuse;
         glm::vec3 specular;
+    };
+    DirectionalLight directionalLight;
+
+    struct PointLight {
+        glm::vec3 position;
+        glm::vec3 color;
 
         float constant;
         float linear;
         float quadratic;
+
+        glm::vec3 ambient;
+        glm::vec3 diffuse;
+        glm::vec3 specular;
     };
     PointLight pointLight;
 
