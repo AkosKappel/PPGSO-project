@@ -38,13 +38,13 @@ public:
     std::unique_ptr<Camera> camera;
 
     // All objects to be rendered in scene
-    std::list<std::unique_ptr<Object> > objects;
+    std::list<std::shared_ptr<Object> > objects;
 
     // Keyboard state
     std::map<int, int> keyboard;
 
     // Lights, in this case using only simple directional diffuse lighting
-    glm::vec3 lightDirection{-1.0f, 5.0f, 3.0f};
+    glm::vec3 lightDirection{0.0f, 1.0f, 0.0f};
 
     // Store cursor state
     struct {

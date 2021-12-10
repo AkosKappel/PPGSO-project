@@ -18,9 +18,11 @@ private:
     static std::unique_ptr<ppgso::Texture> texture;
 
     float age;
+    glm::mat4 posRotMatrix;
+    float hand;
 public:
 
-    SmokeParticle(glm::vec3 pos, float size);
+    SmokeParticle(glm::vec3 pos, glm::mat4 rotationPosMatrix, float size, float hand);
 
     bool update(Scene &scene, float dt) override;
 

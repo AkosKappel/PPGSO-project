@@ -2,15 +2,18 @@
 
 #include <shaders/diffuse_vert_glsl.h>
 #include <shaders/diffuse_frag_glsl.h>
+#include <glm/gtx/euler_angles.hpp>
 
 // Static resources
 std::unique_ptr<ppgso::Mesh> SmokeParticle::mesh;
 std::unique_ptr<ppgso::Texture> SmokeParticle::texture;
 std::unique_ptr<ppgso::Shader> SmokeParticle::shader;
 
-SmokeParticle::SmokeParticle(glm::vec3 pos, float size) {
+SmokeParticle::SmokeParticle(glm::vec3 pos, glm::mat4 rotationPosMatrix, float size, float hand2) {
     position = pos;
     scale = glm::vec3(size, size, size);
+    posRotMatrix = rotationPosMatrix;
+    hand = hand2;
 
     float shade = glm::linearRand(0.4f, 0.6f);
     age = 0.0f;
@@ -29,11 +32,15 @@ bool SmokeParticle::update(Scene &scene, float dt) {
     }
 
     float oscillation = 0.01f;
-    position += glm::vec3(glm::linearRand(-oscillation, oscillation), 0.005f, glm::linearRand(-oscillation, oscillation));
+    float handT = (hand - (-ppgso::PI/2)) / (-((2.5f*ppgso::PI)/4) - -ppgso::PI/2);
+    position += glm::vec3(glm::linearRand(-oscillation, oscillation), 0.005 * handT, (-0.005) * (1-handT) + glm::linearRand(-oscillation, oscillation));
     age += dt;
+    modelMatrix = posRotMatrix
+            * glm::translate(glm::mat4(1.0f), position)
+            * glm::orientate4(rotation)
+            * glm::scale(glm::mat4(1.0f), scale);
 
     // Generate modelMatrix from position, rotation and scale
-    generateModelMatrix();
 
     return true;
 }

@@ -8,6 +8,7 @@
 #include "scene.h"
 #include "object.h"
 #include "SmokeParticle.h"
+#include "bone.h"
 
 class Cigar final : public Object {
 private:
@@ -18,6 +19,8 @@ private:
 
     std::list<std::unique_ptr<Object>> objects;
 public:
+
+    std::shared_ptr<Bone> parent;
     /*!
      * Create new cigar
      */
@@ -41,6 +44,7 @@ public:
      * Custom click event for asteroid
      */
     void onClick(Scene &scene) override;
+
 };
 
 

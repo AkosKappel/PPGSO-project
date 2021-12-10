@@ -22,15 +22,20 @@ glm::vec3 Keyframes::interpolateFrame(glm::vec3 start, glm::vec3 end, float t) {
 }
 
 void Keyframes::updatePosRot(float time, glm::vec3 *position, glm::vec3 *rotation){
-    if(keyframes.size() != currentFrame+1 && !keyframes.empty() && (time - timePassed)/keyframes[currentFrame+1].length >= 1){
-        *position = keyframes[currentFrame+1].position;
-        *rotation = keyframes[currentFrame+1].rotation;
-        currentFrame+=1;
-        timePassed += keyframes[currentFrame+1].length;
+    if(currentFrame == 0 && !keyframes.empty() && (time - timePassed)/keyframes[0].length < 1){
+        *position = keyframes[currentFrame].position;
+        *rotation = keyframes[currentFrame].rotation;
     }
-    else if(keyframes.size() != currentFrame+1 && !keyframes.empty()){
-        float offset = (time - timePassed)/keyframes[currentFrame+1].length;
-        *position = interpolateFrame(keyframes[currentFrame].position, keyframes[currentFrame+1].position, offset);
-        *rotation = interpolateFrame(keyframes[currentFrame].rotation, keyframes[currentFrame+1].rotation, offset);
+    else if(keyframes.size() != currentFrame && !keyframes.empty() && (time - timePassed)/keyframes[currentFrame].length >= 1){
+        *position = keyframes[currentFrame].position;
+        *rotation = keyframes[currentFrame].rotation;
+        timePassed += keyframes[currentFrame].length;
+        currentFrame += 1;
+    }
+    else if(keyframes.size() != currentFrame && !keyframes.empty()){
+        float offset = (time - timePassed)/keyframes[currentFrame].length;
+        *position = interpolateFrame(keyframes[currentFrame-1].position, keyframes[currentFrame].position, offset);
+        *rotation = interpolateFrame(keyframes[currentFrame-1].rotation, keyframes[currentFrame].rotation, offset);
     }
 }
+
