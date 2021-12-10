@@ -29,6 +29,9 @@
 #include "Cigar.h"
 #include "Lever.h"
 #include "WineBottle.h"
+#include "BarCounter.h"
+#include "Light.h"
+#include "Tree.h"
 
 const unsigned int SIZE = 1024;
 
@@ -133,10 +136,10 @@ private:
 
 
         // bottles
-        auto wine1 = std::make_unique<WineBottle>(glm::vec3(3, 2, 0), true);
+        auto wine1 = std::make_unique<WineBottle>(glm::vec3(-1.5f, 1.22f, 4.6f), false);
         scene.objects.push_back(std::move(wine1));
 
-        auto wine2 = std::make_unique<WineBottle>(glm::vec3(-3, 2, 0), false);
+        auto wine2 = std::make_unique<WineBottle>(glm::vec3(-2.6f, 1.22f, 4.6f), true);
         scene.objects.push_back(std::move(wine2));
 
         // Create ceiling
@@ -373,6 +376,18 @@ private:
         scene.objects.push_back(std::move(bone210));
 
 
+        auto barCounter = std::make_unique<BarCounter>(glm::vec3(-2.0f, 0.6f, 4.5f), glm::vec3(0, 0, ppgso::PI));
+        scene.objects.push_back(std::move(barCounter));
+
+        auto tree1 = std::make_unique<Tree>(glm::vec3(-10.0f, 0.0f, 0.0f));
+        scene.objects.push_back(std::move(tree1));
+
+        auto tree2 = std::make_unique<Tree>(glm::vec3(-15.0f, 0.0f, 0.0f));
+        scene.objects.push_back(std::move(tree2));
+
+        auto tree3 = std::make_unique<Tree>(glm::vec3(-20.0f, 0.0f, 0.0f));
+        scene.objects.push_back(std::move(tree3));
+
         // Create floor
         auto floor = std::make_unique<Plane>(
                 glm::vec3(0, 0, 0),
@@ -385,6 +400,18 @@ private:
                 glm::vec3(-ppgso::PI / 2, 0, 0));
         floor2->generate(3, 3, TextureType::FLOOR);
         scene.objects.push_back(std::move(floor2));
+
+        auto grass = std::make_unique<Plane>(
+                glm::vec3(0, -0.01, 0),
+                glm::vec3(-ppgso::PI / 2, 0, 0));
+        grass->generate(50, 50, TextureType::GRASS);
+        scene.objects.push_back(std::move(grass));
+
+        auto sidewalk = std::make_unique<Plane>(
+                glm::vec3(-16, 0, 3),
+                glm::vec3(-ppgso::PI / 2, 0, 0));
+        sidewalk->generate(10, 2, TextureType::SIDEWALK);
+        scene.objects.push_back(std::move(sidewalk));
     }
 
 public:

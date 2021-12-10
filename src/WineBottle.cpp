@@ -12,10 +12,15 @@ std::unique_ptr<ppgso::Shader> WineBottle::shader;
 
 WineBottle::WineBottle(glm::vec3 pos, bool is_moving) {
     position = pos;
-    float size = 0.1f;
-    scale = glm::vec3(size, size, size);
+    rotation = glm::vec3(ppgso::PI, 0, 0);
     moving = is_moving;
-    radius = size * 3.0f;
+
+    float size = 0.02f;
+    scale = glm::vec3(size, size, size);
+
+    vel.x = 1.0f;
+    radius = size * 2.5f;
+    acc = glm::vec3(-1.0f, 0.0f, 0.0f);
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
@@ -24,39 +29,65 @@ WineBottle::WineBottle(glm::vec3 pos, bool is_moving) {
 }
 
 bool WineBottle::update(Scene &scene, float dt) {
+    age += dt;
 
-    if (position.x < 0) { // start falling from this point
-        if (position.y - radius > 0) { // apply gravitation
-            acc = glm::vec3(0.0f, -9.81f, 0.0f);
-            vel += acc * dt;
-            position += vel * dt;
-        } else { // keep bottle on ground
-            position.y = radius;
-            vel = glm::vec3(0.0f);
-            acc = glm::vec3(0.0f);
+    if (age > tStart) {
+        BarCounter *bar = nullptr;
+        auto i = std::begin(scene.objects);
+        while (i != std::end(scene.objects)) {
+            auto obj = i->get();
+            if (auto *bottle = dynamic_cast<WineBottle *>(obj)) {
+                if (bottle != this) {
+                    // collision of 2 bottles
+                    float distance = std::sqrt(
+                            (position.x - bottle->position.x) * (position.x - bottle->position.x) +
+                            (position.y - bottle->position.y) * (position.y - bottle->position.y) +
+                            (position.z - bottle->position.z) * (position.z - bottle->position.z)
+                    );
+                    if (distance < radius + bottle->radius) {
+                        moving = !moving;
+                        bottle->moving = !bottle->moving;
+
+                        // swap speeds when collision happens
+                        auto temp = vel.x;
+                        vel.x = bottle->vel.x;
+                        bottle->vel.x = temp;
+                    }
+                }
+            }
+            if (auto *counter = dynamic_cast<BarCounter *>(obj)) {
+                bar = counter;
+            }
+            ++i;
         }
-    }
 
-    // collision
-//    auto i = std::begin(scene.objects);
-//    while (i != std::end(scene.objects)) {
-//        auto obj = i->get();
-//        auto distance = std::sqrt(
-//                (position.x * obj->position.x) * (position.x * obj->position.x) +
-//                (position.y * obj->position.y) * (position.y * obj->position.y) +
-//                (position.z * obj->position.z) * (position.z * obj->position.z)
-//        );
-//        if (distance < 2 * radius) {
-//            std::cout << "COLLISION" << std::endl;
-//        }
-//        ++i;
-//    }
+        if (position.x > bar->position.x + bar->length / 2) { // start falling from this position
+            if (position.y - radius > 0) { // apply gravitation if bottle is in air
+                float gravity = 9.81f;
+                acc.y = -gravity;
+                vel.y += acc.y * dt;
+                position.y += vel.y * dt;
+            } else { // keep bottle on ground
+                position.y = radius;
+                vel.y = 0.0f;
+                acc.y = 0.0f;
+            }
+        }
 
-    if (moving) {
-        float rotMomentum = 2;
-        float speed = 1;
-        rotation.y += rotMomentum * dt;
-        position.x -= speed * dt;
+        if (moving) {
+            // apply friction
+            float frictionCoef = 0.003f;
+            vel.x *= (1 - frictionCoef);
+
+            float rotMomentum = 5 * vel.x;
+            rotation.y += rotMomentum * dt;
+            position.x += vel.x * dt;
+
+            if (vel.x < 0.1f) {
+                vel.x = 0.0f;
+                moving = false;
+            }
+        }
     }
 
     // Generate modelMatrix from position, rotation and scale
@@ -82,5 +113,4 @@ void WineBottle::render(Scene &scene) {
 }
 
 void WineBottle::onClick(Scene &scene) {
-    std::cout << "Wine bottle clicked!" << std::endl;
 }

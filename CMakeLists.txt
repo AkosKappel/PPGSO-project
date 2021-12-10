@@ -68,6 +68,7 @@ set(PPGSO_SHADER_SRC
         shader/diffuse_vert.glsl shader/diffuse_frag.glsl
         shader/texture_vert.glsl shader/texture_frag.glsl
         shader/cube_vert.glsl shader/cube_frag.glsl
+        shader/phong_vert.glsl shader/phong_frag.glsl
         )
 add_resources(shaders ${PPGSO_SHADER_SRC})
 
@@ -126,7 +127,12 @@ add_executable(src
         src/SmokeParticle.cpp
         src/SlotMachine.cpp
         src/WineBottle.cpp
-        src/Lever.cpp)
+        src/Lever.cpp
+        src/BarCounter.cpp
+        src/Tree.cpp
+        src/Leaf.cpp
+        src/Light.cpp
+        src/bone.cpp)
 target_link_libraries(src ppgso shaders)
 install(TARGETS src DESTINATION .)
 add_custom_command(TARGET src POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data/ ${CMAKE_CURRENT_BINARY_DIR})

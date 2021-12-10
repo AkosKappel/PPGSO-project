@@ -20,6 +20,7 @@ private:
     static std::unique_ptr<ppgso::Texture> SidewalkTexture;
     static std::unique_ptr<ppgso::Texture> WallTexture;
     static std::unique_ptr<ppgso::Texture> CeilingTexture;
+    static std::unique_ptr<ppgso::Texture> GrassTexture;
 
     // Attributes
     TextureType texture;

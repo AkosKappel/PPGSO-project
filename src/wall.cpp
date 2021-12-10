@@ -1,7 +1,7 @@
 #include "wall.h"
 
-#include <shaders/diffuse_custom_frag_glsl.h>
-#include <shaders/diffuse_custom_vert_glsl.h>
+#include <shaders/texture_frag_glsl.h>
+#include <shaders/texture_vert_glsl.h>
 
 std::unique_ptr<ppgso::Mesh> Wall::mesh;
 std::unique_ptr<ppgso::Texture> Wall::texture;
@@ -11,7 +11,7 @@ Wall::Wall() {
   scale.x *= 3.0f;
   scale.y *= 1.5f;
   scale.z *= 0.2f;
-  if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_custom_vert_glsl, diffuse_custom_frag_glsl);
+  if (!shader) shader = std::make_unique<ppgso::Shader>(texture_vert_glsl, texture_frag_glsl);
   if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Wall/Brick.bmp"));
   std::vector<float> positions2 = {
     -1.0, -1.0,  1.0, //FRONT

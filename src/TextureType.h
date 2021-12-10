@@ -6,6 +6,7 @@ enum class TextureType {
     SIDEWALK,
     WALL,
     CEILING,
+    GRASS,
 };
 
 #endif //PPGSO_TEXTURETYPE_H

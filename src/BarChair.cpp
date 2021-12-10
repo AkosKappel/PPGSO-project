@@ -10,14 +10,8 @@ std::unique_ptr<ppgso::Shader> BarChair::shader;
 
 BarChair::BarChair(glm::vec3 pos) {
     position = pos;
-//    scale = glm::vec3(10, 5, 1);
-
-    // Set random scale speed and rotation
-//    rotation = glm::ballRand(ppgso::PI);
-//    rotMomentum = glm::ballRand(ppgso::PI);
-//    scale = glm::vec3(10, 10, 1);
-//    rotation = glm::vec3(ppgso::PI, 0, 0);
-//    rotMomentum = glm::vec3(0);
+    float size = 0.25f;
+    scale = glm::vec3(size, size, size);
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);

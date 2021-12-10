@@ -8,6 +8,7 @@ std::unique_ptr<ppgso::Mesh> Square::mesh;
 std::unique_ptr<ppgso::Texture> Square::FloorTexture;
 std::unique_ptr<ppgso::Texture> Square::SidewalkTexture;
 std::unique_ptr<ppgso::Texture> Square::WallTexture;
+std::unique_ptr<ppgso::Texture> Square::GrassTexture;
 std::unique_ptr<ppgso::Texture> Square::CeilingTexture;
 std::unique_ptr<ppgso::Shader> Square::shader;
 
@@ -19,10 +20,11 @@ Square::Square(glm::vec3 pos, glm::vec3 rot, glm::vec3 scl = glm::vec3(1, 1, 1),
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(texture_vert_glsl, texture_frag_glsl);
-    if (!FloorTexture) FloorTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Floor/parq.bmp"));
-    if (!SidewalkTexture) SidewalkTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/wall.bmp"));
+    if (!FloorTexture) FloorTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/parq.bmp"));
+    if (!SidewalkTexture) SidewalkTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/sidewalk.bmp"));
     if (!WallTexture) WallTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/wall.bmp"));
-    if (!CeilingTexture) CeilingTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Floor/parq.bmp"));
+    if (!GrassTexture) GrassTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/grass.bmp"));
+    if (!CeilingTexture) CeilingTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/ceiling.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("Square/square.obj");
 }
 
@@ -61,6 +63,9 @@ void Square::render(Scene &scene) {
             break;
         case TextureType::CEILING:
             shader->setUniform("Texture", *CeilingTexture);
+            break;
+        case TextureType::GRASS:
+            shader->setUniform("Texture", *GrassTexture);
             break;
         default:
             break;
