@@ -27,8 +27,8 @@ bool Leaf::update(Scene &scene, float dt) {
         return false;
     }
 
-    float gravity = 0.01f;
-    position += glm::vec3(0.0f, -gravity, 0.0f) + wind * dt;
+    float gravity = 9.81f;
+    position += (glm::vec3(0.0f, -gravity, 0.0f) * 0.06f + wind) * dt;
     rotation += rotationMomentum * dt;
 
     // Generate modelMatrix from position, rotation and scale
@@ -54,4 +54,11 @@ void Leaf::render(Scene &scene) {
 }
 
 void Leaf::onClick(Scene &scene) {
+}
+
+void Leaf::renderShadow(Scene &scene) {
+    shader->use();
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shader->setUniform("ModelMatrix", modelMatrix);
+    mesh->render();
 }

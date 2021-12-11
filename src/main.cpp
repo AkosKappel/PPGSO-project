@@ -14,9 +14,6 @@
 
 #include "camera.h"
 #include "scene.h"
-#include "generator.h"
-#include "player.h"
-#include "space.h"
 #include "BarChair.h"
 #include "Plane.h"
 #include "Square.h"
@@ -50,6 +47,7 @@ private:
 
     void initScene() {
         scene.objects.clear();
+        scene.createDepthMap();
 
         scene.pointLight.position = {0.0f, 1.0f, 0.0f};
         scene.pointLight.color = {0.7f, 0.3f, 0.3f};
@@ -74,19 +72,26 @@ private:
         scene.directionalLight.diffuse = glm::vec3{1.0};
         scene.directionalLight.specular = glm::vec3{1.0};
 
+        float near_plane = 1.0f, far_plane = 7.5f;
+        glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+        glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
+                                          glm::vec3( 0.0f, 0.0f,  0.0f),
+                                          glm::vec3( 0.0f, 1.0f,  0.0f));
+        scene.lightSpaceMatrix = lightProjection * lightView;
+
         // Create a camera
         auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 100.0f);
         camera->position = glm::vec3(0.0f, 1.7f, 20.0f);
         scene.camera = std::move(camera);
 
-        auto light1 = std::make_unique<Light>(glm::vec3(0.0f, 1.0f, 0.0f));
-        scene.objects.push_back(std::move(light1));
-
-        auto light2 = std::make_unique<Light>(glm::vec3(0.0f, 3.0f, 0.0f));
-        scene.objects.push_back(std::move(light2));
-
-        auto skybox = std::make_unique<Skybox>();
-        scene.objects.push_back(std::move(skybox));
+//        auto light1 = std::make_unique<Light>(glm::vec3(0.0f, 1.0f, 0.0f));
+//        scene.objects.push_back(std::move(light1));
+//
+//        auto light2 = std::make_unique<Light>(glm::vec3(0.0f, 3.0f, 0.0f));
+//        scene.objects.push_back(std::move(light2));
+//
+//        auto skybox = std::make_unique<Skybox>();
+//        scene.objects.push_back(std::move(skybox));
 
         auto wall1 = std::make_unique<Wall>();
         wall1->position = {-3.0f, 1.5f, 6.2f};
@@ -129,309 +134,309 @@ private:
         wall9->rotation = {0.0f, 0.0f, ppgso::PI/2};
         scene.objects.push_back(std::move(wall9));
 
-        auto doorway1 = std::make_unique<Doorway>();
-        doorway1->position = {-5.8f, 1.5f, 3.0f};
-        doorway1->rotation = {0.0f, 0.0f, ppgso::PI/2};
-        scene.objects.push_back(std::move(doorway1));
+//        auto doorway1 = std::make_unique<Doorway>();
+//        doorway1->position = {-5.8f, 1.5f, 3.0f};
+//        doorway1->rotation = {0.0f, 0.0f, ppgso::PI/2};
+//        scene.objects.push_back(std::move(doorway1));
+//
+//        auto doorway2 = std::make_unique<Doorway>();
+//        doorway2->position = {3.0f, 1.5f, 6.2f};
+//        scene.objects.push_back(std::move(doorway2));
+//
+//        auto door = std::make_unique<Door>();
+//        door->position = {-5.8f, 0.0f, 3.0f};
+//        door->rotation = {0.0f, 0.0f, ppgso::PI/2};
+//        door->rotateAround = {0.0f, 0.0f, -0.6f};
+//        door->timeRotate = 5.0f;
+//        scene.objects.push_back(std::move(door));
+//
+//        auto door2 = std::make_unique<Door>();
+//        door2->position = {3.0f, 0.0f, 6.2f};
+//        door2->rotateAround = {0.6f, 0.0f, 0.0f};
+//        door2->timeRotate = 10.0f;
+//        scene.objects.push_back(std::move(door2));
+//
+//        auto chair = std::make_unique<BarChair>(glm::vec3(0, 0, 0));
+//        chair->scale = glm::vec3(0.25f, 0.25f, 0.25f);
+//        scene.objects.push_back(std::move(chair));
+//
+//
+//        // bottles
+//        auto wine1 = std::make_unique<WineBottle>(glm::vec3(-1.5f, 1.22f, 4.6f), false);
+//        scene.objects.push_back(std::move(wine1));
+//
+//        auto wine2 = std::make_unique<WineBottle>(glm::vec3(-2.6f, 1.22f, 4.6f), true);
+//        scene.objects.push_back(std::move(wine2));
+//
+//        // Create ceiling
+//        auto ceiling = std::make_unique<Plane>(
+//                glm::vec3(0, 3, 0),
+//                glm::vec3(ppgso::PI / 2, 0, 0));
+//        ceiling->generate(6, 6, 1, TextureType::CEILING);
+//        scene.objects.push_back(std::move(ceiling));
+//
+//        auto ceiling2 = std::make_unique<Plane>(
+//                glm::vec3(3.0f, 3, 9.0f),
+//                glm::vec3(ppgso::PI / 2, 0, 0));
+//        ceiling2->generate(3, 3, 1, TextureType::CEILING);
+//        scene.objects.push_back(std::move(ceiling2));
+//
+//        auto bone = std::make_shared<Bone>();
+//        bone->parent = nullptr;
+//        bone->scale = {0.2f, 0.2f, 0.2f};
+//        bone->scale.z *= 0.5f;
+//        bone->scale.y *= 1.2f;
+//        bone->position.x = 0.0f;
+//        bone->position.y = 6.0f;
+//
+//        auto bone2 = std::make_shared<Bone>();
+//        bone2->parent = bone;
+//        bone2->scale.x = 0.06f;
+//        bone2->scale.y = 0.15f;
+//        bone2->scale.z = 0.075f;
+//        bone2->position.x = 0.26f;
+//        bone2->position.y = 0.09f;
+//
+//        auto bone3 = std::make_shared<Bone>();
+//        bone3->parent = bone;
+//        bone3->rotateAround = {0.0f, -0.15f, 0.0};
+//        bone3->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 5.0f);
+//        bone3->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/4, 0.0f, ppgso::PI/8}, 3.0f);
+//        bone3->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/4, 0.0f, ppgso::PI/8}, 3.0f);
+//        bone3->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 3.0f);
+//        bone3->scale.x = 0.06f;
+//        bone3->scale.y = 0.15f;
+//        bone3->scale.z = 0.075f;
+//
+//        auto bone4 = std::make_shared<Bone>();
+//        bone4->parent = bone;
+//        bone4->scale.x *= 0.06f;
+//        bone4->scale.y *= 0.2f;
+//        bone4->scale.z *= 0.075f;
+//        bone4->position.x = 0.125f;
+//        bone4->position.y = -0.3f;
+//        bone4->position.z = 0.1f;
+//        bone4->rotation.y = ppgso::PI/2;
+//        bone4->rotation.z = -ppgso::PI/2;
+//
+//        auto bone5 = std::make_shared<Bone>();
+//        bone5->parent = bone;
+//        bone5->scale.x *= 0.06f;
+//        bone5->scale.y *= 0.2f;
+//        bone5->scale.z *= 0.075f;
+//        bone5->position.x = -0.125f;
+//        bone5->position.y = -0.3f;
+//        bone5->position.z = 0.1f;
+//        bone5->rotation.y = ppgso::PI/2;
+//        bone5->rotation.z = -ppgso::PI/2;
+//
+//        auto bone6 = std::make_shared<Bone>();
+//        bone6->parent = bone;
+//        bone6->scale.x = 0.075f;
+//        bone6->scale.y = 0.2f;
+//        bone6->scale.z = 0.075f;
+//        bone6->position.x = 0.125f;
+//        bone6->position.z = 0.375f;
+//        bone6->position.y = -0.44f;
+//
+//        auto bone7 = std::make_shared<Bone>();
+//        bone7->parent = bone;
+//        bone7->scale.x = 0.075f;
+//        bone7->scale.y = 0.2f;
+//        bone7->scale.z = 0.075f;
+//        bone7->position.x = -0.125f;
+//        bone7->position.z = 0.375f;
+//        bone7->position.y = -0.44f;
+//
+//        auto bone8 = std::make_shared<Bone>();
+//        bone8->parent = bone;
+//        bone8->scale.x = 0.15f;
+//        bone8->scale.y = 0.15f;
+//        bone8->scale.z = 0.15f;
+//        bone8->position.x = 0.0f;
+//        bone8->position.z = 0.0f;
+//        bone8->position.y = 0.39f;
+//
+//        auto bone9 = std::make_shared<Bone>();
+//        bone9->rotateAround = {0.26f, -0.15f, 0.0f};
+//        bone9->rotatePosition.x = -ppgso::PI/2;
+//        bone9->parent = bone;
+//        bone9->scale.x = 0.06f;
+//        bone9->scale.y = 0.15f;
+//        bone9->scale.z = 0.075f;
+//        bone9->position.x = 0.26f;
+//        bone9->position.y = -0.21f;
+//
+//        auto bone10 = std::make_shared<Bone>();
+//        bone10->rotateAround = {0.0f, -0.15f, 0.0f};
+//        bone10->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 5.0f);
+//        bone10->addFrame({0, -0.3f, 0}, {-((2.5f*ppgso::PI)/4), 0.0f, ppgso::PI/4}, 3.0f);
+//        bone10->addFrame({0, -0.3f, 0}, {-((2.5f*ppgso::PI)/4), 0.0f, ppgso::PI/4}, 3.0f);
+//        bone10->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 3.0f);
+//        bone10->parent = bone3;
+//        bone10->scale.x = 0.06f;
+//        bone10->scale.y = 0.15f;
+//        bone10->scale.z = 0.075f;
+//
+//        auto bone21 = std::make_shared<Bone>();
+//        bone21->parent = nullptr;
+//        bone21->scale = {0.2f, 0.2f, 0.2f};
+//        bone21->scale.z *= 0.5f;
+//        bone21->scale.y *= 1.2f;
+//        bone21->position.x = 5.0f;
+//        bone21->position.y = 6.0f;
+//
+//        auto bone22 = std::make_shared<Bone>();
+//        bone22->parent = bone21;
+//        bone22->scale.x = 0.06f;
+//        bone22->scale.y = 0.15f;
+//        bone22->scale.z = 0.075f;
+//        bone22->position.x = 0.26f;
+//        bone22->position.y = 0.09f;
+//
+//        auto bone23 = std::make_shared<Bone>();
+//        bone23->parent = bone21;
+//        bone23->rotateAround = {0.0f, -0.15f, 0.0};
+//        bone23->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 20.0f);
+//        bone23->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/3, 0.0f, ppgso::PI/16}, 3.0f);
+//        bone23->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/3, 0.0f, ppgso::PI/16}, 3.0f);
+//        bone23->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 3.0f);
+//        bone23->scale.x = 0.06f;
+//        bone23->scale.y = 0.15f;
+//        bone23->scale.z = 0.075f;
+//
+//        auto bone24 = std::make_shared<Bone>();
+//        bone24->parent = bone21;
+//        bone24->scale.x *= 0.06f;
+//        bone24->scale.y *= 0.2f;
+//        bone24->scale.z *= 0.075f;
+//        bone24->position.x = 0.125f;
+//        bone24->position.y = -0.3f;
+//        bone24->position.z = 0.1f;
+//        bone24->rotation.y = ppgso::PI/2;
+//        bone24->rotation.z = -ppgso::PI/2;
+//
+//        auto bone25 = std::make_shared<Bone>();
+//        bone25->parent = bone21;
+//        bone25->scale.x *= 0.06f;
+//        bone25->scale.y *= 0.2f;
+//        bone25->scale.z *= 0.075f;
+//        bone25->position.x = -0.125f;
+//        bone25->position.y = -0.3f;
+//        bone25->position.z = 0.1f;
+//        bone25->rotation.y = ppgso::PI/2;
+//        bone25->rotation.z = -ppgso::PI/2;
+//
+//        auto bone26 = std::make_shared<Bone>();
+//        bone26->parent = bone21;
+//        bone26->scale.x = 0.075f;
+//        bone26->scale.y = 0.2f;
+//        bone26->scale.z = 0.075f;
+//        bone26->position.x = 0.125f;
+//        bone26->position.z = 0.375f;
+//        bone26->position.y = -0.44f;
+//
+//        auto bone27 = std::make_shared<Bone>();
+//        bone27->parent = bone21;
+//        bone27->scale.x = 0.075f;
+//        bone27->scale.y = 0.2f;
+//        bone27->scale.z = 0.075f;
+//        bone27->position.x = -0.125f;
+//        bone27->position.z = 0.375f;
+//        bone27->position.y = -0.44f;
+//
+//        auto bone28 = std::make_shared<Bone>();
+//        bone28->parent = bone21;
+//        bone28->scale.x = 0.15f;
+//        bone28->scale.y = 0.15f;
+//        bone28->scale.z = 0.15f;
+//        bone28->position.x = 0.0f;
+//        bone28->position.z = 0.0f;
+//        bone28->position.y = 0.39f;
+//
+//        auto bone29 = std::make_shared<Bone>();
+//        bone29->rotateAround = {0.26f, -0.15f, 0.0f};
+//        bone29->rotatePosition.x = -ppgso::PI/2;
+//        bone29->parent = bone21;
+//        bone29->scale.x = 0.06f;
+//        bone29->scale.y = 0.15f;
+//        bone29->scale.z = 0.075f;
+//        bone29->position.x = 0.26f;
+//        bone29->position.y = -0.21f;
+//
+//        auto bone210 = std::make_shared<Bone>();
+//        bone210->rotateAround = {0.0f, -0.15f, 0.0f};
+//        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 20.0f);
+//        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/6, 0.0f, 0.0f}, 3.0f);
+//        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/6, 0.0f, 0.0f}, 3.0f);
+//        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 3.0f);
+//        bone210->parent = bone23;
+//        bone210->scale.x = 0.06f;
+//        bone210->scale.y = 0.15f;
+//        bone210->scale.z = 0.075f;
+//
+//        auto cigar = std::make_unique<Cigar>(glm::vec3(0, -0.11f, 0));
+//        cigar->parent = bone10;
+//        cigar->rotation = {ppgso::PI, 0.0f, 0.4f};
+//
+//        scene.objects.push_back(std::move(bone));
+//        scene.objects.push_back(std::move(bone2));
+//        scene.objects.push_back(std::move(bone3));
+//        scene.objects.push_back(std::move(bone4));
+//        scene.objects.push_back(std::move(bone5));
+//        scene.objects.push_back(std::move(bone6));
+//        scene.objects.push_back(std::move(bone7));
+//        scene.objects.push_back(std::move(bone8));
+//        scene.objects.push_back(std::move(bone9));
+//        scene.objects.push_back(std::move(bone10));
+//        scene.objects.push_back(std::move(cigar));
+//        scene.objects.push_back(std::move(bone21));
+//        scene.objects.push_back(std::move(bone22));
+//        scene.objects.push_back(std::move(bone23));
+//        scene.objects.push_back(std::move(bone24));
+//        scene.objects.push_back(std::move(bone25));
+//        scene.objects.push_back(std::move(bone26));
+//        scene.objects.push_back(std::move(bone27));
+//        scene.objects.push_back(std::move(bone28));
+//        scene.objects.push_back(std::move(bone29));
+//        scene.objects.push_back(std::move(bone210));
 
-        auto doorway2 = std::make_unique<Doorway>();
-        doorway2->position = {3.0f, 1.5f, 6.2f};
-        scene.objects.push_back(std::move(doorway2));
 
-        auto door = std::make_unique<Door>();
-        door->position = {-5.8f, 0.0f, 3.0f};
-        door->rotation = {0.0f, 0.0f, ppgso::PI/2};
-        door->rotateAround = {0.0f, 0.0f, -0.6f};
-        door->timeRotate = 5.0f;
-        scene.objects.push_back(std::move(door));
-
-        auto door2 = std::make_unique<Door>();
-        door2->position = {3.0f, 0.0f, 6.2f};
-        door2->rotateAround = {0.6f, 0.0f, 0.0f};
-        door2->timeRotate = 10.0f;
-        scene.objects.push_back(std::move(door2));
-
-        auto chair = std::make_unique<BarChair>(glm::vec3(0, 0, 0));
-        chair->scale = glm::vec3(0.25f, 0.25f, 0.25f);
-        scene.objects.push_back(std::move(chair));
-
-
-        // bottles
-        auto wine1 = std::make_unique<WineBottle>(glm::vec3(-1.5f, 1.22f, 4.6f), false);
-        scene.objects.push_back(std::move(wine1));
-
-        auto wine2 = std::make_unique<WineBottle>(glm::vec3(-2.6f, 1.22f, 4.6f), true);
-        scene.objects.push_back(std::move(wine2));
-
-        // Create ceiling
-        auto ceiling = std::make_unique<Plane>(
-                glm::vec3(0, 3, 0),
-                glm::vec3(ppgso::PI / 2, 0, 0));
-        ceiling->generate(6, 6, TextureType::CEILING);
-        scene.objects.push_back(std::move(ceiling));
-
-        auto ceiling2 = std::make_unique<Plane>(
-                glm::vec3(3.0f, 3, 9.0f),
-                glm::vec3(ppgso::PI / 2, 0, 0));
-        ceiling2->generate(3, 3, TextureType::CEILING);
-        scene.objects.push_back(std::move(ceiling2));
-
-        auto bone = std::make_shared<Bone>();
-        bone->parent = nullptr;
-        bone->scale = {0.2f, 0.2f, 0.2f};
-        bone->scale.z *= 0.5f;
-        bone->scale.y *= 1.2f;
-        bone->position.x = 0.0f;
-        bone->position.y = 6.0f;
-
-        auto bone2 = std::make_shared<Bone>();
-        bone2->parent = bone;
-        bone2->scale.x = 0.06f;
-        bone2->scale.y = 0.15f;
-        bone2->scale.z = 0.075f;
-        bone2->position.x = 0.26f;
-        bone2->position.y = 0.09f;
-
-        auto bone3 = std::make_shared<Bone>();
-        bone3->parent = bone;
-        bone3->rotateAround = {0.0f, -0.15f, 0.0};
-        bone3->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 5.0f);
-        bone3->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/4, 0.0f, ppgso::PI/8}, 3.0f);
-        bone3->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/4, 0.0f, ppgso::PI/8}, 3.0f);
-        bone3->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 3.0f);
-        bone3->scale.x = 0.06f;
-        bone3->scale.y = 0.15f;
-        bone3->scale.z = 0.075f;
-
-        auto bone4 = std::make_shared<Bone>();
-        bone4->parent = bone;
-        bone4->scale.x *= 0.06f;
-        bone4->scale.y *= 0.2f;
-        bone4->scale.z *= 0.075f;
-        bone4->position.x = 0.125f;
-        bone4->position.y = -0.3f;
-        bone4->position.z = 0.1f;
-        bone4->rotation.y = ppgso::PI/2;
-        bone4->rotation.z = -ppgso::PI/2;
-
-        auto bone5 = std::make_shared<Bone>();
-        bone5->parent = bone;
-        bone5->scale.x *= 0.06f;
-        bone5->scale.y *= 0.2f;
-        bone5->scale.z *= 0.075f;
-        bone5->position.x = -0.125f;
-        bone5->position.y = -0.3f;
-        bone5->position.z = 0.1f;
-        bone5->rotation.y = ppgso::PI/2;
-        bone5->rotation.z = -ppgso::PI/2;
-
-        auto bone6 = std::make_shared<Bone>();
-        bone6->parent = bone;
-        bone6->scale.x = 0.075f;
-        bone6->scale.y = 0.2f;
-        bone6->scale.z = 0.075f;
-        bone6->position.x = 0.125f;
-        bone6->position.z = 0.375f;
-        bone6->position.y = -0.44f;
-
-        auto bone7 = std::make_shared<Bone>();
-        bone7->parent = bone;
-        bone7->scale.x = 0.075f;
-        bone7->scale.y = 0.2f;
-        bone7->scale.z = 0.075f;
-        bone7->position.x = -0.125f;
-        bone7->position.z = 0.375f;
-        bone7->position.y = -0.44f;
-
-        auto bone8 = std::make_shared<Bone>();
-        bone8->parent = bone;
-        bone8->scale.x = 0.15f;
-        bone8->scale.y = 0.15f;
-        bone8->scale.z = 0.15f;
-        bone8->position.x = 0.0f;
-        bone8->position.z = 0.0f;
-        bone8->position.y = 0.39f;
-
-        auto bone9 = std::make_shared<Bone>();
-        bone9->rotateAround = {0.26f, -0.15f, 0.0f};
-        bone9->rotatePosition.x = -ppgso::PI/2;
-        bone9->parent = bone;
-        bone9->scale.x = 0.06f;
-        bone9->scale.y = 0.15f;
-        bone9->scale.z = 0.075f;
-        bone9->position.x = 0.26f;
-        bone9->position.y = -0.21f;
-
-        auto bone10 = std::make_shared<Bone>();
-        bone10->rotateAround = {0.0f, -0.15f, 0.0f};
-        bone10->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 5.0f);
-        bone10->addFrame({0, -0.3f, 0}, {-((2.5f*ppgso::PI)/4), 0.0f, ppgso::PI/4}, 3.0f);
-        bone10->addFrame({0, -0.3f, 0}, {-((2.5f*ppgso::PI)/4), 0.0f, ppgso::PI/4}, 3.0f);
-        bone10->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 3.0f);
-        bone10->parent = bone3;
-        bone10->scale.x = 0.06f;
-        bone10->scale.y = 0.15f;
-        bone10->scale.z = 0.075f;
-
-        auto bone21 = std::make_shared<Bone>();
-        bone21->parent = nullptr;
-        bone21->scale = {0.2f, 0.2f, 0.2f};
-        bone21->scale.z *= 0.5f;
-        bone21->scale.y *= 1.2f;
-        bone21->position.x = 5.0f;
-        bone21->position.y = 6.0f;
-
-        auto bone22 = std::make_shared<Bone>();
-        bone22->parent = bone21;
-        bone22->scale.x = 0.06f;
-        bone22->scale.y = 0.15f;
-        bone22->scale.z = 0.075f;
-        bone22->position.x = 0.26f;
-        bone22->position.y = 0.09f;
-
-        auto bone23 = std::make_shared<Bone>();
-        bone23->parent = bone21;
-        bone23->rotateAround = {0.0f, -0.15f, 0.0};
-        bone23->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 20.0f);
-        bone23->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/3, 0.0f, ppgso::PI/16}, 3.0f);
-        bone23->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/3, 0.0f, ppgso::PI/16}, 3.0f);
-        bone23->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 3.0f);
-        bone23->scale.x = 0.06f;
-        bone23->scale.y = 0.15f;
-        bone23->scale.z = 0.075f;
-
-        auto bone24 = std::make_shared<Bone>();
-        bone24->parent = bone21;
-        bone24->scale.x *= 0.06f;
-        bone24->scale.y *= 0.2f;
-        bone24->scale.z *= 0.075f;
-        bone24->position.x = 0.125f;
-        bone24->position.y = -0.3f;
-        bone24->position.z = 0.1f;
-        bone24->rotation.y = ppgso::PI/2;
-        bone24->rotation.z = -ppgso::PI/2;
-
-        auto bone25 = std::make_shared<Bone>();
-        bone25->parent = bone21;
-        bone25->scale.x *= 0.06f;
-        bone25->scale.y *= 0.2f;
-        bone25->scale.z *= 0.075f;
-        bone25->position.x = -0.125f;
-        bone25->position.y = -0.3f;
-        bone25->position.z = 0.1f;
-        bone25->rotation.y = ppgso::PI/2;
-        bone25->rotation.z = -ppgso::PI/2;
-
-        auto bone26 = std::make_shared<Bone>();
-        bone26->parent = bone21;
-        bone26->scale.x = 0.075f;
-        bone26->scale.y = 0.2f;
-        bone26->scale.z = 0.075f;
-        bone26->position.x = 0.125f;
-        bone26->position.z = 0.375f;
-        bone26->position.y = -0.44f;
-
-        auto bone27 = std::make_shared<Bone>();
-        bone27->parent = bone21;
-        bone27->scale.x = 0.075f;
-        bone27->scale.y = 0.2f;
-        bone27->scale.z = 0.075f;
-        bone27->position.x = -0.125f;
-        bone27->position.z = 0.375f;
-        bone27->position.y = -0.44f;
-
-        auto bone28 = std::make_shared<Bone>();
-        bone28->parent = bone21;
-        bone28->scale.x = 0.15f;
-        bone28->scale.y = 0.15f;
-        bone28->scale.z = 0.15f;
-        bone28->position.x = 0.0f;
-        bone28->position.z = 0.0f;
-        bone28->position.y = 0.39f;
-
-        auto bone29 = std::make_shared<Bone>();
-        bone29->rotateAround = {0.26f, -0.15f, 0.0f};
-        bone29->rotatePosition.x = -ppgso::PI/2;
-        bone29->parent = bone21;
-        bone29->scale.x = 0.06f;
-        bone29->scale.y = 0.15f;
-        bone29->scale.z = 0.075f;
-        bone29->position.x = 0.26f;
-        bone29->position.y = -0.21f;
-
-        auto bone210 = std::make_shared<Bone>();
-        bone210->rotateAround = {0.0f, -0.15f, 0.0f};
-        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 20.0f);
-        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/6, 0.0f, 0.0f}, 3.0f);
-        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/6, 0.0f, 0.0f}, 3.0f);
-        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 3.0f);
-        bone210->parent = bone23;
-        bone210->scale.x = 0.06f;
-        bone210->scale.y = 0.15f;
-        bone210->scale.z = 0.075f;
-
-        auto cigar = std::make_unique<Cigar>(glm::vec3(0, -0.11f, 0));
-        cigar->parent = bone10;
-        cigar->rotation = {ppgso::PI, 0.0f, 0.4f};
-
-        scene.objects.push_back(std::move(bone));
-        scene.objects.push_back(std::move(bone2));
-        scene.objects.push_back(std::move(bone3));
-        scene.objects.push_back(std::move(bone4));
-        scene.objects.push_back(std::move(bone5));
-        scene.objects.push_back(std::move(bone6));
-        scene.objects.push_back(std::move(bone7));
-        scene.objects.push_back(std::move(bone8));
-        scene.objects.push_back(std::move(bone9));
-        scene.objects.push_back(std::move(bone10));
-        scene.objects.push_back(std::move(cigar));
-        scene.objects.push_back(std::move(bone21));
-        scene.objects.push_back(std::move(bone22));
-        scene.objects.push_back(std::move(bone23));
-        scene.objects.push_back(std::move(bone24));
-        scene.objects.push_back(std::move(bone25));
-        scene.objects.push_back(std::move(bone26));
-        scene.objects.push_back(std::move(bone27));
-        scene.objects.push_back(std::move(bone28));
-        scene.objects.push_back(std::move(bone29));
-        scene.objects.push_back(std::move(bone210));
-
-
-        auto barCounter = std::make_unique<BarCounter>(glm::vec3(-2.0f, 0.6f, 4.5f), glm::vec3(0, 0, ppgso::PI));
-        scene.objects.push_back(std::move(barCounter));
-
-        auto tree1 = std::make_unique<Tree>(glm::vec3(-10.0f, 0.0f, 0.0f));
-        scene.objects.push_back(std::move(tree1));
-
-        auto tree2 = std::make_unique<Tree>(glm::vec3(-15.0f, 0.0f, 0.0f));
-        scene.objects.push_back(std::move(tree2));
-
-        auto tree3 = std::make_unique<Tree>(glm::vec3(-20.0f, 0.0f, 0.0f));
-        scene.objects.push_back(std::move(tree3));
+//        auto barCounter = std::make_unique<BarCounter>(glm::vec3(-2.0f, 0.6f, 4.5f), glm::vec3(0, 0, ppgso::PI));
+//        scene.objects.push_back(std::move(barCounter));
+//
+//        auto tree1 = std::make_unique<Tree>(glm::vec3(-10.0f, 0.0f, 0.0f));
+//        scene.objects.push_back(std::move(tree1));
+//
+//        auto tree2 = std::make_unique<Tree>(glm::vec3(-15.0f, 0.0f, 0.0f));
+//        scene.objects.push_back(std::move(tree2));
+//
+//        auto tree3 = std::make_unique<Tree>(glm::vec3(-20.0f, 0.0f, 0.0f));
+//        scene.objects.push_back(std::move(tree3));
 
         // Create floor
         auto floor = std::make_unique<Plane>(
                 glm::vec3(0, 0, 0),
                 glm::vec3(-ppgso::PI / 2, 0, 0));
-        floor->generate(6, 6, TextureType::FLOOR);
+        floor->generate(6, 6, 1, TextureType::FLOOR);
         scene.objects.push_back(std::move(floor));
 
         auto floor2 = std::make_unique<Plane>(
                 glm::vec3(3.0f, 0, 9.0f),
                 glm::vec3(-ppgso::PI / 2, 0, 0));
-        floor2->generate(3, 3, TextureType::FLOOR);
+        floor2->generate(3, 3, 1, TextureType::FLOOR);
         scene.objects.push_back(std::move(floor2));
 
         auto grass = std::make_unique<Plane>(
                 glm::vec3(0, -0.01, 0),
                 glm::vec3(-ppgso::PI / 2, 0, 0));
-        grass->generate(5, 5, TextureType::GRASS);
+        grass->generate(1, 1, 30, TextureType::GRASS);
         scene.objects.push_back(std::move(grass));
 
         auto sidewalk = std::make_unique<Plane>(
                 glm::vec3(-16, 0, 3),
                 glm::vec3(-ppgso::PI / 2, 0, 0));
-        sidewalk->generate(10, 2, TextureType::SIDEWALK);
+        sidewalk->generate(10, 2, 1, TextureType::SIDEWALK);
         scene.objects.push_back(std::move(sidewalk));
     }
 
@@ -510,14 +515,18 @@ public:
 
         time = (float) glfwGetTime();
 
-        //std::cout << time << std::endl;
-        // Set gray background
-        glClearColor(.5f, .5f, .5f, 0);
-        // Clear depth and color buffers
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glViewport(0, 0, scene.SHADOW_WIDTH, scene.SHADOW_HEIGHT);
+        glBindFramebuffer(GL_FRAMEBUFFER, scene.depthMapFBO);
+        glClear(GL_DEPTH_BUFFER_BIT);
 
         // Update and render all objects
         scene.update(dt);
+        scene.renderShadow();
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindTexture(GL_TEXTURE_2D, scene.depthMap);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         scene.render();
     }
 };

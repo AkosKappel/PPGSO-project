@@ -51,3 +51,10 @@ void SlotMachine::render(Scene &scene) {
 void SlotMachine::onClick(Scene &scene) {
     std::cout << "Slot machine clicked!" << std::endl;
 }
+
+void SlotMachine::renderShadow(Scene &scene) {
+    shader->use();
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shader->setUniform("ModelMatrix", modelMatrix);
+    mesh->render();
+}

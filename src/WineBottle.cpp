@@ -9,6 +9,7 @@
 std::unique_ptr<ppgso::Mesh> WineBottle::mesh;
 std::unique_ptr<ppgso::Texture> WineBottle::texture;
 std::unique_ptr<ppgso::Shader> WineBottle::shader;
+std::unique_ptr<ppgso::Shader> WineBottle::shadowShader;
 
 WineBottle::WineBottle(glm::vec3 pos, bool is_moving) {
     position = pos;
@@ -18,7 +19,7 @@ WineBottle::WineBottle(glm::vec3 pos, bool is_moving) {
     float size = 0.02f;
     scale = glm::vec3(size, size, size);
 
-    vel.x = 1.0f;
+    vel.x = is_moving ? 1.0f : 0.0f;
     radius = size * 2.5f;
     acc = glm::vec3(-1.0f, 0.0f, 0.0f);
 
@@ -76,10 +77,11 @@ bool WineBottle::update(Scene &scene, float dt) {
 
         if (moving) {
             // apply friction
-            float frictionCoef = 0.003f;
-            vel.x *= (1 - frictionCoef);
+            float frictionCoef = 0.08f;
+            acc.x = vel.x > 0.0f ? -frictionCoef : 0.0f;
+            vel.x += acc.x * dt;
 
-            float rotMomentum = 5 * vel.x;
+            float rotMomentum = 10 * vel.x;
             rotation.y += rotMomentum * dt;
             position.x += vel.x * dt;
 
@@ -113,4 +115,11 @@ void WineBottle::render(Scene &scene) {
 }
 
 void WineBottle::onClick(Scene &scene) {
+}
+
+void WineBottle::renderShadow(Scene &scene) {
+    shadowShader->use();
+    shadowShader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shadowShader->setUniform("ModelMatrix", modelMatrix);
+    mesh->render();
 }

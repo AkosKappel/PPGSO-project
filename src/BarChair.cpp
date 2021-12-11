@@ -48,3 +48,10 @@ void BarChair::render(Scene &scene) {
 void BarChair::onClick(Scene &scene) {
     std::cout << "BarChair clicked!" << std::endl;
 }
+
+void BarChair::renderShadow(Scene &scene) {
+    shader->use();
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shader->setUniform("ModelMatrix", modelMatrix);
+    mesh->render();
+}

@@ -165,3 +165,10 @@ void Bone::render(Scene &scene) {
     shader->setUniform("Texture", *texture);
     mesh->render();
 }
+
+void Bone::renderShadow(Scene &scene) {
+    shader->use();
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shader->setUniform("ModelMatrix", modelMatrix);
+    mesh->render();
+}

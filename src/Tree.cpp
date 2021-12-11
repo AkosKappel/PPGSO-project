@@ -82,3 +82,10 @@ void Tree::render(Scene &scene) {
 
 void Tree::onClick(Scene &scene) {
 }
+
+void Tree::renderShadow(Scene &scene) {
+    shader->use();
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shader->setUniform("ModelMatrix", modelMatrix);
+    meshLeaves->render();
+}

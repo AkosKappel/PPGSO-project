@@ -20,7 +20,7 @@ public:
      */
     Plane(glm::vec3 pos, glm::vec3 rot);
 
-    void generate(int n, int m, TextureType txtType);
+    void generate(int n, int m, float scaling, TextureType txtType);
 
     /*!
      * Update asteroid
@@ -35,6 +35,8 @@ public:
      * @param scene Scene to render in
      */
     void render(Scene &scene) override;
+
+    void renderShadow(Scene &scene) override;
 
     /*!
      * Custom click event for asteroid

@@ -63,5 +63,11 @@ void SmokeParticle::render(Scene &scene) {
 }
 
 void SmokeParticle::onClick(Scene &scene) {
-    std::cout << "SmokeParticle clicked!" << std::endl;
+}
+
+void SmokeParticle::renderShadow(Scene &scene) {
+    shader->use();
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shader->setUniform("ModelMatrix", modelMatrix);
+    mesh->render();
 }

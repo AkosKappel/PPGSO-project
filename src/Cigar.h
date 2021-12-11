@@ -45,6 +45,7 @@ public:
      */
     void onClick(Scene &scene) override;
 
+    void renderShadow(Scene &scene) override;
 };
 
 

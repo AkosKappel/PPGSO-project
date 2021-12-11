@@ -40,3 +40,10 @@ void Light::render(Scene &scene) {
 
 void Light::onClick(Scene &scene) {
 }
+
+void Light::renderShadow(Scene &scene) {
+    shader->use();
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shader->setUniform("ModelMatrix", modelMatrix);
+    mesh->render();
+}

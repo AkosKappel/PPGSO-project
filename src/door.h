@@ -19,4 +19,6 @@ public:
 
     bool update(Scene &scene, float dt) override;
     void render(Scene &scene) override;
+
+    void renderShadow(Scene &scene) override;
 };

@@ -3,6 +3,9 @@
 #include <shaders/phong_vert_glsl.h>
 #include <shaders/phong_frag_glsl.h>
 
+#include <shaders/shadow_vert_glsl.h>
+#include <shaders/shadow_frag_glsl.h>
+
 // Static resources
 std::unique_ptr<ppgso::Mesh> Square::mesh;
 std::unique_ptr<ppgso::Texture> Square::FloorTexture;
@@ -11,6 +14,7 @@ std::unique_ptr<ppgso::Texture> Square::WallTexture;
 std::unique_ptr<ppgso::Texture> Square::GrassTexture;
 std::unique_ptr<ppgso::Texture> Square::CeilingTexture;
 std::unique_ptr<ppgso::Shader> Square::shader;
+std::unique_ptr<ppgso::Shader> Square::shadowShader;
 
 Square::Square(glm::vec3 pos, glm::vec3 rot, float size = 1, TextureType txt = TextureType::FLOOR) {
     position = pos;
@@ -20,15 +24,16 @@ Square::Square(glm::vec3 pos, glm::vec3 rot, float size = 1, TextureType txt = T
 
     material.ambient = glm::vec3(0.2);
     material.diffuse = glm::vec3(0.7);
-    material.specular = glm::vec3(0.6);
-    material.shininess = 32;
+    material.specular = glm::vec3(0.0);
+    material.shininess = 64;
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
+    if (!shadowShader) shadowShader = std::make_unique<ppgso::Shader>(shadow_vert_glsl, shadow_frag_glsl);
     if (!FloorTexture) FloorTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/parq.bmp"));
     if (!SidewalkTexture) SidewalkTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/sidewalk.bmp"));
     if (!WallTexture) WallTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/wall.bmp"));
-    if (!GrassTexture) GrassTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/grass.bmp"));
+    if (!GrassTexture) GrassTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/grass--texture.bmp"));
     if (!CeilingTexture) CeilingTexture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Square/ceiling.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("Square/square.obj");
 }
@@ -117,4 +122,11 @@ void Square::render(Scene &scene) {
 }
 
 void Square::onClick(Scene &scene) {
+}
+
+void Square::renderShadow(Scene &scene) {
+    shadowShader->use();
+    shadowShader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shadowShader->setUniform("ModelMatrix", modelMatrix);
+    mesh->render();
 }

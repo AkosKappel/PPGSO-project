@@ -52,3 +52,10 @@ void Lever::render(Scene &scene) {
 void Lever::onClick(Scene &scene) {
     std::cout << "Lever clicked!" << std::endl;
 }
+
+void Lever::renderShadow(Scene &scene) {
+    shader->use();
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shader->setUniform("ModelMatrix", modelMatrix);
+    mesh->render();
+}

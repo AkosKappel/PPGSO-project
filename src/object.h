@@ -49,6 +49,7 @@ public:
      */
     virtual void render(Scene &scene) = 0;
 
+    virtual void renderShadow(Scene &scene) = 0;
 
     /*!
      * Event to be called when the object is clicked

@@ -78,3 +78,10 @@ void BarCounter::render(Scene &scene) {
 
 void BarCounter::onClick(Scene &scene) {
 }
+
+void BarCounter::renderShadow(Scene &scene) {
+    shader->use();
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shader->setUniform("ModelMatrix", modelMatrix);
+    mesh->render();
+}

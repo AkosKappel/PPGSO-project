@@ -35,6 +35,15 @@ public:
      */
     std::vector<Object *> intersect(const glm::vec3 &position, const glm::vec3 &direction);
 
+    void renderShadow();
+
+    void createDepthMap();
+
+    const GLsizei SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+    unsigned int depthMapFBO;
+    unsigned int depthMap;
+    glm::mat4 lightSpaceMatrix;
+
     // Camera object
     std::unique_ptr<Camera> camera;
 

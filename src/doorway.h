@@ -18,6 +18,6 @@ public:
 
     void render(Scene &scene) override;
 
-
+    void renderShadow(Scene &scene) override;
 };
 

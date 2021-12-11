@@ -77,5 +77,9 @@ void Cigar::onClick(Scene &scene) {
     std::cout << "Cigar clicked!" << std::endl;
 }
 
-
-
+void Cigar::renderShadow(Scene &scene) {
+    shader->use();
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shader->setUniform("ModelMatrix", modelMatrix);
+    mesh->render();
+}

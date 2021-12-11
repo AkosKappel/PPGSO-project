@@ -69,6 +69,7 @@ set(PPGSO_SHADER_SRC
         shader/texture_vert.glsl shader/texture_frag.glsl
         shader/cube_vert.glsl shader/cube_frag.glsl
         shader/phong_vert.glsl shader/phong_frag.glsl
+        shader/shadow_vert.glsl shader/shadow_frag.glsl
         )
 add_resources(shaders ${PPGSO_SHADER_SRC})
 
@@ -109,12 +110,6 @@ add_executable(src
         src/object.cpp
         src/scene.cpp
         src/camera.cpp
-        src/asteroid.cpp
-        src/generator.cpp
-        src/player.cpp
-        src/projectile.cpp
-        src/explosion.cpp
-        src/space.cpp
         src/BarChair.cpp
         src/Plane.cpp
         src/Square.cpp
