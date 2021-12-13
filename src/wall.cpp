@@ -20,8 +20,8 @@ Wall::Wall() {
   scale.x *= 3.0f;
   scale.y *= 1.5f;
   scale.z *= 0.2f;
-    if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
-    if (!shadowShader) shadowShader = std::make_unique<ppgso::Shader>(shadow_vert_glsl, shadow_frag_glsl);
+  if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
+  if (!shadowShader) shadowShader = std::make_unique<ppgso::Shader>(shadow_vert_glsl, shadow_frag_glsl);
   if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Wall/Brick.bmp"));
   std::vector<float> positions2 = {
     -1.0, -1.0,  1.0, //FRONT
@@ -168,9 +168,13 @@ void Wall::render(Scene &scene) {
     shader->setUniform("material.diffuse", material.diffuse);
     shader->setUniform("material.specular", material.specular);
     shader->setUniform("material.shininess", material.shininess);
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shader->setUniform("Texture", *texture);
+    shader->setUniform("shadowMap",1);
+    glActiveTexture(GL_TEXTURE0 + 1);
+    glBindTexture(GL_TEXTURE_2D, scene.depthMap);
 
   shader->setUniform("ModelMatrix", modelMatrix);
-  shader->setUniform("Texture", *texture);
   mesh->render();
 }
 

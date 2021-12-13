@@ -134,13 +134,7 @@ bool Bone::update(Scene &scene, float dt) {
             parent->rotationPositionMatrix
             * glm::translate(glm::mat4(1.0f), position)
             * glm::translate(glm::mat4(1.0f), {-rotateAround.x, -rotateAround.y, -rotateAround.z})
-            * rotate(glm::mat4{1.0f}, rotatePosition.x, {1.0f, 0.0f, 0.0f})
-            * glm::translate(glm::mat4(1.0f), {rotateAround.x, rotateAround.y, rotateAround.z})
-            * glm::translate(glm::mat4(1.0f), {-rotateAround.x, -rotateAround.y, -rotateAround.z})
-            * rotate(glm::mat4{1.0f}, rotatePosition.y, {0.0f, 1.0f, 0.0f})
-            * glm::translate(glm::mat4(1.0f), {rotateAround.x, rotateAround.y, rotateAround.z})
-            * glm::translate(glm::mat4(1.0f), {-rotateAround.x, -rotateAround.y, -rotateAround.z})
-            * rotate(glm::mat4{1.0f}, rotatePosition.z, {0.0f, 0.0f, 1.0f})
+            * glm::orientate4(rotatePosition)
             * glm::translate(glm::mat4(1.0f), {rotateAround.x, rotateAround.y, rotateAround.z})
             * glm::orientate4(rotation);
     }
@@ -163,12 +157,5 @@ void Bone::render(Scene &scene) {
 
     shader->setUniform("ModelMatrix", modelMatrix);
     shader->setUniform("Texture", *texture);
-    mesh->render();
-}
-
-void Bone::renderShadow(Scene &scene) {
-    shader->use();
-    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
-    shader->setUniform("ModelMatrix", modelMatrix);
     mesh->render();
 }

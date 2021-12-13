@@ -92,6 +92,9 @@ void Square::render(Scene &scene) {
     shader->setUniform("material.diffuse", material.diffuse);
     shader->setUniform("material.specular", material.specular);
     shader->setUniform("material.shininess", material.shininess);
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+
+    shader->setUniform("shadowMap", 1);
 
     // Transform model
     shader->setUniform("ModelMatrix", modelMatrix);
@@ -116,6 +119,9 @@ void Square::render(Scene &scene) {
         default:
             break;
     }
+    shader->setUniform("shadowMap", 1);
+    glActiveTexture(GL_TEXTURE0 + 1);
+    glBindTexture(GL_TEXTURE_2D, scene.depthMap);
 
     // Render mesh
     mesh->render();
@@ -125,8 +131,8 @@ void Square::onClick(Scene &scene) {
 }
 
 void Square::renderShadow(Scene &scene) {
-    shadowShader->use();
-    shadowShader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
-    shadowShader->setUniform("ModelMatrix", modelMatrix);
-    mesh->render();
+    //shadowShader->use();
+    //shadowShader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    //shadowShader->setUniform("ModelMatrix", modelMatrix);
+    //mesh->render();
 }

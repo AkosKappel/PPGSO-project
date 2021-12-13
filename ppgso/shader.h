@@ -74,6 +74,8 @@ namespace ppgso {
      */
     void setUniform(const std::string &name, glm::vec3 vector) const;
 
+    void setUniform(const std::string &name, int id) const;
+
     /*!
      * Set a vector as an input for the shader program variable "name"
      *
