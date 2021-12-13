@@ -159,3 +159,7 @@ void Bone::render(Scene &scene) {
     shader->setUniform("Texture", *texture);
     mesh->render();
 }
+
+void Bone::renderShadow(Scene &scene) {
+
+}

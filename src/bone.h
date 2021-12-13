@@ -27,5 +27,5 @@ public:
 
     void addFrame(glm::vec3 pos, glm::vec3 rot, float length);
 
-
+    void renderShadow(Scene &scene) override;
 };
