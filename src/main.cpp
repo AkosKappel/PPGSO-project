@@ -50,14 +50,16 @@ private:
         scene.objects.clear();
         scene.createDepthMap();
 
-        scene.pointLight[0].position = {0.0f, 2.0f, 0.0f};
-        scene.pointLight[0].color = {0.2f, 0.5f, 0.7f};
+        auto light1 = std::make_unique<Light>(glm::vec3(0.0f, 3.0f, 0.0f));
+        scene.pointLight[0].position = light1->position;
+        scene.pointLight[0].color = {0.3f, 0.6f, 0.7f};
         scene.pointLight[0].constant = 1.0f;
         scene.pointLight[0].linear = 0.09f;
         scene.pointLight[0].quadratic = 0.032f;
         scene.pointLight[0].ambient = glm::vec3{1.0};
         scene.pointLight[0].diffuse = glm::vec3{1.0};
         scene.pointLight[0].specular = glm::vec3{1.0};
+        scene.objects.push_back(std::move(light1));
 
         scene.pointLight[1].position = {3.0f, 2.0f, 9.0f};
         scene.pointLight[1].color = {1.0f, 1.0f, 1.0f};
@@ -68,7 +70,19 @@ private:
         scene.pointLight[1].diffuse = glm::vec3{1.0};
         scene.pointLight[1].specular = glm::vec3{1.0};
 
-        scene.spotLight[0].position = {3.0f, 3.0f, 9.5f};
+        auto light2 = std::make_unique<Light>(glm::vec3(0.0f, 2.5f, -5.47f), true);
+        scene.pointLight[2].position = light2->position;
+        scene.pointLight[2].color = {1.0f, 1.0f, 1.0f};
+        scene.pointLight[2].constant = 1.0f;
+        scene.pointLight[2].linear = 0.7f;
+        scene.pointLight[2].quadratic = 1.8f;
+        scene.pointLight[2].ambient = glm::vec3{1.0};
+        scene.pointLight[2].diffuse = glm::vec3{1.0};
+        scene.pointLight[2].specular = glm::vec3{1.0};
+        scene.objects.push_back(std::move(light2));
+
+        auto light3 = std::make_unique<Light>(glm::vec3(3.0f, 3.0f, 9.5f));
+        scene.spotLight[0].position = light3->position;
         scene.spotLight[0].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[0].color = {1.0f, 1.0f, 1.0f};
         scene.spotLight[0].cutOff = glm::cos(glm::radians(20.0f));
@@ -76,6 +90,7 @@ private:
         scene.spotLight[0].ambient = glm::vec3{1.0};
         scene.spotLight[0].diffuse = glm::vec3{1.0};
         scene.spotLight[0].specular = glm::vec3{1.0};
+        scene.objects.push_back(std::move(light3));
 
         scene.spotLight[1].position = {3.0f, 3.0f, 3.0f};
         scene.spotLight[1].direction = {0.0f, -1.0f, 0.0f};
@@ -130,14 +145,14 @@ private:
         camera->position = glm::vec3(0.0f, 1.7f, 20.0f);
         scene.camera = std::move(camera);
 
-        auto light1 = std::make_unique<Light>(glm::vec3(3.0f, 3.0f, 9.0f));
-        scene.objects.push_back(std::move(light1));
-
-//        auto light2 = std::make_unique<Light>(glm::vec3(3.0f, 3.0f, 9.0f));
-//        scene.objects.push_back(std::move(light1));
-
         auto skybox = std::make_unique<Skybox>();
         scene.objects.push_back(std::move(skybox));
+
+        auto machine1 = std::make_unique<SlotMachine>(glm::vec3(0.0f, 0.0f, -5.5f));
+        scene.objects.push_back(std::move(machine1));
+
+        auto machine2 = std::make_unique<SlotMachine>(glm::vec3(1.0f, 0.0f, -5.5f));
+        scene.objects.push_back(std::move(machine2));
 
         auto wall1 = std::make_unique<Wall>();
         wall1->position = {-3.0f, 1.5f, 6.2f};

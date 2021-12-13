@@ -1,3 +1,4 @@
+#pragma once
 #include <ppgso/ppgso.h>
 
 class Keyframes {

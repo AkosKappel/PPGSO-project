@@ -1,3 +1,4 @@
+#pragma once
 #ifndef PPGSO_LEVER_H
 #define PPGSO_LEVER_H
 
@@ -8,6 +9,7 @@
 
 #include "scene.h"
 #include "object.h"
+#include "keyframes.h"
 
 class Lever final : public Object {
 private:
@@ -16,7 +18,8 @@ private:
     static std::unique_ptr<ppgso::Shader> shader;
     static std::unique_ptr<ppgso::Texture> texture;
 
-    float movement;
+    float timePassedFromStart;
+    Keyframes keyframes;
 public:
 
     Lever(glm::vec3 pos, float size);

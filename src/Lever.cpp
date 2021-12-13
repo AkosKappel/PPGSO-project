@@ -2,6 +2,7 @@
 
 #include <shaders/diffuse_vert_glsl.h>
 #include <shaders/diffuse_frag_glsl.h>
+#include "glm/ext.hpp"
 
 // Static resources
 std::unique_ptr<ppgso::Mesh> Lever::mesh;
@@ -12,7 +13,11 @@ Lever::Lever(glm::vec3 pos, float size) {
     position = pos;
     scale = glm::vec3(size, size, size);
     rotation.x = 0.23f;
-    movement = 0.1f;
+    timePassedFromStart = 0.0f;
+
+    keyframes.addFrame(position, rotation, 5.0f);
+    keyframes.addFrame(position, {0.37f, 0, 0}, 3.0f);
+    keyframes.addFrame(position, {0.23f, 0, 0}, 3.0f);
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
@@ -21,12 +26,9 @@ Lever::Lever(glm::vec3 pos, float size) {
 }
 
 bool Lever::update(Scene &scene, float dt) {
-
-    if (rotation.x > 0.37f || rotation.x < 0.23f) {
-        movement = -movement;
-    }
-    rotation.x += movement * dt;
-
+    timePassedFromStart += dt;
+    keyframes.updatePosRot(timePassedFromStart, &position, &rotation);
+    std::cout<<glm::to_string(position)<<std::endl;
     // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
 
@@ -50,12 +52,7 @@ void Lever::render(Scene &scene) {
 }
 
 void Lever::onClick(Scene &scene) {
-    std::cout << "Lever clicked!" << std::endl;
 }
 
 void Lever::renderShadow(Scene &scene) {
-    shader->use();
-    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
-    shader->setUniform("ModelMatrix", modelMatrix);
-    mesh->render();
 }

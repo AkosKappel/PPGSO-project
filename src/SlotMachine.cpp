@@ -1,7 +1,7 @@
 #include "SlotMachine.h"
 
-#include <shaders/diffuse_vert_glsl.h>
-#include <shaders/diffuse_frag_glsl.h>
+#include <shaders/phong_frag_glsl.h>
+#include <shaders/phong_vert_glsl.h>
 
 // Static resources
 std::unique_ptr<ppgso::Mesh> SlotMachine::mesh;
@@ -12,16 +12,20 @@ SlotMachine::SlotMachine(glm::vec3 pos) {
     position = pos;
     float size = 0.005f;
     scale = glm::vec3(size, size, size);
-    lever = std::make_unique<Lever>(glm::vec3(0.0f), size * 200);
+    lever = std::make_unique<Lever>(position + glm::vec3(0.4f, -0.1f, -0.2f), size * 200);
+
+    material.ambient = glm::vec3(1.0);
+    material.diffuse = glm::vec3(1.0);
+    material.specular = glm::vec3(1.0);
+    material.shininess = 32;
 
     // Initialize static resources if needed
-    if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
+    if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Arcade-with-lever/arcade.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("Arcade-with-lever/arcade.obj");
 }
 
 bool SlotMachine::update(Scene &scene, float dt) {
-    lever->position = position + glm::vec3(0.4f, -0.1f, -0.2f);
     lever->update(scene, dt);
 
     // Generate modelMatrix from position, rotation and scale
@@ -33,28 +37,62 @@ bool SlotMachine::update(Scene &scene, float dt) {
 void SlotMachine::render(Scene &scene) {
     shader->use();
 
-    // Set up light
-    shader->setUniform("LightDirection", scene.lightDirection);
-
-    // use camera
     shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);
     shader->setUniform("ViewMatrix", scene.camera->viewMatrix);
+    shader->setUniform("viewPos", scene.camera->position);
+
+    shader->setUniform("directionalLight.direction", scene.directionalLight.direction);
+    shader->setUniform("directionalLight.ambient", scene.directionalLight.ambient);
+    shader->setUniform("directionalLight.diffuse", scene.directionalLight.diffuse);
+    shader->setUniform("directionalLight.specular", scene.directionalLight.specular);
+
+    for (int i = 0; i < scene.nPointLights; i++) {
+        std::string number = std::to_string(i);
+
+        shader->setUniform("pointLights[" + number + "].position", scene.pointLight[i].position);
+        shader->setUniform("pointLights[" + number + "].color", scene.pointLight[i].color);
+
+        shader->setUniform("pointLights[" + number + "].ambient", scene.pointLight[i].ambient);
+        shader->setUniform("pointLights[" + number + "].diffuse", scene.pointLight[i].diffuse);
+        shader->setUniform("pointLights[" + number + "].specular", scene.pointLight[i].specular);
+
+        shader->setUniform("pointLights[" + number + "].constant",  scene.pointLight[i].constant);
+        shader->setUniform("pointLights[" + number + "].linear",    scene.pointLight[i].linear);
+        shader->setUniform("pointLights[" + number + "].quadratic", scene.pointLight[i].quadratic);
+    }
+
+    for (int i = 0; i < scene.nSpotLights; i++) {
+        std::string number = std::to_string(i);
+
+        shader->setUniform("spotLights[" + number + "].position", scene.spotLight[i].position);
+        shader->setUniform("spotLights[" + number + "].direction", scene.spotLight[i].direction);
+        shader->setUniform("spotLights[" + number + "].color", scene.spotLight[i].color);
+
+        shader->setUniform("spotLights[" + number + "].cutOff", scene.spotLight[i].cutOff);
+        shader->setUniform("spotLights[" + number + "].outerCutOff", scene.spotLight[i].outerCutOff);
+
+        shader->setUniform("spotLights[" + number + "].ambient", scene.spotLight[i].ambient);
+        shader->setUniform("spotLights[" + number + "].diffuse", scene.spotLight[i].diffuse);
+        shader->setUniform("spotLights[" + number + "].specular", scene.spotLight[i].specular);
+    }
+
+    shader->setUniform("material.ambient", material.ambient);
+    shader->setUniform("material.diffuse", material.diffuse);
+    shader->setUniform("material.specular", material.specular);
+    shader->setUniform("material.shininess", material.shininess);
+
+    shader->setUniform("isOutside", false);
 
     // render mesh
-    shader->setUniform("ModelMatrix", modelMatrix);
     shader->setUniform("Texture", *texture);
+    shader->setUniform("ModelMatrix", modelMatrix);
     mesh->render();
 
     lever->render(scene);
 }
 
 void SlotMachine::onClick(Scene &scene) {
-    std::cout << "Slot machine clicked!" << std::endl;
 }
 
 void SlotMachine::renderShadow(Scene &scene) {
-    shader->use();
-    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
-    shader->setUniform("ModelMatrix", modelMatrix);
-    mesh->render();
 }

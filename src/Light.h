@@ -17,9 +17,11 @@ private:
     static std::unique_ptr<ppgso::Shader> shader;
 
     glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
+    bool isMoving;
+    float age;
 public:
 
-    Light(glm::vec3 pos);
+    Light(glm::vec3 pos, bool moving = false);
 
     bool update(Scene &scene, float dt) override;
 

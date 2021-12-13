@@ -172,7 +172,7 @@ vec3 calculateSpotLight(SpotLight light, vec3 normal, vec3 FragPos, vec3 viewDir
   return ambient + diffuse + specular;
 }
 
-#define NR_POINT_LIGHTS 2
+#define NR_POINT_LIGHTS 3
 #define NR_SPOT_LIGHTS 5
 
 uniform PointLight pointLights[NR_POINT_LIGHTS];

@@ -7,9 +7,11 @@
 std::unique_ptr<ppgso::Mesh> Light::mesh;
 std::unique_ptr<ppgso::Shader> Light::shader;
 
-Light::Light(glm::vec3 pos) {
+Light::Light(glm::vec3 pos, bool moving) {
     position = pos;
-    scale = glm::vec3(0.5f);
+    isMoving = moving;
+    scale = isMoving ? glm::vec3(0.05f) : glm::vec3(0.5f);
+    age = 0.0f;
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(color_vert_glsl, color_frag_glsl);
@@ -17,6 +19,14 @@ Light::Light(glm::vec3 pos) {
 }
 
 bool Light::update(Scene &scene, float dt) {
+    age += dt;
+    if (isMoving) {
+        position.x = std::sin(age) * 0.4f;
+        color = glm::vec3(abs(std::sin(age)), 0.0f, abs(std::cos(age)));
+
+        scene.pointLight[2].position = position;
+        scene.pointLight[2].color = color;
+    }
 
     // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
@@ -42,8 +52,4 @@ void Light::onClick(Scene &scene) {
 }
 
 void Light::renderShadow(Scene &scene) {
-    shader->use();
-    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
-    shader->setUniform("ModelMatrix", modelMatrix);
-    mesh->render();
 }
