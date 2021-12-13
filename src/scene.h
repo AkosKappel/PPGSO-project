@@ -77,7 +77,7 @@ public:
         glm::vec3 diffuse;
         glm::vec3 specular;
     };
-    PointLight pointLight;
+    PointLight pointLight[2];
 
     struct SpotLight {
         glm::vec3 position;
@@ -90,9 +90,10 @@ public:
         glm::vec3 diffuse;
         glm::vec3 specular;
     };
-    SpotLight spotLight;
+    SpotLight spotLight[5];
 
-//    std::list<std::shared_ptr<Light> > lights;
+    int nPointLights = 2;
+    int nSpotLights = 5;
 
     // Store cursor state
     struct {

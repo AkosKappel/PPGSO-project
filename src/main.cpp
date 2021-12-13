@@ -49,23 +49,68 @@ private:
         scene.objects.clear();
         scene.createDepthMap();
 
-        scene.pointLight.position = {0.0f, 1.0f, 0.0f};
-        scene.pointLight.color = {0.7f, 0.3f, 0.3f};
-        scene.pointLight.constant = 1.0f;
-        scene.pointLight.linear = 0.09f;
-        scene.pointLight.quadratic = 0.032f;
-        scene.pointLight.ambient = glm::vec3{1.0};
-        scene.pointLight.diffuse = glm::vec3{1.0};
-        scene.pointLight.specular = glm::vec3{1.0};
+        scene.pointLight[0].position = {0.0f, 1.0f, 0.0f};
+        scene.pointLight[0].color = {0.7f, 0.3f, 0.3f};
+        scene.pointLight[0].constant = 1.0f;
+        scene.pointLight[0].linear = 0.09f;
+        scene.pointLight[0].quadratic = 0.032f;
+        scene.pointLight[0].ambient = glm::vec3{1.0};
+        scene.pointLight[0].diffuse = glm::vec3{1.0};
+        scene.pointLight[0].specular = glm::vec3{1.0};
 
-        scene.spotLight.position = {0.0f, 3.0f, 0.0f};
-        scene.spotLight.direction = {0.0f, -1.0f, 0.0f};
-        scene.spotLight.color = {1.0f, 1.0f, 1.0f};
-        scene.spotLight.cutOff = glm::cos(glm::radians(12.5f));
-        scene.spotLight.outerCutOff = glm::cos(glm::radians(17.5f));
-        scene.spotLight.ambient = glm::vec3{1.0};
-        scene.spotLight.diffuse = glm::vec3{1.0};
-        scene.spotLight.specular = glm::vec3{1.0};
+        scene.pointLight[1].position = {0.0f, 1.0f, 0.0f};
+        scene.pointLight[1].color = {0.7f, 0.3f, 0.3f};
+        scene.pointLight[1].constant = 1.0f;
+        scene.pointLight[1].linear = 0.09f;
+        scene.pointLight[1].quadratic = 0.032f;
+        scene.pointLight[1].ambient = glm::vec3{1.0};
+        scene.pointLight[1].diffuse = glm::vec3{1.0};
+        scene.pointLight[1].specular = glm::vec3{1.0};
+
+        scene.spotLight[0].position = {0.0f, 3.0f, 0.0f};
+        scene.spotLight[0].direction = {0.0f, -1.0f, 0.0f};
+        scene.spotLight[0].color = {1.0f, 1.0f, 1.0f};
+        scene.spotLight[0].cutOff = glm::cos(glm::radians(12.5f));
+        scene.spotLight[0].outerCutOff = glm::cos(glm::radians(17.5f));
+        scene.spotLight[0].ambient = glm::vec3{1.0};
+        scene.spotLight[0].diffuse = glm::vec3{1.0};
+        scene.spotLight[0].specular = glm::vec3{1.0};
+
+        scene.spotLight[1].position = {0.0f, 3.0f, 0.0f};
+        scene.spotLight[1].direction = {0.0f, -1.0f, 0.0f};
+        scene.spotLight[1].color = {1.0f, 1.0f, 1.0f};
+        scene.spotLight[1].cutOff = glm::cos(glm::radians(12.5f));
+        scene.spotLight[1].outerCutOff = glm::cos(glm::radians(17.5f));
+        scene.spotLight[1].ambient = glm::vec3{1.0};
+        scene.spotLight[1].diffuse = glm::vec3{1.0};
+        scene.spotLight[1].specular = glm::vec3{1.0};
+
+        scene.spotLight[2].position = {0.0f, 3.0f, 0.0f};
+        scene.spotLight[2].direction = {0.0f, -1.0f, 0.0f};
+        scene.spotLight[2].color = {1.0f, 1.0f, 1.0f};
+        scene.spotLight[2].cutOff = glm::cos(glm::radians(12.5f));
+        scene.spotLight[2].outerCutOff = glm::cos(glm::radians(17.5f));
+        scene.spotLight[2].ambient = glm::vec3{1.0};
+        scene.spotLight[2].diffuse = glm::vec3{1.0};
+        scene.spotLight[2].specular = glm::vec3{1.0};
+
+        scene.spotLight[3].position = {0.0f, 3.0f, 0.0f};
+        scene.spotLight[3].direction = {0.0f, -1.0f, 0.0f};
+        scene.spotLight[3].color = {1.0f, 1.0f, 1.0f};
+        scene.spotLight[3].cutOff = glm::cos(glm::radians(12.5f));
+        scene.spotLight[3].outerCutOff = glm::cos(glm::radians(17.5f));
+        scene.spotLight[3].ambient = glm::vec3{1.0};
+        scene.spotLight[3].diffuse = glm::vec3{1.0};
+        scene.spotLight[3].specular = glm::vec3{1.0};
+
+        scene.spotLight[4].position = {2.0f, 3.0f, 9.0f};
+        scene.spotLight[4].direction = {0.0f, -1.0f, 0.0f};
+        scene.spotLight[4].color = {1.0f, 1.0f, 1.0f};
+        scene.spotLight[4].cutOff = glm::cos(glm::radians(12.5f));
+        scene.spotLight[4].outerCutOff = glm::cos(glm::radians(17.5f));
+        scene.spotLight[4].ambient = glm::vec3{1.0};
+        scene.spotLight[4].diffuse = glm::vec3{1.0};
+        scene.spotLight[4].specular = glm::vec3{1.0};
 
         scene.directionalLight.direction = {0.0f, -1.0f, 0.0f};
         scene.directionalLight.ambient = glm::vec3{1.0};
@@ -84,9 +129,9 @@ private:
         camera->position = glm::vec3(0.0f, 1.7f, 20.0f);
         scene.camera = std::move(camera);
 
-//        auto light1 = std::make_unique<Light>(glm::vec3(0.0f, 1.0f, 0.0f));
-//        scene.objects.push_back(std::move(light1));
-//
+        auto light1 = std::make_unique<Light>(glm::vec3(2.0f, 3.0f, 9.0f));
+        scene.objects.push_back(std::move(light1));
+
 //        auto light2 = std::make_unique<Light>(glm::vec3(0.0f, 3.0f, 0.0f));
 //        scene.objects.push_back(std::move(light2));
 
@@ -134,27 +179,27 @@ private:
         wall9->rotation = {0.0f, 0.0f, ppgso::PI/2};
         scene.objects.push_back(std::move(wall9));
 
-//        auto doorway1 = std::make_unique<Doorway>();
-//        doorway1->position = {-5.8f, 1.5f, 3.0f};
-//        doorway1->rotation = {0.0f, 0.0f, ppgso::PI/2};
-//        scene.objects.push_back(std::move(doorway1));
-//
-//        auto doorway2 = std::make_unique<Doorway>();
-//        doorway2->position = {3.0f, 1.5f, 6.2f};
-//        scene.objects.push_back(std::move(doorway2));
-//
-//        auto door = std::make_unique<Door>();
-//        door->position = {-5.8f, 0.0f, 3.0f};
-//        door->rotation = {0.0f, 0.0f, ppgso::PI/2};
-//        door->rotateAround = {0.0f, 0.0f, -0.6f};
-//        door->timeRotate = 5.0f;
-//        scene.objects.push_back(std::move(door));
-//
-//        auto door2 = std::make_unique<Door>();
-//        door2->position = {3.0f, 0.0f, 6.2f};
-//        door2->rotateAround = {0.6f, 0.0f, 0.0f};
-//        door2->timeRotate = 10.0f;
-//        scene.objects.push_back(std::move(door2));
+        auto doorway1 = std::make_unique<Doorway>();
+        doorway1->position = {-5.8f, 1.5f, 3.0f};
+        doorway1->rotation = {0.0f, 0.0f, ppgso::PI/2};
+        scene.objects.push_back(std::move(doorway1));
+
+        auto doorway2 = std::make_unique<Doorway>();
+        doorway2->position = {3.0f, 1.5f, 6.2f};
+        scene.objects.push_back(std::move(doorway2));
+
+        auto door = std::make_unique<Door>();
+        door->position = {-5.8f, 0.0f, 3.0f};
+        door->rotation = {0.0f, 0.0f, ppgso::PI/2};
+        door->rotateAround = {0.0f, 0.0f, -0.6f};
+        door->timeRotate = 5.0f;
+        scene.objects.push_back(std::move(door));
+
+        auto door2 = std::make_unique<Door>();
+        door2->position = {3.0f, 0.0f, 6.2f};
+        door2->rotateAround = {0.6f, 0.0f, 0.0f};
+        door2->timeRotate = 10.0f;
+        scene.objects.push_back(std::move(door2));
 
         auto bone = std::make_shared<Bone>();
         bone->parent = nullptr;

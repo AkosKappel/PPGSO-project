@@ -64,29 +64,35 @@ void Square::render(Scene &scene) {
     shader->setUniform("directionalLight.diffuse", scene.directionalLight.diffuse);
     shader->setUniform("directionalLight.specular", scene.directionalLight.specular);
 
+    for (int i = 0; i < scene.nPointLights; i++) {
+        std::string number = std::to_string(i);
 
-    shader->setUniform("pointLight.position", scene.pointLight.position);
-    shader->setUniform("pointLight.color", scene.pointLight.color);
+        shader->setUniform("pointLights[" + number + "].position", scene.pointLight[i].position);
+        shader->setUniform("pointLights[" + number + "].color", scene.pointLight[i].color);
 
-    shader->setUniform("pointLight.ambient", scene.pointLight.ambient);
-    shader->setUniform("pointLight.diffuse", scene.pointLight.diffuse);
-    shader->setUniform("pointLight.specular", scene.pointLight.specular);
+        shader->setUniform("pointLights[" + number + "].ambient", scene.pointLight[i].ambient);
+        shader->setUniform("pointLights[" + number + "].diffuse", scene.pointLight[i].diffuse);
+        shader->setUniform("pointLights[" + number + "].specular", scene.pointLight[i].specular);
 
-    shader->setUniform("pointLight.constant",  scene.pointLight.constant);
-    shader->setUniform("pointLight.linear",    scene.pointLight.linear);
-    shader->setUniform("pointLight.quadratic", scene.pointLight.quadratic);
+        shader->setUniform("pointLights[" + number + "].constant",  scene.pointLight[i].constant);
+        shader->setUniform("pointLights[" + number + "].linear",    scene.pointLight[i].linear);
+        shader->setUniform("pointLights[" + number + "].quadratic", scene.pointLight[i].quadratic);
+    }
 
+    for (int i = 0; i < scene.nSpotLights; i++) {
+        std::string number = std::to_string(i);
 
-    shader->setUniform("spotLight.position", scene.spotLight.position);
-    shader->setUniform("spotLight.direction", scene.spotLight.direction);
-    shader->setUniform("spotLight.color", scene.spotLight.color);
-    shader->setUniform("spotLight.cutOff", scene.spotLight.cutOff);
-    shader->setUniform("spotLight.outerCutOff", scene.spotLight.outerCutOff);
+        shader->setUniform("spotLights[" + number + "].position", scene.spotLight[i].position);
+        shader->setUniform("spotLights[" + number + "].direction", scene.spotLight[i].direction);
+        shader->setUniform("spotLights[" + number + "].color", scene.spotLight[i].color);
 
-    shader->setUniform("spotLight.ambient", scene.spotLight.ambient);
-    shader->setUniform("spotLight.diffuse", scene.spotLight.diffuse);
-    shader->setUniform("spotLight.specular", scene.spotLight.specular);
+        shader->setUniform("spotLights[" + number + "].cutOff", scene.spotLight[i].cutOff);
+        shader->setUniform("spotLights[" + number + "].outerCutOff", scene.spotLight[i].outerCutOff);
 
+        shader->setUniform("spotLights[" + number + "].ambient", scene.spotLight[i].ambient);
+        shader->setUniform("spotLights[" + number + "].diffuse", scene.spotLight[i].diffuse);
+        shader->setUniform("spotLights[" + number + "].specular", scene.spotLight[i].specular);
+    }
 
     shader->setUniform("material.ambient", material.ambient);
     shader->setUniform("material.diffuse", material.diffuse);
@@ -103,18 +109,23 @@ void Square::render(Scene &scene) {
     switch (texture) {
         case TextureType::FLOOR:
             shader->setUniform("Texture", *FloorTexture);
+            shader->setUniform("isOutside", false);
             break;
         case TextureType::SIDEWALK:
             shader->setUniform("Texture", *SidewalkTexture);
+            shader->setUniform("isOutside", true);
             break;
         case TextureType::WALL:
             shader->setUniform("Texture", *WallTexture);
+            shader->setUniform("isOutside", false);
             break;
         case TextureType::CEILING:
             shader->setUniform("Texture", *CeilingTexture);
+            shader->setUniform("isOutside", false);
             break;
         case TextureType::GRASS:
             shader->setUniform("Texture", *GrassTexture);
+            shader->setUniform("isOutside", true);
             break;
         default:
             break;

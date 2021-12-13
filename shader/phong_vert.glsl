@@ -25,7 +25,7 @@ void main() {
   texCoord = TexCoord;
 
   // Normal in world coordinates
-  //normal = vec3(ModelMatrix * vec4(Normal, 0.0f));
+//  normal = vec3(ModelMatrix * vec4(Normal, 0.0f));
   normal = normalize(mat3(transpose(inverse(ModelMatrix))) * Normal);
 
   FragPos = vec3(ModelMatrix * vec4(Position, 1.0));
@@ -33,17 +33,4 @@ void main() {
   // Calculate the final position on screen
   FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
   gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(Position, 1.0);
-
-
-
-//  // Copy the input to the fragment shader
-//  texCoord = TexCoord;
-//
-//  // Normal in world coordinates
-//  normal = normalize(ModelMatrix * vec4(Normal, 0.0f));
-//
-//  FragPos = vec3(ModelMatrix * vec4(Position, 1.0));
-//
-//  // Calculate the final position on screen
-//  gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(Position, 1.0);
 }
