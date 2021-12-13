@@ -17,6 +17,7 @@ private:
     static std::unique_ptr<ppgso::Mesh> meshBark;
     static std::unique_ptr<ppgso::Shader> shader;
     static std::unique_ptr<ppgso::Texture> textureLeaves;
+    static std::unique_ptr<ppgso::Shader> shadowShader;
     static std::unique_ptr<ppgso::Texture> textureBark;
 
     std::list<std::unique_ptr<Object>> fallingLeaves;

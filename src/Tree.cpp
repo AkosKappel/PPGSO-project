@@ -2,6 +2,8 @@
 
 #include <shaders/diffuse_vert_glsl.h>
 #include <shaders/diffuse_frag_glsl.h>
+#include <shaders/shadow_vert_glsl.h>
+#include <shaders/shadow_frag_glsl.h>
 
 // Static resources
 std::unique_ptr<ppgso::Mesh> Tree::meshLeaves;
@@ -9,6 +11,7 @@ std::unique_ptr<ppgso::Mesh> Tree::meshBark;
 std::unique_ptr<ppgso::Texture> Tree::textureLeaves;
 std::unique_ptr<ppgso::Texture> Tree::textureBark;
 std::unique_ptr<ppgso::Shader> Tree::shader;
+std::unique_ptr<ppgso::Shader> Tree::shadowShader;
 
 Tree::Tree(glm::vec3 pos) {
     position = pos;
@@ -19,6 +22,7 @@ Tree::Tree(glm::vec3 pos) {
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
+    if (!shadowShader) shadowShader = std::make_unique<ppgso::Shader>(shadow_vert_glsl, shadow_frag_glsl);
     if (!textureLeaves) textureLeaves = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Tree/leaf.bmp"));
     if (!textureBark) textureBark = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Tree/bark.bmp"));
     if (!meshLeaves) meshLeaves = std::make_unique<ppgso::Mesh>("Tree/treeLeaves.obj");
@@ -84,8 +88,9 @@ void Tree::onClick(Scene &scene) {
 }
 
 void Tree::renderShadow(Scene &scene) {
-    shader->use();
-    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
-    shader->setUniform("ModelMatrix", modelMatrix);
+    shadowShader->use();
+    shadowShader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
+    shadowShader->setUniform("ModelMatrix", modelMatrix);
     meshLeaves->render();
+    meshBark->render();
 }
