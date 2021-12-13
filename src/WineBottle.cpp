@@ -118,8 +118,5 @@ void WineBottle::onClick(Scene &scene) {
 }
 
 void WineBottle::renderShadow(Scene &scene) {
-    shadowShader->use();
-    shadowShader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
-    shadowShader->setUniform("ModelMatrix", modelMatrix);
-    mesh->render();
+
 }

@@ -16,10 +16,10 @@ Camera::Camera(float fow, float ratio, float near, float far) {
 }
 
 void Camera::update(float time) {
-    timePassed += time;
-    //viewMatrix = lookAt(position, position + orientation, up);
-    keyframes.updatePosRot(timePassed, &position, &rotation);
-    viewMatrix = glm::translate(glm::mat4(1.0f), position) * glm::orientate4(rotation);
+//    timePassed += time;
+    viewMatrix = lookAt(position, position + orientation, up);
+//    keyframes.updatePosRot(timePassed, &position, &rotation);
+//    viewMatrix = glm::translate(glm::mat4(1.0f), position) * glm::orientate4(rotation);
 }
 
 void Camera::movement(int key, int action, int mods) {

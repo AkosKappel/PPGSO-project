@@ -18,9 +18,9 @@ public:
     /*!
      * Create new floor
      */
-    Plane(glm::vec3 pos, glm::vec3 rot);
+    Plane();
 
-    void generate(int n, int m, float scaling, TextureType txtType);
+    void generate(glm::vec3 pos, glm::vec3 rot, int n, int m, float scaling, TextureType txtType);
 
     /*!
      * Update asteroid

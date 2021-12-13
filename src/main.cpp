@@ -89,9 +89,9 @@ private:
 //
 //        auto light2 = std::make_unique<Light>(glm::vec3(0.0f, 3.0f, 0.0f));
 //        scene.objects.push_back(std::move(light2));
-//
-//        auto skybox = std::make_unique<Skybox>();
-//        scene.objects.push_back(std::move(skybox));
+
+        auto skybox = std::make_unique<Skybox>();
+        scene.objects.push_back(std::move(skybox));
 
         auto wall1 = std::make_unique<Wall>();
         wall1->position = {-3.0f, 1.5f, 6.2f};
@@ -155,31 +155,6 @@ private:
 //        door2->rotateAround = {0.6f, 0.0f, 0.0f};
 //        door2->timeRotate = 10.0f;
 //        scene.objects.push_back(std::move(door2));
-//
-//        auto chair = std::make_unique<BarChair>(glm::vec3(0, 0, 0));
-//        chair->scale = glm::vec3(0.25f, 0.25f, 0.25f);
-//        scene.objects.push_back(std::move(chair));
-//
-//
-//        // bottles
-//        auto wine1 = std::make_unique<WineBottle>(glm::vec3(-1.5f, 1.22f, 4.6f), false);
-//        scene.objects.push_back(std::move(wine1));
-//
-//        auto wine2 = std::make_unique<WineBottle>(glm::vec3(-2.6f, 1.22f, 4.6f), true);
-//        scene.objects.push_back(std::move(wine2));
-//
-//        // Create ceiling
-//        auto ceiling = std::make_unique<Plane>(
-//                glm::vec3(0, 3, 0),
-//                glm::vec3(ppgso::PI / 2, 0, 0));
-//        ceiling->generate(6, 6, 1, TextureType::CEILING);
-//        scene.objects.push_back(std::move(ceiling));
-//
-//        auto ceiling2 = std::make_unique<Plane>(
-//                glm::vec3(3.0f, 3, 9.0f),
-//                glm::vec3(ppgso::PI / 2, 0, 0));
-//        ceiling2->generate(3, 3, 1, TextureType::CEILING);
-//        scene.objects.push_back(std::move(ceiling2));
 //
 //        auto bone = std::make_shared<Bone>();
 //        bone->parent = nullptr;
@@ -401,42 +376,58 @@ private:
 //        scene.objects.push_back(std::move(bone29));
 //        scene.objects.push_back(std::move(bone210));
 
+        auto barCounter = std::make_unique<BarCounter>(glm::vec3(-2.0f, 0.6f, 4.5f), glm::vec3(0, 0, ppgso::PI));
+        scene.objects.push_back(std::move(barCounter));
 
-//        auto barCounter = std::make_unique<BarCounter>(glm::vec3(-2.0f, 0.6f, 4.5f), glm::vec3(0, 0, ppgso::PI));
-//        scene.objects.push_back(std::move(barCounter));
-//
-//        auto tree1 = std::make_unique<Tree>(glm::vec3(-10.0f, 0.0f, 0.0f));
-//        scene.objects.push_back(std::move(tree1));
-//
-//        auto tree2 = std::make_unique<Tree>(glm::vec3(-15.0f, 0.0f, 0.0f));
-//        scene.objects.push_back(std::move(tree2));
-//
-//        auto tree3 = std::make_unique<Tree>(glm::vec3(-20.0f, 0.0f, 0.0f));
-//        scene.objects.push_back(std::move(tree3));
+        // bottles
+        auto wine1 = std::make_unique<WineBottle>(glm::vec3(-1.5f, 1.22f, 4.6f), false);
+        scene.objects.push_back(std::move(wine1));
+
+        auto wine2 = std::make_unique<WineBottle>(glm::vec3(-2.6f, 1.22f, 4.6f), true);
+        scene.objects.push_back(std::move(wine2));
+
+//        auto chair = std::make_unique<BarChair>(glm::vec3(0, 0, 0));
+//        chair->scale = glm::vec3(0.25f, 0.25f, 0.25f);
+//        scene.objects.push_back(std::move(chair));
+
+        // create trees
+        auto treePositions = {
+                glm::vec3{-10.0f, 0.0f, 0.0f},
+                glm::vec3{-15.0f, 0.0f, 0.0f},
+                glm::vec3{-20.0f, 0.0f, 0.0f},
+                glm::vec3{-10.0f, 0.0f, 6.0f},
+                glm::vec3{-15.0f, 0.0f, 6.0f},
+                glm::vec3{-20.0f, 0.0f, 6.0f},
+        };
+        for (auto position : treePositions) {
+            auto tree = std::make_unique<Tree>(position);
+            scene.objects.push_back(std::move(tree));
+        }
 
         // Create floor
-        auto floor = std::make_unique<Plane>(
-                glm::vec3(0, 0, 0),
-                glm::vec3(-ppgso::PI / 2, 0, 0));
-        floor->generate(6, 6, 1, TextureType::FLOOR);
+        auto floor = std::make_unique<Plane>();
+        floor->generate(glm::vec3(0, 0, 0), glm::vec3(-ppgso::PI / 2, 0, 0),
+                        6, 6, 1, TextureType::FLOOR);
+        floor->generate( glm::vec3(3.0f, 0, 9.0f), glm::vec3(-ppgso::PI / 2, 0, 0),
+                         3, 3, 1, TextureType::FLOOR);
         scene.objects.push_back(std::move(floor));
 
-        auto floor2 = std::make_unique<Plane>(
-                glm::vec3(3.0f, 0, 9.0f),
-                glm::vec3(-ppgso::PI / 2, 0, 0));
-        floor2->generate(3, 3, 1, TextureType::FLOOR);
-        scene.objects.push_back(std::move(floor2));
+        // Create ceiling
+        auto ceiling = std::make_unique<Plane>();
+        ceiling->generate(glm::vec3(0, 3, 0),glm::vec3(ppgso::PI / 2, 0, 0),
+                          6, 6, 1, TextureType::CEILING);
+        ceiling->generate(glm::vec3(3.0f, 3, 9.0f),glm::vec3(ppgso::PI / 2, 0, 0),
+                          3, 3, 1, TextureType::CEILING);
+        scene.objects.push_back(std::move(ceiling));
 
-        auto grass = std::make_unique<Plane>(
-                glm::vec3(0, -0.01, 0),
-                glm::vec3(-ppgso::PI / 2, 0, 0));
-        grass->generate(1, 1, 30, TextureType::GRASS);
+        auto grass = std::make_unique<Plane>();
+        grass->generate( glm::vec3(0, -0.01, 0), glm::vec3(-ppgso::PI / 2, 0, 0),
+                         1, 1, 30, TextureType::GRASS);
         scene.objects.push_back(std::move(grass));
 
-        auto sidewalk = std::make_unique<Plane>(
-                glm::vec3(-16, 0, 3),
-                glm::vec3(-ppgso::PI / 2, 0, 0));
-        sidewalk->generate(10, 2, 1, TextureType::SIDEWALK);
+        auto sidewalk = std::make_unique<Plane>();
+        sidewalk->generate(glm::vec3(-16, 0, 3), glm::vec3(-ppgso::PI / 2, 0, 0),
+                           10, 2, 1, TextureType::SIDEWALK);
         scene.objects.push_back(std::move(sidewalk));
     }
 
