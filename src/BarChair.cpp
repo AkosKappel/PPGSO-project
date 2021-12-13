@@ -46,7 +46,6 @@ void BarChair::render(Scene &scene) {
 }
 
 void BarChair::onClick(Scene &scene) {
-    std::cout << "BarChair clicked!" << std::endl;
 }
 
 void BarChair::renderShadow(Scene &scene) {

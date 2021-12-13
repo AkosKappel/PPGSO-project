@@ -165,6 +165,7 @@ vec3 calculateSpotLight(SpotLight light, vec3 normal, vec3 FragPos, vec3 viewDir
   float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
   vec3 specular = light.color * (material.specular * spec) * light.specular;
 
+  ambient *= intensity;
   diffuse  *= intensity;
   specular *= intensity;
 
@@ -192,7 +193,7 @@ void main() {
         }
 
         for (int i = 0; i < NR_SPOT_LIGHTS; i++) {
-            lightStrength += calculateSpotLight(spotLight, normal, FragPos, viewDir, material);
+            lightStrength += calculateSpotLight(spotLights[i], normal, FragPos, viewDir, material);
         }
     }
 

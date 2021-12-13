@@ -9,7 +9,7 @@ std::unique_ptr<ppgso::Shader> Light::shader;
 
 Light::Light(glm::vec3 pos) {
     position = pos;
-    scale = glm::vec3(0.1f);
+    scale = glm::vec3(0.5f);
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(color_vert_glsl, color_frag_glsl);

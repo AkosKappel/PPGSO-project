@@ -28,6 +28,7 @@
 #include "WineBottle.h"
 #include "BarCounter.h"
 #include "Light.h"
+#include "Desk.h"
 #include "Tree.h"
 
 const unsigned int SIZE = 1024;
@@ -49,8 +50,8 @@ private:
         scene.objects.clear();
         scene.createDepthMap();
 
-        scene.pointLight[0].position = {0.0f, 1.0f, 0.0f};
-        scene.pointLight[0].color = {0.7f, 0.3f, 0.3f};
+        scene.pointLight[0].position = {0.0f, 2.0f, 0.0f};
+        scene.pointLight[0].color = {0.2f, 0.5f, 0.7f};
         scene.pointLight[0].constant = 1.0f;
         scene.pointLight[0].linear = 0.09f;
         scene.pointLight[0].quadratic = 0.032f;
@@ -58,8 +59,8 @@ private:
         scene.pointLight[0].diffuse = glm::vec3{1.0};
         scene.pointLight[0].specular = glm::vec3{1.0};
 
-        scene.pointLight[1].position = {0.0f, 1.0f, 0.0f};
-        scene.pointLight[1].color = {0.7f, 0.3f, 0.3f};
+        scene.pointLight[1].position = {3.0f, 2.0f, 9.0f};
+        scene.pointLight[1].color = {1.0f, 1.0f, 1.0f};
         scene.pointLight[1].constant = 1.0f;
         scene.pointLight[1].linear = 0.09f;
         scene.pointLight[1].quadratic = 0.032f;
@@ -67,47 +68,47 @@ private:
         scene.pointLight[1].diffuse = glm::vec3{1.0};
         scene.pointLight[1].specular = glm::vec3{1.0};
 
-        scene.spotLight[0].position = {0.0f, 3.0f, 0.0f};
+        scene.spotLight[0].position = {3.0f, 3.0f, 9.5f};
         scene.spotLight[0].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[0].color = {1.0f, 1.0f, 1.0f};
-        scene.spotLight[0].cutOff = glm::cos(glm::radians(12.5f));
-        scene.spotLight[0].outerCutOff = glm::cos(glm::radians(17.5f));
+        scene.spotLight[0].cutOff = glm::cos(glm::radians(20.0f));
+        scene.spotLight[0].outerCutOff = glm::cos(glm::radians(30.0f));
         scene.spotLight[0].ambient = glm::vec3{1.0};
         scene.spotLight[0].diffuse = glm::vec3{1.0};
         scene.spotLight[0].specular = glm::vec3{1.0};
 
-        scene.spotLight[1].position = {0.0f, 3.0f, 0.0f};
+        scene.spotLight[1].position = {3.0f, 3.0f, 3.0f};
         scene.spotLight[1].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[1].color = {1.0f, 1.0f, 1.0f};
-        scene.spotLight[1].cutOff = glm::cos(glm::radians(12.5f));
-        scene.spotLight[1].outerCutOff = glm::cos(glm::radians(17.5f));
+        scene.spotLight[1].cutOff = glm::cos(glm::radians(20.0f));
+        scene.spotLight[1].outerCutOff = glm::cos(glm::radians(30.0f));
         scene.spotLight[1].ambient = glm::vec3{1.0};
         scene.spotLight[1].diffuse = glm::vec3{1.0};
         scene.spotLight[1].specular = glm::vec3{1.0};
 
-        scene.spotLight[2].position = {0.0f, 3.0f, 0.0f};
+        scene.spotLight[2].position = {3.0f, 3.0f, -3.0f};
         scene.spotLight[2].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[2].color = {1.0f, 1.0f, 1.0f};
-        scene.spotLight[2].cutOff = glm::cos(glm::radians(12.5f));
-        scene.spotLight[2].outerCutOff = glm::cos(glm::radians(17.5f));
+        scene.spotLight[2].cutOff = glm::cos(glm::radians(20.0f));
+        scene.spotLight[2].outerCutOff = glm::cos(glm::radians(30.0f));
         scene.spotLight[2].ambient = glm::vec3{1.0};
         scene.spotLight[2].diffuse = glm::vec3{1.0};
         scene.spotLight[2].specular = glm::vec3{1.0};
 
-        scene.spotLight[3].position = {0.0f, 3.0f, 0.0f};
+        scene.spotLight[3].position = {-3.0f, 3.0f, 3.0f};
         scene.spotLight[3].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[3].color = {1.0f, 1.0f, 1.0f};
-        scene.spotLight[3].cutOff = glm::cos(glm::radians(12.5f));
-        scene.spotLight[3].outerCutOff = glm::cos(glm::radians(17.5f));
+        scene.spotLight[3].cutOff = glm::cos(glm::radians(20.0f));
+        scene.spotLight[3].outerCutOff = glm::cos(glm::radians(30.0f));
         scene.spotLight[3].ambient = glm::vec3{1.0};
         scene.spotLight[3].diffuse = glm::vec3{1.0};
         scene.spotLight[3].specular = glm::vec3{1.0};
 
-        scene.spotLight[4].position = {2.0f, 3.0f, 9.0f};
+        scene.spotLight[4].position = {-3.0f, 3.0f, -3.0f};
         scene.spotLight[4].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[4].color = {1.0f, 1.0f, 1.0f};
-        scene.spotLight[4].cutOff = glm::cos(glm::radians(12.5f));
-        scene.spotLight[4].outerCutOff = glm::cos(glm::radians(17.5f));
+        scene.spotLight[4].cutOff = glm::cos(glm::radians(20.0f));
+        scene.spotLight[4].outerCutOff = glm::cos(glm::radians(30.0f));
         scene.spotLight[4].ambient = glm::vec3{1.0};
         scene.spotLight[4].diffuse = glm::vec3{1.0};
         scene.spotLight[4].specular = glm::vec3{1.0};
@@ -117,9 +118,9 @@ private:
         scene.directionalLight.diffuse = glm::vec3{1.0};
         scene.directionalLight.specular = glm::vec3{1.0};
 
-        float near_plane = 1.0f, far_plane = 100.0f;
-        glm::mat4 lightProjection = glm::ortho(-30.0f, 30.0f, -30.0f, 30.0f, near_plane, far_plane);
-        glm::mat4 lightView = glm::lookAt(glm::vec3(-5.0f, 5.0f, 5.0f),
+        float near_plane = 1.0f, far_plane = 200.0f;
+        glm::mat4 lightProjection = glm::ortho(-40.0f, 40.0f, -40.0f, 40.0f, near_plane, far_plane);
+        glm::mat4 lightView = glm::lookAt(glm::vec3(-50.0f, 50.0f, -50.0f),
                                           glm::vec3( 0.0f, 0.0f,  0.0f),
                                           glm::vec3( 0.0f, 1.0f,  0.0f));
         scene.lightSpaceMatrix = lightProjection * lightView;
@@ -129,11 +130,11 @@ private:
         camera->position = glm::vec3(0.0f, 1.7f, 20.0f);
         scene.camera = std::move(camera);
 
-        auto light1 = std::make_unique<Light>(glm::vec3(2.0f, 3.0f, 9.0f));
+        auto light1 = std::make_unique<Light>(glm::vec3(3.0f, 3.0f, 9.0f));
         scene.objects.push_back(std::move(light1));
 
-//        auto light2 = std::make_unique<Light>(glm::vec3(0.0f, 3.0f, 0.0f));
-//        scene.objects.push_back(std::move(light2));
+//        auto light2 = std::make_unique<Light>(glm::vec3(3.0f, 3.0f, 9.0f));
+//        scene.objects.push_back(std::move(light1));
 
         auto skybox = std::make_unique<Skybox>();
         scene.objects.push_back(std::move(skybox));
@@ -435,14 +436,17 @@ private:
 //        chair->scale = glm::vec3(0.25f, 0.25f, 0.25f);
 //        scene.objects.push_back(std::move(chair));
 
+        auto desk = std::make_unique<Desk>(glm::vec3(3, 0, 9));
+        scene.objects.push_back(std::move(desk));
+
         // create trees
         auto treePositions = {
-                glm::vec3{-10.0f, 0.0f, 0.0f},
-                glm::vec3{-15.0f, 0.0f, 0.0f},
-                glm::vec3{-20.0f, 0.0f, 0.0f},
-                glm::vec3{-10.0f, 0.0f, 6.0f},
-                glm::vec3{-15.0f, 0.0f, 6.0f},
-                glm::vec3{-20.0f, 0.0f, 6.0f},
+                glm::vec3{-12.0f, 0.0f, 0.0f},
+                glm::vec3{-17.0f, 0.0f, 0.0f},
+                glm::vec3{-22.0f, 0.0f, 0.0f},
+                glm::vec3{-12.0f, 0.0f, 6.0f},
+                glm::vec3{-17.0f, 0.0f, 6.0f},
+                glm::vec3{-22.0f, 0.0f, 6.0f},
         };
         for (auto position : treePositions) {
             auto tree = std::make_unique<Tree>(position);

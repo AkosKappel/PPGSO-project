@@ -1,5 +1,5 @@
-#ifndef PPGSO_BARCHAIR_H
-#define PPGSO_BARCHAIR_H
+#ifndef PPGSO_DESK_H
+#define PPGSO_DESK_H
 
 #include <memory>
 
@@ -7,18 +7,20 @@
 
 #include "scene.h"
 #include "object.h"
+#include "Money.h"
 
-class BarChair final : public Object {
+class Desk final : public Object {
 private:
     // Static resources (Shared between instances)
     static std::unique_ptr<ppgso::Mesh> mesh;
     static std::unique_ptr<ppgso::Shader> shader;
     static std::unique_ptr<ppgso::Texture> texture;
 
-    glm::vec3 rotMomentum;
+    float height;
+    std::list<std::unique_ptr<Object>> objects;
 public:
 
-    BarChair(glm::vec3 pos);
+    Desk(glm::vec3 pos);
 
     bool update(Scene &scene, float dt) override;
 
@@ -30,4 +32,4 @@ public:
 };
 
 
-#endif //PPGSO_BARCHAIR_H
+#endif //PPGSO_DESK_H
