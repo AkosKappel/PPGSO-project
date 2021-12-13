@@ -13,7 +13,7 @@ SmokeParticle::SmokeParticle(glm::vec3 pos, glm::mat4 rotationPosMatrix, float s
     scaleFactor = size;
     scale = glm::vec3(scaleFactor);
     posRotMatrix = rotationPosMatrix;
-    hand = hand2;
+    hand = (hand2 - (-ppgso::PI/2)) / (-((2.5f*ppgso::PI)/4) - -ppgso::PI/2);
 
     float shade = glm::linearRand(0.3f, 0.6f);
     color = glm::vec3(shade);
@@ -33,8 +33,7 @@ bool SmokeParticle::update(Scene &scene, float dt) {
     }
 
     float oscillation = 0.01f;
-    float handT = (hand - (-ppgso::PI/2)) / (-((2.5f*ppgso::PI)/4) - -ppgso::PI/2);
-    position += glm::vec3(glm::linearRand(-oscillation, oscillation), 0.005 * handT, (-0.005) * (1-handT) + glm::linearRand(-oscillation, oscillation));
+    position += glm::vec3(glm::linearRand(-oscillation, oscillation), 0.005 * hand, (-0.005) * (1-hand) + glm::linearRand(-oscillation, oscillation));
     scale += glm::vec3(0.02f) * dt;
     age += dt;
     modelMatrix = posRotMatrix
