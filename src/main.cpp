@@ -39,7 +39,6 @@ private:
     void initScene() {
         scene.objects.clear();
         scene.createDepthMap();
-//        scene.initBloom();
 
         auto light1 = std::make_unique<Light>(glm::vec3(0.0f, 3.0f, 0.0f));
         scene.pointLight[0].position = light1->position;

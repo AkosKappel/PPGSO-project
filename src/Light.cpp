@@ -46,37 +46,6 @@ void Light::render(Scene &scene) {
 
     // render mesh
     shader->setUniform("ModelMatrix", modelMatrix);
-//
-//    glGenFramebuffers(2, scene.pingpongFBO);
-//    glGenTextures(2, scene.pingpongBuffer);
-//    int size = 1024;
-//    for (unsigned int i = 0; i < 2; i++)
-//    {
-//        glBindFramebuffer(GL_FRAMEBUFFER, scene.pingpongFBO[i]);
-//        glBindTexture(GL_TEXTURE_2D, scene.pingpongBuffer[i]);
-//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, size, size, 0, GL_RGBA, GL_FLOAT, NULL);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, scene.pingpongBuffer[i], 0);
-//    }
-//
-//    bool horizontal = true, first_iteration = true;
-//    int amount = 10;
-////    shaderBlur.use();
-//    for (unsigned int i = 0; i < amount; i++)
-//    {
-//        glBindFramebuffer(GL_FRAMEBUFFER, scene.pingpongFBO[horizontal]);
-////        shaderBlur.setInt("horizontal", horizontal);
-//        glBindTexture(GL_TEXTURE_2D, first_iteration ? scene.colorBuffers[1] : scene.pingpongBuffer[!horizontal]);
-////        RenderQuad();
-//        horizontal = !horizontal;
-//        if (first_iteration)
-//            first_iteration = false;
-//    }
-//    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
     mesh->render();
 }
 

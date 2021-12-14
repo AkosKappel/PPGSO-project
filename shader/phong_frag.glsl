@@ -179,13 +179,31 @@ uniform SpotLight spotLights[NR_SPOT_LIGHTS];
 
 uniform bool isOutside;
 
-layout (location = 0) out vec4 FragColor;
-layout (location = 1) out vec4 BrightColor;
+const float offset_x = 1.0f / 50.0f;
+const float offset_y = 1.0f / 50.0f;
+
+vec2 offsets[9] = vec2[] (
+    vec2(-offset_x,  offset_y), vec2( 0.0f,    offset_y), vec2( offset_x,  offset_y),
+    vec2(-offset_x,  0.0f),     vec2( 0.0f,    0.0f),     vec2( offset_x,  0.0f),
+    vec2(-offset_x, -offset_y), vec2( 0.0f,   -offset_y), vec2( offset_x, -offset_y)
+);
+
+float edgeDetectionKernel[9] = float[] (
+    1,  1, 1,
+    1, -8, 1,
+    1,  1, 1
+);
+
+float kernel[9] = float[] (
+    1/9f, 1/9f, 1/9f,
+    1/9f, 1/9f, 1/9f,
+    1/9f, 1/9f, 1/9f
+);
 
 void main() {
   vec3 viewDir = normalize(viewPos - FragPos);
 
-    vec3 lightStrength = vec3(0);
+    vec3 lightStrength = vec3(0.0f);
 
     if (isOutside) {
         lightStrength += calculateDirectionalLight(directionalLight, normal, viewDir, material);
@@ -200,13 +218,17 @@ void main() {
     }
 
   vec3 result = lightStrength * vec3(texture(Texture, vec2(texCoord.x, 1.0 - texCoord.y) + TextureOffset));
-  FragmentColor = vec4(result, 1.0);
 
-//  FragColor = FragmentColor;
+//  FragColor = vec4(result, 1.0);
   // check whether fragment output is higher than threshold, if so output as brightness color
   float brightness = dot(FragmentColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-  if (brightness > 1.0)
-    BrightColor = vec4(FragmentColor.rgb, 1.0);
-  else
-    BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+  if (brightness > 0.5) {
+      vec3 color = vec3(0);
+      for(int i = 0; i < 9; i++) {
+          color += texture(Texture, vec2(texCoord.x, 1.0 - texCoord.y) + offsets[i]).rgb * kernel[i];
+      }
+      FragmentColor = vec4(color, 1.0);
+  } else {
+      FragmentColor = vec4(result, 1.0);
+  }
 }
