@@ -70,6 +70,7 @@ set(PPGSO_SHADER_SRC
         shader/cube_vert.glsl shader/cube_frag.glsl
         shader/phong_vert.glsl shader/phong_frag.glsl
         shader/shadow_vert.glsl shader/shadow_frag.glsl
+        shader/postprocessing_vert.glsl shader/postprocessing_frag.glsl
         )
 add_resources(shaders ${PPGSO_SHADER_SRC})
 

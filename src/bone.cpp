@@ -16,7 +16,7 @@ Bone::Bone() {
     timePassed = 0;
     parent = nullptr;
     if (!shader) shader = std::make_unique<ppgso::Shader>(texture_vert_glsl, texture_frag_glsl);
-    if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Wall/Brick.bmp"));
+    if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("pink.bmp"));
     std::vector<float> positions2 = {
             -1.0, -1.0,  1.0, //FRONT
             1.0, -1.0,  1.0,

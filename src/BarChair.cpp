@@ -8,10 +8,11 @@ std::unique_ptr<ppgso::Mesh> BarChair::mesh;
 std::unique_ptr<ppgso::Texture> BarChair::texture;
 std::unique_ptr<ppgso::Shader> BarChair::shader;
 
-BarChair::BarChair(glm::vec3 pos) {
+BarChair::BarChair(glm::vec3 pos, glm::vec3 rot) {
     position = pos;
-    float size = 0.25f;
-    scale = glm::vec3(size, size, size);
+    rotation = rot;
+    float size = 0.35f;
+    scale = glm::vec3(size);
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
@@ -20,12 +21,8 @@ BarChair::BarChair(glm::vec3 pos) {
 }
 
 bool BarChair::update(Scene &scene, float dt) {
-    // Rotate the object
-    rotation += rotMomentum * dt;
-
     // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
-
     return true;
 }
 

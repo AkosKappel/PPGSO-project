@@ -33,7 +33,6 @@ uniform vec3 viewPos;
 
 float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir)
 {
-
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
 
     projCoords = projCoords * 0.5 + 0.5;
@@ -45,9 +44,9 @@ float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir)
     float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005) - 0.005f;
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
-    for(int x = -1; x <= 1; ++x)
+    for (int x = -1; x <= 1; ++x)
     {
-        for(int y = -1; y <= 1; ++y)
+        for (int y = -1; y <= 1; ++y)
         {
             float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
             shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
@@ -180,6 +179,9 @@ uniform SpotLight spotLights[NR_SPOT_LIGHTS];
 
 uniform bool isOutside;
 
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 BrightColor;
+
 void main() {
   vec3 viewDir = normalize(viewPos - FragPos);
 
@@ -199,4 +201,12 @@ void main() {
 
   vec3 result = lightStrength * vec3(texture(Texture, vec2(texCoord.x, 1.0 - texCoord.y) + TextureOffset));
   FragmentColor = vec4(result, 1.0);
+
+//  FragColor = FragmentColor;
+  // check whether fragment output is higher than threshold, if so output as brightness color
+  float brightness = dot(FragmentColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+  if (brightness > 1.0)
+    BrightColor = vec4(FragmentColor.rgb, 1.0);
+  else
+    BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
 }

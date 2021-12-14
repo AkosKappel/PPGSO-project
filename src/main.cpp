@@ -1,11 +1,3 @@
-// Example gl_scene
-// - Introduces the concept of a dynamic scene of objects
-// - Uses abstract object interface for Update and Render steps
-// - Creates a simple game scene with Player, Asteroid and Space objects
-// - Contains a generator object that does not render but adds Asteroids to the scene
-// - Some objects use shared resources and all object deallocations are handled automatically
-// - Controls: LEFT, RIGHT, "R" to reset, SPACE to fire
-
 #include <iostream>
 #include <map>
 #include <list>
@@ -24,7 +16,6 @@
 #include "SlotMachine.h"
 #include "bone.h"
 #include "Cigar.h"
-#include "Lever.h"
 #include "WineBottle.h"
 #include "BarCounter.h"
 #include "Light.h"
@@ -45,14 +36,14 @@ private:
      * Reset and initialize the game scene
      * Creating unique smart pointers to objects that are stored in the scene object list
      */
-
     void initScene() {
         scene.objects.clear();
         scene.createDepthMap();
+//        scene.initBloom();
 
         auto light1 = std::make_unique<Light>(glm::vec3(0.0f, 3.0f, 0.0f));
         scene.pointLight[0].position = light1->position;
-        scene.pointLight[0].color = {0.3f, 0.6f, 0.7f};
+        scene.pointLight[0].color = {0.4f, 0.1f, 0.8f};
         scene.pointLight[0].constant = 1.0f;
         scene.pointLight[0].linear = 0.09f;
         scene.pointLight[0].quadratic = 0.032f;
@@ -70,7 +61,7 @@ private:
         scene.pointLight[1].diffuse = glm::vec3{1.0};
         scene.pointLight[1].specular = glm::vec3{1.0};
 
-        auto light2 = std::make_unique<Light>(glm::vec3(0.0f, 2.5f, -5.47f), true);
+        auto light2 = std::make_unique<Light>(glm::vec3(0.0f, 2.5f, -5.47f), true, 2);
         scene.pointLight[2].position = light2->position;
         scene.pointLight[2].color = {1.0f, 1.0f, 1.0f};
         scene.pointLight[2].constant = 1.0f;
@@ -92,7 +83,8 @@ private:
         scene.spotLight[0].specular = glm::vec3{1.0};
         scene.objects.push_back(std::move(light3));
 
-        scene.spotLight[1].position = {3.0f, 3.0f, 3.0f};
+        auto light4 = std::make_unique<Light>(glm::vec3(3.0f, 3.0f, 3.0f));
+        scene.spotLight[1].position = light4->position;
         scene.spotLight[1].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[1].color = {1.0f, 1.0f, 1.0f};
         scene.spotLight[1].cutOff = glm::cos(glm::radians(20.0f));
@@ -100,8 +92,10 @@ private:
         scene.spotLight[1].ambient = glm::vec3{1.0};
         scene.spotLight[1].diffuse = glm::vec3{1.0};
         scene.spotLight[1].specular = glm::vec3{1.0};
+        scene.objects.push_back(std::move(light4));
 
-        scene.spotLight[2].position = {3.0f, 3.0f, -3.0f};
+        auto light5 = std::make_unique<Light>(glm::vec3(3.0f, 3.0f, -3.0f));
+        scene.spotLight[2].position = light5->position;
         scene.spotLight[2].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[2].color = {1.0f, 1.0f, 1.0f};
         scene.spotLight[2].cutOff = glm::cos(glm::radians(20.0f));
@@ -109,8 +103,10 @@ private:
         scene.spotLight[2].ambient = glm::vec3{1.0};
         scene.spotLight[2].diffuse = glm::vec3{1.0};
         scene.spotLight[2].specular = glm::vec3{1.0};
+        scene.objects.push_back(std::move(light5));
 
-        scene.spotLight[3].position = {-3.0f, 3.0f, 3.0f};
+        auto light6 = std::make_unique<Light>(glm::vec3(-3.0f, 3.0f, 3.0f));
+        scene.spotLight[3].position = light6->position;
         scene.spotLight[3].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[3].color = {1.0f, 1.0f, 1.0f};
         scene.spotLight[3].cutOff = glm::cos(glm::radians(20.0f));
@@ -118,8 +114,10 @@ private:
         scene.spotLight[3].ambient = glm::vec3{1.0};
         scene.spotLight[3].diffuse = glm::vec3{1.0};
         scene.spotLight[3].specular = glm::vec3{1.0};
+        scene.objects.push_back(std::move(light6));
 
-        scene.spotLight[4].position = {-3.0f, 3.0f, -3.0f};
+        auto light7 = std::make_unique<Light>(glm::vec3(-3.0f, 3.0f, -3.0f));
+        scene.spotLight[4].position = light7->position;
         scene.spotLight[4].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[4].color = {1.0f, 1.0f, 1.0f};
         scene.spotLight[4].cutOff = glm::cos(glm::radians(20.0f));
@@ -127,6 +125,7 @@ private:
         scene.spotLight[4].ambient = glm::vec3{1.0};
         scene.spotLight[4].diffuse = glm::vec3{1.0};
         scene.spotLight[4].specular = glm::vec3{1.0};
+        scene.objects.push_back(std::move(light7));
 
         scene.directionalLight.direction = {0.0f, -1.0f, 0.0f};
         scene.directionalLight.ambient = glm::vec3{1.0};
@@ -142,7 +141,8 @@ private:
 
         // Create a camera
         auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 100.0f);
-        camera->position = glm::vec3(0.0f, 1.7f, 20.0f);
+        camera->position = glm::vec3(-28.0f, 1.6f, 3.0f);
+        camera->orientation = glm::vec3(1.0f, 0.0f, 0.0f);
         scene.camera = std::move(camera);
 
         auto skybox = std::make_unique<Skybox>();
@@ -151,8 +151,25 @@ private:
         auto machine1 = std::make_unique<SlotMachine>(glm::vec3(0.0f, 0.0f, -5.5f));
         scene.objects.push_back(std::move(machine1));
 
+        auto chair1 = std::make_unique<BarChair>(glm::vec3(0.0f, 0.0f, -4.5f), glm::vec3(0.0f, 0.0f, ppgso::PI));
+        scene.objects.push_back(std::move(chair1));
+
         auto machine2 = std::make_unique<SlotMachine>(glm::vec3(1.0f, 0.0f, -5.5f));
         scene.objects.push_back(std::move(machine2));
+
+        auto chair2 = std::make_unique<BarChair>(glm::vec3(1.0f, 0.0f, -4.5f), glm::vec3(0.0f, 0.0f, ppgso::PI));
+        scene.objects.push_back(std::move(chair2));
+
+        auto machine3 = std::make_unique<SlotMachine>(glm::vec3(5.0, 0.0f, -1.0f));
+        machine3->rotation.z = -ppgso::PI / 2;
+        scene.objects.push_back(std::move(machine3));
+
+        auto machine4 = std::make_unique<SlotMachine>(glm::vec3(5.0f, 0.0f, 0.0f));
+        machine4->rotation.z = -ppgso::PI / 2;
+        scene.objects.push_back(std::move(machine4));
+
+        auto chair4 = std::make_unique<BarChair>(glm::vec3(4.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, ppgso::PI / 2));
+        scene.objects.push_back(std::move(chair4));
 
         auto wall1 = std::make_unique<Wall>();
         wall1->position = {-3.0f, 1.5f, 6.2f};
@@ -222,8 +239,8 @@ private:
         bone->scale = {0.2f, 0.2f, 0.2f};
         bone->scale.z *= 0.5f;
         bone->scale.y *= 1.2f;
-        bone->position.x = 0.0f;
-        bone->position.y = 6.0f;
+        bone->rotation = glm::vec3(0.0f, 0.0f, ppgso::PI);
+        bone->position = glm::vec3(3.0f, 1.0f, 9.6f);
 
         auto bone2 = std::make_shared<Bone>();
         bone2->parent = bone;
@@ -319,8 +336,8 @@ private:
         bone21->scale = {0.2f, 0.2f, 0.2f};
         bone21->scale.z *= 0.5f;
         bone21->scale.y *= 1.2f;
-        bone21->position.x = 5.0f;
-        bone21->position.y = 6.0f;
+        bone21->position = glm::vec3(-0.01f, 1.5f, -4.5f);
+        bone21->rotation.z = ppgso::PI;
 
         auto bone22 = std::make_shared<Bone>();
         bone22->parent = bone21;
@@ -446,10 +463,6 @@ private:
 
         auto wine2 = std::make_unique<WineBottle>(glm::vec3(-2.6f, 1.22f, 4.6f), true);
         scene.objects.push_back(std::move(wine2));
-
-//        auto chair = std::make_unique<BarChair>(glm::vec3(0, 0, 0));
-//        chair->scale = glm::vec3(0.25f, 0.25f, 0.25f);
-//        scene.objects.push_back(std::move(chair));
 
         auto desk = std::make_unique<Desk>(glm::vec3(3, 0, 9));
         scene.objects.push_back(std::move(desk));

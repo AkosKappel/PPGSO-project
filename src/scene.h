@@ -39,6 +39,14 @@ public:
 
     void createDepthMap();
 
+    unsigned int hdrFBO;
+    unsigned int colorBuffers[2];
+
+    unsigned int pingpongFBO[2];
+    unsigned int pingpongBuffer[2];
+
+    void initBloom();
+
     const GLsizei SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
     unsigned int depthMapFBO;
     unsigned int depthMap;

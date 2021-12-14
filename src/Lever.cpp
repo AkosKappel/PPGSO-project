@@ -28,7 +28,6 @@ Lever::Lever(glm::vec3 pos, float size) {
 bool Lever::update(Scene &scene, float dt) {
     timePassedFromStart += dt;
     keyframes.updatePosRot(timePassedFromStart, &position, &rotation);
-    std::cout<<glm::to_string(position)<<std::endl;
     // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
 

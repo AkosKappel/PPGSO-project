@@ -19,9 +19,10 @@ private:
     glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
     bool isMoving;
     float age;
+    int lightId;
 public:
 
-    Light(glm::vec3 pos, bool moving = false);
+    Light(glm::vec3 pos, bool moving = false, int id = 0);
 
     bool update(Scene &scene, float dt) override;
 
