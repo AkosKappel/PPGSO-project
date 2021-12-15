@@ -47,8 +47,8 @@ private:
         scene.pointLight[0].linear = 0.09f;
         scene.pointLight[0].quadratic = 0.032f;
         scene.pointLight[0].ambient = glm::vec3{1.0};
-        scene.pointLight[0].diffuse = glm::vec3{1.0};
-        scene.pointLight[0].specular = glm::vec3{1.0};
+        scene.pointLight[0].diffuse = glm::vec3{0.7};
+        scene.pointLight[0].specular = glm::vec3{0.7};
         scene.objects.push_back(std::move(light1));
 
         scene.pointLight[1].position = {3.0f, 2.0f, 9.0f};
@@ -75,8 +75,8 @@ private:
         scene.spotLight[0].position = light3->position;
         scene.spotLight[0].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[0].color = {1.0f, 1.0f, 1.0f};
-        scene.spotLight[0].cutOff = glm::cos(glm::radians(20.0f));
-        scene.spotLight[0].outerCutOff = glm::cos(glm::radians(30.0f));
+        scene.spotLight[0].cutOff = glm::cos(glm::radians(30.0f));
+        scene.spotLight[0].outerCutOff = glm::cos(glm::radians(40.0f));
         scene.spotLight[0].ambient = glm::vec3{1.0};
         scene.spotLight[0].diffuse = glm::vec3{1.0};
         scene.spotLight[0].specular = glm::vec3{1.0};
@@ -86,8 +86,8 @@ private:
         scene.spotLight[1].position = light4->position;
         scene.spotLight[1].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[1].color = {1.0f, 1.0f, 1.0f};
-        scene.spotLight[1].cutOff = glm::cos(glm::radians(20.0f));
-        scene.spotLight[1].outerCutOff = glm::cos(glm::radians(30.0f));
+        scene.spotLight[1].cutOff = glm::cos(glm::radians(30.0f));
+        scene.spotLight[1].outerCutOff = glm::cos(glm::radians(40.0f));
         scene.spotLight[1].ambient = glm::vec3{1.0};
         scene.spotLight[1].diffuse = glm::vec3{1.0};
         scene.spotLight[1].specular = glm::vec3{1.0};
@@ -97,8 +97,8 @@ private:
         scene.spotLight[2].position = light5->position;
         scene.spotLight[2].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[2].color = {1.0f, 1.0f, 1.0f};
-        scene.spotLight[2].cutOff = glm::cos(glm::radians(20.0f));
-        scene.spotLight[2].outerCutOff = glm::cos(glm::radians(30.0f));
+        scene.spotLight[2].cutOff = glm::cos(glm::radians(30.0f));
+        scene.spotLight[2].outerCutOff = glm::cos(glm::radians(40.0f));
         scene.spotLight[2].ambient = glm::vec3{1.0};
         scene.spotLight[2].diffuse = glm::vec3{1.0};
         scene.spotLight[2].specular = glm::vec3{1.0};
@@ -108,8 +108,8 @@ private:
         scene.spotLight[3].position = light6->position;
         scene.spotLight[3].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[3].color = {1.0f, 1.0f, 1.0f};
-        scene.spotLight[3].cutOff = glm::cos(glm::radians(20.0f));
-        scene.spotLight[3].outerCutOff = glm::cos(glm::radians(30.0f));
+        scene.spotLight[3].cutOff = glm::cos(glm::radians(30.0f));
+        scene.spotLight[3].outerCutOff = glm::cos(glm::radians(40.0f));
         scene.spotLight[3].ambient = glm::vec3{1.0};
         scene.spotLight[3].diffuse = glm::vec3{1.0};
         scene.spotLight[3].specular = glm::vec3{1.0};
@@ -119,8 +119,8 @@ private:
         scene.spotLight[4].position = light7->position;
         scene.spotLight[4].direction = {0.0f, -1.0f, 0.0f};
         scene.spotLight[4].color = {1.0f, 1.0f, 1.0f};
-        scene.spotLight[4].cutOff = glm::cos(glm::radians(20.0f));
-        scene.spotLight[4].outerCutOff = glm::cos(glm::radians(30.0f));
+        scene.spotLight[4].cutOff = glm::cos(glm::radians(30.0f));
+        scene.spotLight[4].outerCutOff = glm::cos(glm::radians(40.0f));
         scene.spotLight[4].ambient = glm::vec3{1.0};
         scene.spotLight[4].diffuse = glm::vec3{1.0};
         scene.spotLight[4].specular = glm::vec3{1.0};
@@ -159,15 +159,15 @@ private:
         auto chair2 = std::make_unique<BarChair>(glm::vec3(1.0f, 0.0f, -4.5f), glm::vec3(0.0f, 0.0f, ppgso::PI));
         scene.objects.push_back(std::move(chair2));
 
-        auto machine3 = std::make_unique<SlotMachine>(glm::vec3(5.0, 0.0f, -1.0f));
+        auto machine3 = std::make_unique<SlotMachine>(glm::vec3(5.0, 0.0f, -3.0f));
         machine3->rotation.z = -ppgso::PI / 2;
         scene.objects.push_back(std::move(machine3));
 
-        auto machine4 = std::make_unique<SlotMachine>(glm::vec3(5.0f, 0.0f, 0.0f));
+        auto machine4 = std::make_unique<SlotMachine>(glm::vec3(5.0f, 0.0f, -2.0f));
         machine4->rotation.z = -ppgso::PI / 2;
         scene.objects.push_back(std::move(machine4));
 
-        auto chair4 = std::make_unique<BarChair>(glm::vec3(4.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, ppgso::PI / 2));
+        auto chair4 = std::make_unique<BarChair>(glm::vec3(4.0f, 0.0f, -2.0f), glm::vec3(0.0f, 0.0f, ppgso::PI / 2));
         scene.objects.push_back(std::move(chair4));
 
         auto wall1 = std::make_unique<Wall>();

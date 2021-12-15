@@ -18,9 +18,9 @@ SlotMachine::SlotMachine(glm::vec3 pos, bool hasLever) {
         lever = nullptr;
     }
     material.ambient = glm::vec3(0.3);
-    material.diffuse = glm::vec3(0.7);
-    material.specular = glm::vec3(0.9);
-    material.shininess = 16;
+    material.diffuse = glm::vec3(0.01);
+    material.specular = glm::vec3(0.8);
+    material.shininess = 0.25;
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);

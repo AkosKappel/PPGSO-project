@@ -18,7 +18,7 @@ Tree::Tree(glm::vec3 pos) {
     float size = glm::linearRand(0.06f, 0.12f);
     scale = glm::vec3(size);
     rotation = glm::vec3(0.0f, 0.0f, glm::linearRand(-ppgso::PI, ppgso::PI));
-    wind = glm::vec3(0.3f, 0.0f, 0.1f);
+    wind = glm::vec3(-0.2f, 0.0f, 0.3f);
 
     // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
@@ -93,4 +93,8 @@ void Tree::renderShadow(Scene &scene) {
     shadowShader->setUniform("ModelMatrix", modelMatrix);
     meshLeaves->render();
     meshBark->render();
+
+    for (auto &obj: fallingLeaves) {
+        obj->renderShadow(scene);
+    }
 }

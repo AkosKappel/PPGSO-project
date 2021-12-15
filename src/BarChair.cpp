@@ -9,10 +9,10 @@ std::unique_ptr<ppgso::Texture> BarChair::texture;
 std::unique_ptr<ppgso::Shader> BarChair::shader;
 
 BarChair::BarChair(glm::vec3 pos, glm::vec3 rot) {
-    material.ambient = glm::vec3(0.3);
-    material.diffuse = glm::vec3(0.7);
-    material.specular = glm::vec3(0.9);
-    material.shininess = 16;
+    material.ambient = glm::vec3(0.1f);
+    material.diffuse = glm::vec3(0.1f);
+    material.specular = glm::vec3(0.65f);
+    material.shininess = 0.4f;
 
     position = pos;
     rotation = rot;
