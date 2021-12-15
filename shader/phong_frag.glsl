@@ -222,31 +222,16 @@ void main() {
 
   float brightness = dot(FragmentColor.rgb, vec3(0.2126, 0.7152, 0.0722));
   if (brightness > 0.6) {
-//      vec3 color = vec3(0);
-//      for(int i = 0; i < 9; i++) {
-//          color += texture(Texture, vec2(texCoord.x, 1.0 - texCoord.y) + offsets[i]).rgb * kernel[i];
-//      }
-//      FragmentColor = vec4(color, 1.0);
-//      FragmentColor = vec4(vec3(1.0) - result, 1.0);
 
-      //this will be our RGBA sum
       vec4 sum = vec4(0.0);
 
-      //our original texcoord for this fragment
       vec2 tc = texCoord;
 
-      //the amount to blur, i.e. how far off center to sample from
-      //1.0 -> blur by one pixel
-      //2.0 -> blur by two pixels, etc.
       float blur = 10.0 / 1024;
 
-      //the direction of our blur
-      //(1.0, 0.0) -> x-axis blur
-      //(0.0, 1.0) -> y-axis blur
       float hstep = 1.0;
       float vstep = 0.0;
 
-      //apply blurring, using a 9-tap filter with predefined gaussian weights
       sum += texture2D(Texture, vec2(tc.x - 4.0 * blur * hstep, tc.y - 4.0 * blur * vstep)) * 0.0162162162;
       sum += texture2D(Texture, vec2(tc.x - 3.0 * blur * hstep, tc.y - 3.0 * blur * vstep)) * 0.0540540541;
       sum += texture2D(Texture, vec2(tc.x - 2.0 * blur * hstep, tc.y - 2.0 * blur * vstep)) * 0.1216216216;
@@ -259,7 +244,6 @@ void main() {
       sum += texture2D(Texture, vec2(tc.x + 3.0 * blur * hstep, tc.y + 3.0 * blur * vstep)) * 0.0540540541;
       sum += texture2D(Texture, vec2(tc.x + 4.0 * blur * hstep, tc.y + 4.0 * blur * vstep)) * 0.0162162162;
 
-      //discard alpha for our simple demo, multiply by vertex color and return
       FragmentColor = vec4(lightStrength * sum.rgb, 1.0);
   }
 }

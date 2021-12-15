@@ -42,12 +42,9 @@ bool Cigar::update(Scene &scene, float dt) {
     }
 
     modelMatrix *= glm::scale(glm::mat4(1.0f), scale);
-    //generateModelMatrix();
 
-    // Use iterator to update all objects so we can remove while iterating
     auto i = std::begin(objects);
     while (i != std::end(objects)) {
-        // Update and remove from list if needed
         auto obj = i->get();
         if (!obj->update(scene, dt))
             i = objects.erase(i);

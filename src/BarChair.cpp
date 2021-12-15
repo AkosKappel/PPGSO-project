@@ -9,24 +9,22 @@ std::unique_ptr<ppgso::Texture> BarChair::texture;
 std::unique_ptr<ppgso::Shader> BarChair::shader;
 
 BarChair::BarChair(glm::vec3 pos, glm::vec3 rot) {
-    material.ambient = glm::vec3(0.1f);
+    material.ambient = glm::vec3(0.1f); // material for chair
     material.diffuse = glm::vec3(0.1f);
     material.specular = glm::vec3(0.65f);
     material.shininess = 0.4f;
 
-    position = pos;
+    position = pos; //pos, rot, size init
     rotation = rot;
     float size = 0.35f;
     scale = glm::vec3(size);
 
-    // Initialize static resources if needed
-    if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
+    if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl); // shader, texture and mesh
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("BarChair/barChair1.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("BarChair/barChair.obj");
 }
 
 bool BarChair::update(Scene &scene, float dt) {
-    // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
     return true;
 }
@@ -34,7 +32,7 @@ bool BarChair::update(Scene &scene, float dt) {
 void BarChair::render(Scene &scene) {
     shader->use();
 
-    shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);
+    shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);  // passing variables to shader: lights, positions, view, projection, textures, mesh
     shader->setUniform("ViewMatrix", scene.camera->viewMatrix);
     shader->setUniform("viewPos", scene.camera->position);
 
@@ -81,10 +79,10 @@ void BarChair::render(Scene &scene) {
     shader->setUniform("isOutside", false);
 
     shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
-    shader->setUniform("Texture", *texture);
-    shader->setUniform("shadowMap",1);
-    glActiveTexture(GL_TEXTURE0 + 1);
-    glBindTexture(GL_TEXTURE_2D, scene.depthMap);
+    shader->setUniform("Texture", *texture); // Texture for object
+    shader->setUniform("shadowMap",1); // setUniform id
+    glActiveTexture(GL_TEXTURE0 + 1); // set active texture to 1 instead of 0
+    glBindTexture(GL_TEXTURE_2D, scene.depthMap); // bind shadow map as second texture
 
     shader->setUniform("ModelMatrix", modelMatrix);
     mesh->render();

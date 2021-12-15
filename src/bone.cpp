@@ -11,7 +11,7 @@ std::unique_ptr<ppgso::Texture> Bone::texture;
 std::unique_ptr<ppgso::Shader> Bone::shader;
 
 Bone::Bone() {
-    material.ambient = glm::vec3(0.2);
+    material.ambient = glm::vec3(0.2); // material for bone
     material.diffuse = glm::vec3(0.7);
     material.specular = glm::vec3(0.6);
     material.shininess = 0.6;
@@ -200,7 +200,8 @@ void Bone::render(Scene &scene) {
     shader->setUniform("material.specular", material.specular);
     shader->setUniform("material.shininess", material.shininess);
 
-    shader->setUniform("isOutside", false);
+    shader->setUniform("isOutside", false); // if its outside shadows and directional light is applied
+                                                     // if its not outside shadows and directional light is applied
 
     shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
     shader->setUniform("Texture", *texture);

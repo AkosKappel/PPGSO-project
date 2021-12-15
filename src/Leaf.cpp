@@ -24,7 +24,6 @@ Leaf::Leaf(glm::vec3 pos, glm::vec3 w) {
     material.specular = glm::vec3(0.2f);
     material.shininess = 0.25f;
 
-    // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
     if (!shadowShader) shadowShader = std::make_unique<ppgso::Shader>(shadow_vert_glsl, shadow_frag_glsl);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Tree/leaf.bmp"));
@@ -41,7 +40,6 @@ bool Leaf::update(Scene &scene, float dt) {
     position += (glm::vec3(0.0f, -gravity, 0.0f) * 0.06f + wind) * dt;
     rotation += rotationMomentum * dt;
 
-    // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
 
     return true;

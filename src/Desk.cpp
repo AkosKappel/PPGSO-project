@@ -3,7 +3,6 @@
 #include <shaders/phong_vert_glsl.h>
 #include <shaders/phong_frag_glsl.h>
 
-// Static resources
 std::unique_ptr<ppgso::Mesh> Desk::mesh;
 std::unique_ptr<ppgso::Texture> Desk::texture;
 std::unique_ptr<ppgso::Shader> Desk::shader;
@@ -33,23 +32,19 @@ Desk::Desk(glm::vec3 pos) {
     objects.push_back(std::move(money3));
     objects.push_back(std::move(money4));
 
-    // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("OfficeDesk/officeDesk.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("OfficeDesk/officeDesk.obj");
 }
 
 bool Desk::update(Scene &scene, float dt) {
-    // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
 
-    // Use iterator to update all objects so we can remove while iterating
     auto i = std::begin(objects);
     while (i != std::end(objects)) {
-        // Update and remove from list if needed
         auto obj = i->get();
         if (!obj->update(scene, dt))
-            i = objects.erase(i); // NOTE: no need to call destructors as we store shared pointers in the scene
+            i = objects.erase(i);
         else
             ++i;
     }

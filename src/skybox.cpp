@@ -26,7 +26,7 @@ Skybox::Skybox() {
         images.push_back(ppgso::image::loadBMP(face));
     }
 
-    if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("front.bmp"), images);
+    if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("front.bmp"), images); // passed images for CUBEMAP
 
     std::vector<float> positions = {
         -1.0f, -1.0f,  1.0f,

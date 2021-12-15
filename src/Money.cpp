@@ -3,7 +3,6 @@
 #include <shaders/phong_vert_glsl.h>
 #include <shaders/phong_frag_glsl.h>
 
-// Static resources
 std::unique_ptr<ppgso::Mesh> Money::mesh;
 std::unique_ptr<ppgso::Texture> Money::texture;
 std::unique_ptr<ppgso::Shader> Money::shader;
@@ -18,16 +17,13 @@ Money::Money(glm::vec3 pos) {
     float size = 0.001f;
     scale = glm::vec3(size);
 
-    // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Money/money.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("Money/money.obj");
 }
 
 bool Money::update(Scene &scene, float dt) {
-    // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
-
     return true;
 }
 

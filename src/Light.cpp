@@ -3,7 +3,6 @@
 #include <shaders/color_vert_glsl.h>
 #include <shaders/color_frag_glsl.h>
 
-// Static resources
 std::unique_ptr<ppgso::Mesh> Light::mesh;
 std::unique_ptr<ppgso::Shader> Light::shader;
 
@@ -14,7 +13,6 @@ Light::Light(glm::vec3 pos, bool moving, int id) {
     age = 0.0f;
     lightId = id;
 
-    // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(color_vert_glsl, color_frag_glsl);
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("sphere.obj");
 }
@@ -29,7 +27,6 @@ bool Light::update(Scene &scene, float dt) {
         scene.pointLight[lightId].color = color;
     }
 
-    // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
 
     return true;
@@ -40,11 +37,9 @@ void Light::render(Scene &scene) {
 
     shader->setUniform("OverallColor", color);
 
-    // use camera
     shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);
     shader->setUniform("ViewMatrix", scene.camera->viewMatrix);
 
-    // render mesh
     shader->setUniform("ModelMatrix", modelMatrix);
     mesh->render();
 }

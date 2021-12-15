@@ -30,13 +30,13 @@ Camera::Camera(float fow, float ratio, float near, float far) {
     keyframes.addFrame({5.447932, 1.541861, 8.298011}, {-0.906126, -0.187056, 0.429982}, 6);
     keyframes.addFrame({5.447932, 1.541861, 8.298011}, {-0.906126, -0.187056, 0.429982}, 11);
     keyframes.addFrame({4.533250, 2.000000, 8.230641}, {0.031723, 0.000000, -1.052939}, 5);
-    keyframes.addFrame({4.517250, 1.980000, 7.260954}, {0.067843, 0.000000, -1.008986}, 3);
+    keyframes.addFrame({4.586703, 2.009999, 7.234855}, {0.013088, 0.000000, -1.102510}, 3);
 }
 
 void Camera::update(float time) {
-    if (freeMovement) {
+    if (freeMovement) { // free camera movement with keys
         viewMatrix = lookAt(position, position + orientation, up);
-    } else {
+    } else { // movement with keyframes
         timePassed += time;
         keyframes.updatePosRot(timePassed, &position, &orientation);
         viewMatrix = lookAt(position, position + orientation, up);

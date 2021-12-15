@@ -19,7 +19,6 @@ Lever::Lever(glm::vec3 pos, float size) {
     keyframes.addFrame(position, {0.37f, 0, 0}, 3.0f);
     keyframes.addFrame(position, {0.23f, 0, 0}, 3.0f);
 
-    // Initialize static resources if needed
     if (!shader) shader = std::make_unique<ppgso::Shader>(diffuse_vert_glsl, diffuse_frag_glsl);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Arcade-with-lever/lever.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("Arcade-with-lever/lever.obj");
@@ -28,7 +27,6 @@ Lever::Lever(glm::vec3 pos, float size) {
 bool Lever::update(Scene &scene, float dt) {
     timePassedFromStart += dt;
     keyframes.updatePosRot(timePassedFromStart, &position, &rotation);
-    // Generate modelMatrix from position, rotation and scale
     generateModelMatrix();
 
     return true;
@@ -37,14 +35,11 @@ bool Lever::update(Scene &scene, float dt) {
 void Lever::render(Scene &scene) {
     shader->use();
 
-    // set up light
     shader->setUniform("LightDirection", scene.lightDirection);
 
-    // use camera
     shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);
     shader->setUniform("ViewMatrix", scene.camera->viewMatrix);
 
-    // render mesh
     shader->setUniform("ModelMatrix", modelMatrix);
     shader->setUniform("Texture", *texture);
     mesh->render();

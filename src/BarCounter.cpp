@@ -10,19 +10,18 @@ std::unique_ptr<ppgso::Texture> BarCounter::texture;
 std::unique_ptr<ppgso::Shader> BarCounter::shader;
 
 BarCounter::BarCounter(glm::vec3 pos, glm::vec3 rot) {
-    position = pos;
+    position = pos; //position, rotation, scale init and length of counter
     rotation = rot;
     float size = 0.4f;
     scale = glm::vec3(size);
     length = 1.8f * size * 2.5f;
 
-    material.ambient = glm::vec3(0.2);
+    material.ambient = glm::vec3(0.2); // material for counter
     material.diffuse = glm::vec3(0.7);
     material.specular = glm::vec3(0.6);
     material.shininess = 0.6;
 
-    // Initialize static resources if needed
-    if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
+    if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl); // shader, texture, mesh
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("BarCounter/barCounter.bmp"));
     if (!mesh) mesh = std::make_unique<ppgso::Mesh>("BarCounter/barCounter.obj");
 }

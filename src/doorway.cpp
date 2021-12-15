@@ -24,7 +24,7 @@ Doorway::Doorway() {
     if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
     if (!shadowShader) shadowShader = std::make_unique<ppgso::Shader>(shadow_vert_glsl, shadow_frag_glsl);
     if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Wall/Brick.bmp"));
-    std::vector<float> positions2 = {
+    std::vector<float> positions2 = { // Custom mesh
             -1.0, -1.0, 1.0, //FRONT LEFT
             -0.2, -1.0, 1.0,
             -0.2, 1.0, 1.0,
@@ -126,32 +126,32 @@ Doorway::Doorway() {
             1.0, 1.0,
             0.6, 1.0,
 
-            0.0, 0.0, //LEFT
+            0.0, 0.0,
             0.2, 0.0,
             0.2, 1.0,
             0.0, 1.0,
 
-            0.0, 0.0, //RIGHT
+            0.0, 0.0,
             0.2, 0.0,
             0.2, 1.0,
             0.0, 1.0,
 
-            0.0, 0.0, //TOP
+            0.0, 0.0,
             0.2, 0.0,
             0.2, 1.0,
             0.0, 1.0,
 
-            0.0, 0.0, //BOTTOM RIGHT
+            0.0, 0.0,
             1.0, 0.0,
             1.0, 1.0,
             0.0, 1.0,
 
-            0.0, 0.0, //BOTTOM LEFT
+            0.0, 0.0,
             1.0, 0.0,
             1.0, 1.0,
             0.0, 1.0,
 
-            0.0, 0.0, //DOORWAY LEFT
+            0.0, 0.0,
             0.2, 0.0,
             0.2, 0.6,
             0.0, 0.6,
@@ -161,7 +161,7 @@ Doorway::Doorway() {
             0.2, 0.6,
             0.0, 0.6,
 
-            0.0, 0.0, //DOORWAY RIGHT
+            0.0, 0.0,
             0.2, 0.0,
             0.2, 0.6,
             0.0, 0.6

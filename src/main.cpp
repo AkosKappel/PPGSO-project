@@ -527,38 +527,22 @@ public:
      * Construct custom game window
      */
     SceneWindow() : Window{"main_window", SIZE, SIZE} {
-        //hideCursor();
+
         glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
 
-        // Initialize OpenGL state
-        // Enable Z-buffer
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL);
 
-        // Enable polygon culling
         glEnable(GL_CULL_FACE);
         glFrontFace(GL_CCW);
         glCullFace(GL_BACK);
 
-        // Set transparency calculations
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         initScene();
     }
 
-    /*!
-     * Handles pressed key when the window is focused
-     * @param key Key code of the key being pressed/released
-     * @param scanCode Scan code of the key being pressed/released
-     * @param action Action indicating the key state change
-     * @param mods Additional modifiers to consider
-     */
     void onKey(int key, int scanCode, int action, int mods) override {
-        if (scene.camera->freeMovement) {
-            std::cout << "pos" << glm::to_string(scene.camera->position) << std::endl;
-            std::cout << "rot" << glm::to_string(scene.camera->rotation) << std::endl;
-            std::cout << "orient" << glm::to_string(scene.camera->orientation) << std::endl;
-        }
         scene.keyboard[key] = action;
         scene.camera->movement(key, action, mods);
 
@@ -573,60 +557,41 @@ public:
         }
     }
 
-    /*!
-     * Handle cursor position changes
-     * @param cursorX Mouse horizontal position in window coordinates
-     * @param cursorY Mouse vertical position in window coordinates
-     */
     void onCursorPos(double cursorX, double cursorY) override {
         scene.cursor.x = cursorX;
         scene.cursor.y = cursorY;
     }
 
-    /*!
-     * Handle cursor buttons
-     * @param button Mouse button being manipulated
-     * @param action Mouse bu
-     * @param mods
-     */
     void onMouseButton(int button, int action, int mods) override {
         scene.camera->movement(button, action, mods);
     }
 
-    /*!
-     * Window update implementation that will be called automatically from pollEvents
-     */
     void onIdle() override {
-        // Track tim
         static auto time = (float) glfwGetTime();
 
-        // Compute time delta
         float dt = (float) glfwGetTime() - time;
         time = (float) glfwGetTime();
 
-        glCullFace(GL_FRONT);
-        glViewport(0, 0, scene.SHADOW_WIDTH, scene.SHADOW_HEIGHT);
-        glBindFramebuffer(GL_FRAMEBUFFER, scene.depthMapFBO);
-        glClear(GL_DEPTH_BUFFER_BIT);
+        glCullFace(GL_FRONT); // cullFace for better shadows
+        glViewport(0, 0, scene.SHADOW_WIDTH, scene.SHADOW_HEIGHT); // window size of shadow resolution
+        glBindFramebuffer(GL_FRAMEBUFFER, scene.depthMapFBO);  // bind framebuffer
+        glClear(GL_DEPTH_BUFFER_BIT); // clear depth buffer
 
-        // Update and render all objects
-        scene.update(dt);
-        scene.renderShadow();
+        scene.update(dt); // update all objects
+        scene.renderShadow(); // render objects that will have shadows with shadow shader
 
-        glCullFace(GL_BACK);
+        glCullFace(GL_BACK); // cullFace back to GL_Back
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glBindTexture(GL_TEXTURE_2D, scene.depthMap);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glBindTexture(GL_TEXTURE_2D, scene.depthMap); // fill depthMap
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear buffers
 
-        scene.render();
+        scene.render(); // render objects with phong shader
     }
 };
 
 int main() {
-    // Initialize our window
     SceneWindow window;
 
-    // Main execution loop
     while (window.pollEvents()) {}
 
     return EXIT_SUCCESS;

@@ -23,7 +23,7 @@ Wall::Wall() {
   if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
   if (!shadowShader) shadowShader = std::make_unique<ppgso::Shader>(shadow_vert_glsl, shadow_frag_glsl);
   if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Wall/Brick.bmp"));
-  std::vector<float> positions2 = {
+  std::vector<float> positions2 = { // custom mesh and Texture coordinates
     -1.0, -1.0,  1.0, //FRONT
     1.0, -1.0,  1.0,
     1.0,  1.0,  1.0,

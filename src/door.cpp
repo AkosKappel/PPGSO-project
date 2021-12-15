@@ -45,7 +45,6 @@ bool Door::update(Scene &scene, float dt) {
             * glm::translate(glm::mat4(1.0f), {rotateAround.x, rotateAround.y, rotateAround.z})
             * glm::orientate4(rotation)
             * glm::scale(glm::mat4(1.0f), scale);
-    //generateModelMatrix();
     return true;
 }
 
