@@ -19,7 +19,7 @@ private:
     std::unique_ptr<Lever> lever;
 public:
 
-    SlotMachine(glm::vec3 pos);
+    SlotMachine(glm::vec3 pos, bool hasLever = false);
 
     bool update(Scene &scene, float dt) override;
 

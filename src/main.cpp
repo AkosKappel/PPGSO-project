@@ -54,8 +54,8 @@ private:
         scene.pointLight[1].position = {3.0f, 2.0f, 9.0f};
         scene.pointLight[1].color = {1.0f, 1.0f, 1.0f};
         scene.pointLight[1].constant = 1.0f;
-        scene.pointLight[1].linear = 0.09f;
-        scene.pointLight[1].quadratic = 0.032f;
+        scene.pointLight[1].linear = 0.35f;
+        scene.pointLight[1].quadratic = 0.044f;
         scene.pointLight[1].ambient = glm::vec3{1.0};
         scene.pointLight[1].diffuse = glm::vec3{1.0};
         scene.pointLight[1].specular = glm::vec3{1.0};
@@ -147,7 +147,7 @@ private:
         auto skybox = std::make_unique<Skybox>();
         scene.objects.push_back(std::move(skybox));
 
-        auto machine1 = std::make_unique<SlotMachine>(glm::vec3(0.0f, 0.0f, -5.5f));
+        auto machine1 = std::make_unique<SlotMachine>(glm::vec3(0.0f, 0.0f, -5.5f), true);
         scene.objects.push_back(std::move(machine1));
 
         auto chair1 = std::make_unique<BarChair>(glm::vec3(0.0f, 0.0f, -4.5f), glm::vec3(0.0f, 0.0f, ppgso::PI));

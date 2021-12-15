@@ -9,10 +9,10 @@ std::unique_ptr<ppgso::Texture> Money::texture;
 std::unique_ptr<ppgso::Shader> Money::shader;
 
 Money::Money(glm::vec3 pos) {
-    material.ambient = glm::vec3(0.3);
-    material.diffuse = glm::vec3(0.6);
-    material.specular = glm::vec3(0.7);
-    material.shininess = 0.4;
+    material.ambient = glm::vec3(0.4);
+    material.diffuse = glm::vec3(0.1);
+    material.specular = glm::vec3(0.05);
+    material.shininess = 256;
 
     position = pos;
     float size = 0.001f;
