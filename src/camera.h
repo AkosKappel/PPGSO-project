@@ -18,11 +18,8 @@ public:
     glm::vec3 orientation{0, 0, -1};
     glm::vec3 rotation{0, 0, 0};
 
-    float defaultSpeed = 0.5f;
+    float defaultSpeed = 0.1f;
     float speed = defaultSpeed;
-    float sensitivity = 100.0f;
-    float timePassed = 0.0f;
-    bool firstClick = true;
 
     Keyframes keyframes;
 

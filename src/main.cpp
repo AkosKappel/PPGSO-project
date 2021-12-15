@@ -4,6 +4,8 @@
 
 #include <ppgso/ppgso.h>
 
+#include "glm/ext.hpp"
+
 #include "camera.h"
 #include "scene.h"
 #include "BarChair.h"
@@ -41,8 +43,9 @@ private:
         scene.createDepthMap();
 
         auto light1 = std::make_unique<Light>(glm::vec3(0.0f, 3.0f, 0.0f));
+        light1->color = glm::vec3(0.4f, 0.1f, 0.8f);
         scene.pointLight[0].position = light1->position;
-        scene.pointLight[0].color = {0.4f, 0.1f, 0.8f};
+        scene.pointLight[0].color = light1->color;
         scene.pointLight[0].constant = 1.0f;
         scene.pointLight[0].linear = 0.09f;
         scene.pointLight[0].quadratic = 0.032f;
@@ -539,6 +542,9 @@ public:
      * @param mods Additional modifiers to consider
      */
     void onKey(int key, int scanCode, int action, int mods) override {
+        std::cout << "pos" << glm::to_string(scene.camera->position) << std::endl;
+        std::cout << "rot" << glm::to_string(scene.camera->rotation) << std::endl;
+        std::cout << "orient" << glm::to_string(scene.camera->orientation) << std::endl;
         scene.keyboard[key] = action;
         scene.camera->movement(key, action, mods);
 
