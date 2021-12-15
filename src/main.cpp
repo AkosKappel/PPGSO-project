@@ -143,7 +143,7 @@ private:
 
         // Create a camera
         auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 100.0f);
-        camera->position = glm::vec3(-28.0f, 1.6f, 3.0f);
+        camera->position = glm::vec3(-27.205076, 1.000000, 6.574977);
         camera->orientation = glm::vec3(1.0f, 0.0f, 0.0f);
         scene.camera = std::move(camera);
 
@@ -227,13 +227,13 @@ private:
         door->position = {-5.8f, 0.0f, 3.0f};
         door->rotation = {0.0f, 0.0f, ppgso::PI/2};
         door->rotateAround = {0.0f, 0.0f, -0.6f};
-        door->timeRotate = 5.0f;
+        door->timeRotate = 29.0f;
         scene.objects.push_back(std::move(door));
 
         auto door2 = std::make_unique<Door>();
         door2->position = {3.0f, 0.0f, 6.2f};
         door2->rotateAround = {0.6f, 0.0f, 0.0f};
-        door2->timeRotate = 10.0f;
+        door2->timeRotate = 91.0f;
         scene.objects.push_back(std::move(door2));
 
         auto bone = std::make_shared<Bone>();
@@ -255,7 +255,11 @@ private:
         auto bone3 = std::make_shared<Bone>();
         bone3->parent = bone;
         bone3->rotateAround = {0.0f, -0.15f, 0.0};
-        bone3->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 5.0f);
+        bone3->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 102.0f);
+        bone3->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/4, 0.0f, ppgso::PI/8}, 3.0f);
+        bone3->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/4, 0.0f, ppgso::PI/8}, 3.0f);
+        bone3->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 3.0f);
+        bone3->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 8.0f);
         bone3->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/4, 0.0f, ppgso::PI/8}, 3.0f);
         bone3->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/4, 0.0f, ppgso::PI/8}, 3.0f);
         bone3->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 3.0f);
@@ -324,7 +328,11 @@ private:
 
         auto bone10 = std::make_shared<Bone>();
         bone10->rotateAround = {0.0f, -0.15f, 0.0f};
-        bone10->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 5.0f);
+        bone10->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 102.0f);
+        bone10->addFrame({0, -0.3f, 0}, {-((2.5f*ppgso::PI)/4), 0.0f, ppgso::PI/4}, 3.0f);
+        bone10->addFrame({0, -0.3f, 0}, {-((2.5f*ppgso::PI)/4), 0.0f, ppgso::PI/4}, 3.0f);
+        bone10->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 3.0f);
+        bone10->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 8.0f);
         bone10->addFrame({0, -0.3f, 0}, {-((2.5f*ppgso::PI)/4), 0.0f, ppgso::PI/4}, 3.0f);
         bone10->addFrame({0, -0.3f, 0}, {-((2.5f*ppgso::PI)/4), 0.0f, ppgso::PI/4}, 3.0f);
         bone10->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 3.0f);
@@ -352,9 +360,9 @@ private:
         auto bone23 = std::make_shared<Bone>();
         bone23->parent = bone21;
         bone23->rotateAround = {0.0f, -0.15f, 0.0};
-        bone23->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 20.0f);
+        bone23->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 69.0f);
         bone23->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/3, 0.0f, ppgso::PI/16}, 3.0f);
-        bone23->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/3, 0.0f, ppgso::PI/16}, 3.0f);
+        bone23->addFrame({-0.26, 0.09f, 0}, {-ppgso::PI/3, 0.0f, ppgso::PI/16}, 1.0f);
         bone23->addFrame({-0.26, 0.09f, 0}, {0.0f, 0.0f, 0.0f}, 3.0f);
         bone23->scale.x = 0.06f;
         bone23->scale.y = 0.15f;
@@ -421,9 +429,9 @@ private:
 
         auto bone210 = std::make_shared<Bone>();
         bone210->rotateAround = {0.0f, -0.15f, 0.0f};
-        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 20.0f);
+        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 69.0f);
         bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/6, 0.0f, 0.0f}, 3.0f);
-        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/6, 0.0f, 0.0f}, 3.0f);
+        bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/6, 0.0f, 0.0f}, 1.0f);
         bone210->addFrame({0, -0.3f, 0}, {-ppgso::PI/2, 0.0f, 0.0f}, 3.0f);
         bone210->parent = bone23;
         bone210->scale.x = 0.06f;

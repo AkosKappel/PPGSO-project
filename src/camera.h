@@ -20,6 +20,7 @@ public:
 
     float defaultSpeed = 0.1f;
     float speed = defaultSpeed;
+    float timePassed;
 
     Keyframes keyframes;
 

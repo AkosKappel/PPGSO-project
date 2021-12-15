@@ -19,7 +19,7 @@ private:
     static std::unique_ptr<ppgso::Texture> texture;
 
     float age = 0.0f;
-    float tStart = 10.0f;
+    float tStart = 42.0f;
     bool moving;
     float radius;
     glm::vec3 acc = glm::vec3(0.0f);

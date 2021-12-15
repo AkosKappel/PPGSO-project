@@ -15,7 +15,7 @@ Lever::Lever(glm::vec3 pos, float size) {
     rotation.x = 0.23f;
     timePassedFromStart = 0.0f;
 
-    keyframes.addFrame(position, rotation, 5.0f);
+    keyframes.addFrame(position, rotation, 72.5f);
     keyframes.addFrame(position, {0.37f, 0, 0}, 3.0f);
     keyframes.addFrame(position, {0.23f, 0, 0}, 3.0f);
 

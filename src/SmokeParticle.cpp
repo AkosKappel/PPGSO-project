@@ -33,7 +33,7 @@ bool SmokeParticle::update(Scene &scene, float dt) {
     }
 
     float oscillation = 0.01f;
-    position += glm::vec3(glm::linearRand(-oscillation, oscillation), 0.005 * hand + glm::linearRand(-oscillation, oscillation), (-0.005) * (1-hand));
+    position += glm::vec3(glm::linearRand(-oscillation, oscillation), 0.005 * hand + glm::linearRand(-oscillation, oscillation), (-0.005) * (1-hand) + glm::linearRand(-oscillation, oscillation));
     scale += glm::vec3(0.02f) * dt;
     age += dt;
     modelMatrix = posRotMatrix
