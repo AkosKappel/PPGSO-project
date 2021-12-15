@@ -188,16 +188,10 @@ vec2(-offset_x,  0.0f),     vec2( 0.0f,    0.0f),     vec2( offset_x,  0.0f),
 vec2(-offset_x, -offset_y), vec2( 0.0f,   -offset_y), vec2( offset_x, -offset_y)
 );
 
-float edgeDetectionKernel[9] = float[] (
+float kernel[9] = float[] (
     1,  1, 1,
     1, -8, 1,
     1,  1, 1
-);
-
-float kernel[9] = float[] (
-    -1,  -1, -1,
-    -1, 8, -1,
-    -1,  -1, -1
 );
 
 void main() {

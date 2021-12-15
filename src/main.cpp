@@ -23,6 +23,7 @@
 #include "Light.h"
 #include "Desk.h"
 #include "Tree.h"
+#include "Poster.h"
 
 const unsigned int SIZE = 1024;
 
@@ -32,7 +33,6 @@ const unsigned int SIZE = 1024;
 class SceneWindow : public ppgso::Window {
 private:
     Scene scene;
-    bool animate = true;
 
     /*!
      * Reset and initialize the game scene
@@ -145,10 +145,14 @@ private:
         auto camera = std::make_unique<Camera>(60.0f, 1.0f, 0.1f, 100.0f);
         camera->position = glm::vec3(-27.205076, 1.000000, 6.574977);
         camera->orientation = glm::vec3(1.0f, 0.0f, 0.0f);
+        camera->freeMovement = false;
         scene.camera = std::move(camera);
 
         auto skybox = std::make_unique<Skybox>();
         scene.objects.push_back(std::move(skybox));
+
+        auto poster = std::make_unique<Poster>(glm::vec3(4.6f, 2.0f, 6.41f), glm::vec3(0.0f, 0.0f, 0.0f));
+        scene.objects.push_back(std::move(poster));
 
         auto machine1 = std::make_unique<SlotMachine>(glm::vec3(0.0f, 0.0f, -5.5f), true);
         scene.objects.push_back(std::move(machine1));
@@ -550,9 +554,11 @@ public:
      * @param mods Additional modifiers to consider
      */
     void onKey(int key, int scanCode, int action, int mods) override {
-        std::cout << "pos" << glm::to_string(scene.camera->position) << std::endl;
-        std::cout << "rot" << glm::to_string(scene.camera->rotation) << std::endl;
-        std::cout << "orient" << glm::to_string(scene.camera->orientation) << std::endl;
+        if (scene.camera->freeMovement) {
+            std::cout << "pos" << glm::to_string(scene.camera->position) << std::endl;
+            std::cout << "rot" << glm::to_string(scene.camera->rotation) << std::endl;
+            std::cout << "orient" << glm::to_string(scene.camera->orientation) << std::endl;
+        }
         scene.keyboard[key] = action;
         scene.camera->movement(key, action, mods);
 
@@ -563,7 +569,7 @@ public:
 
         // Pause
         if (key == GLFW_KEY_P && action == GLFW_PRESS) {
-            animate = !animate;
+            scene.camera->freeMovement = !scene.camera->freeMovement;
         }
     }
 
@@ -595,8 +601,7 @@ public:
         static auto time = (float) glfwGetTime();
 
         // Compute time delta
-        float dt = animate ? (float) glfwGetTime() - time : 0;
-
+        float dt = (float) glfwGetTime() - time;
         time = (float) glfwGetTime();
 
         glCullFace(GL_FRONT);

@@ -22,6 +22,8 @@ public:
     float speed = defaultSpeed;
     float timePassed;
 
+    bool freeMovement;
+
     Keyframes keyframes;
 
     glm::mat4 viewMatrix;

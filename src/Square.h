@@ -27,33 +27,15 @@ private:
     // Attributes
     TextureType texture;
 public:
-    /*!
-     * Create new square
-     * @param pos Center position of the square
-     * @param rot Rotation of the square
-     * @param scl Scaling of the square
-     */
+
     Square(glm::vec3 pos, glm::vec3 rot, float size, TextureType txt);
 
-    /*!
-     * Update asteroid
-     * @param scene Scene to interact with
-     * @param dt Time delta for animation purposes
-     * @return
-     */
     bool update(Scene &scene, float dt) override;
 
-    /*!
-     * Render asteroid
-     * @param scene Scene to render in
-     */
     void render(Scene &scene) override;
 
     void renderShadow(Scene &scene) override;
 
-    /*!
-     * Custom click event for asteroid
-     */
     void onClick(Scene &scene) override;
 };
 

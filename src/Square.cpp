@@ -142,8 +142,4 @@ void Square::onClick(Scene &scene) {
 }
 
 void Square::renderShadow(Scene &scene) {
-    //shadowShader->use();
-    //shadowShader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
-    //shadowShader->setUniform("ModelMatrix", modelMatrix);
-    //mesh->render();
 }

@@ -1,71 +1,49 @@
-#include "Cigar.h"
+#include "Poster.h"
 
-#include <shaders/phong_vert_glsl.h>
-#include <shaders/phong_frag_glsl.h>
-
-#include <glm/gtx/euler_angles.hpp>
-#include <utility>
+#include <shaders/postprocessing_vert_glsl.h>
+#include <shaders/postprocessing_frag_glsl.h>
 
 // Static resources
-std::unique_ptr<ppgso::Mesh> Cigar::mesh;
-std::unique_ptr<ppgso::Texture> Cigar::texture;
-std::unique_ptr<ppgso::Shader> Cigar::shader;
+std::unique_ptr<ppgso::Mesh> Poster::mesh;
+std::unique_ptr<ppgso::Texture> Poster::texture;
+std::unique_ptr<ppgso::Shader> Poster::shader;
 
-Cigar::Cigar(glm::vec3 pos) {
+Poster::Poster(glm::vec3 pos, glm::vec3 rot) {
     position = pos;
-    float size = 0.02f;
-    scale = glm::vec3(size, size, size);
+    rotation = rot;
+    scale = glm::vec3(0.5f);
 
-    material.ambient = glm::vec3(0.2);
+    material.ambient = glm::vec3(0.4);
     material.diffuse = glm::vec3(0.7);
-    material.specular = glm::vec3(0.6);
-    material.shininess = 0.6;
+    material.specular = glm::vec3(0.2);
+    material.shininess = 0.25;
 
-    if (!shader) shader = std::make_unique<ppgso::Shader>(phong_vert_glsl, phong_frag_glsl);
-    if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("Cigar/cigar.bmp"));
-    if (!mesh) mesh = std::make_unique<ppgso::Mesh>("Cigar/cigar.obj");
+    // Initialize static resources if needed
+    if (!shader) shader = std::make_unique<ppgso::Shader>(postprocessing_vert_glsl, postprocessing_frag_glsl);
+    if (!texture) texture = std::make_unique<ppgso::Texture>(ppgso::image::loadBMP("poster.bmp"));
+    if (!mesh) mesh = std::make_unique<ppgso::Mesh>("Square/square.obj");
 }
 
-bool Cigar::update(Scene &scene, float dt) {
-    glm::vec3 rotation2 = rotation;
-    rotation2.x = 0.0f;
-    modelMatrix = parent->rotationPositionMatrix
-                  * glm::translate(glm::mat4(1.0f), position)
-                  * glm::orientate4(rotation);
+bool Poster::update(Scene &scene, float dt) {
 
-    if (objects.size() < 100) {
-        float size = scale.x;
-        auto smoke = std::make_unique<SmokeParticle>(
-                glm::vec3(0, size * 2.5f, size * 7.0f), modelMatrix,
-                size * 1.0f, parent->rotatePosition.x);
-        objects.push_back(std::move(smoke));
-    }
-
-    modelMatrix *= glm::scale(glm::mat4(1.0f), scale);
-    //generateModelMatrix();
-
-    // Use iterator to update all objects so we can remove while iterating
-    auto i = std::begin(objects);
-    while (i != std::end(objects)) {
-        // Update and remove from list if needed
-        auto obj = i->get();
-        if (!obj->update(scene, dt))
-            i = objects.erase(i);
-        else
-            ++i;
-    }
+    // Generate modelMatrix from position, rotation and scale
+    generateModelMatrix();
 
     return true;
 }
 
-void Cigar::render(Scene &scene) {
+void Poster::render(Scene &scene) {
+    // Use shader
     shader->use();
 
+    // Use camera
     shader->setUniform("ProjectionMatrix", scene.camera->projectionMatrix);
     shader->setUniform("ViewMatrix", scene.camera->viewMatrix);
     shader->setUniform("viewPos", scene.camera->position);
 
+
     shader->setUniform("directionalLight.direction", scene.directionalLight.direction);
+
     shader->setUniform("directionalLight.ambient", scene.directionalLight.ambient);
     shader->setUniform("directionalLight.diffuse", scene.directionalLight.diffuse);
     shader->setUniform("directionalLight.specular", scene.directionalLight.specular);
@@ -104,26 +82,27 @@ void Cigar::render(Scene &scene) {
     shader->setUniform("material.diffuse", material.diffuse);
     shader->setUniform("material.specular", material.specular);
     shader->setUniform("material.shininess", material.shininess);
+    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
 
+    shader->setUniform("shadowMap", 1);
+
+    // Transform model
+    shader->setUniform("ModelMatrix", modelMatrix);
+
+    // Apply selected texture
+    shader->setUniform("Texture", *texture);
     shader->setUniform("isOutside", false);
 
-    shader->setUniform("lightSpaceMatrix", scene.lightSpaceMatrix);
-    shader->setUniform("Texture", *texture);
-    shader->setUniform("shadowMap",1);
+    shader->setUniform("shadowMap", 1);
     glActiveTexture(GL_TEXTURE0 + 1);
     glBindTexture(GL_TEXTURE_2D, scene.depthMap);
 
-    shader->setUniform("ModelMatrix", modelMatrix);
+    // Render mesh
     mesh->render();
-
-    // Render all objects
-    for (auto &obj: objects) {
-        obj->render(scene);
-    }
 }
 
-void Cigar::onClick(Scene &scene) {
+void Poster::onClick(Scene &scene) {
 }
 
-void Cigar::renderShadow(Scene &scene) {
+void Poster::renderShadow(Scene &scene) {
 }

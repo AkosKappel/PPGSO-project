@@ -131,6 +131,7 @@ add_executable(src
         src/bone.cpp
         src/Desk.cpp
         src/Money.cpp
+        src/Poster.cpp
         )
 target_link_libraries(src ppgso shaders)
 install(TARGETS src DESTINATION .)
